@@ -5,4 +5,8 @@ public class PettingAnimal extends Animal {
         super(name, species, animalType.PETTABLE, assignedPen);
         this.landSpace = landSpace;
     }
+
+    public int getLandSpace() {
+        return landSpace;
+    }
 }
