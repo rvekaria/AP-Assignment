@@ -1,4 +1,4 @@
-package sample;
+package zoo;
 
 import java.util.ArrayList;
 
@@ -10,7 +10,7 @@ public abstract class Pen {
     private ArrayList<Animal> animalsInPen;
     private static ArrayList<Pen> listOfAllPens;
 
-    public enum penType {DRY, AQUARIUM, PARTWATERDRY, AVIARY, PETTING}
+    public enum penType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
 
     public Pen(String name, int length, int width, int temp, penType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Animal> animalsInPen) {
         this.name = name;
@@ -111,7 +111,7 @@ public abstract class Pen {
             return true;
         } else if (penType == penType.AQUARIUM && animalType == Animal.animalType.WATER) {
             return true;
-        } else if (penType == penType.PARTWATERDRY && animalType == Animal.animalType.AMPHIBIOUS) {
+        } else if (penType == penType.PARTDRYWATER && animalType == Animal.animalType.AMPHIBIOUS) {
             return true;
         } else if (penType == penType.AVIARY && animalType == Animal.animalType.FLYING) {
             return true;

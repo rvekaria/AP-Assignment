@@ -1,4 +1,4 @@
-package sample;
+package zoo;
 
 public class Controller {
 }

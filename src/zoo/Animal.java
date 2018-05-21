@@ -1,4 +1,4 @@
-package sample;
+package zoo;
 
 import java.util.ArrayList;
 
@@ -16,6 +16,7 @@ public abstract class Animal {
         this.species = species;
         this.type = type;
         this.assignedPen = assignedPen;
+        listOfAllAnimals.add(this);
     }
 
     public String getName() {

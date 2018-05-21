@@ -1,4 +1,4 @@
-package sample;
+package zoo;
 
 public class FlyingAnimal extends Animal {
     private int airSpace;

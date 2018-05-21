@@ -1,4 +1,4 @@
-package sample;
+package zoo;
 
 public class WaterAnimal extends Animal {
     private int waterSpace;
