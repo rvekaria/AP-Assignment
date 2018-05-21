@@ -1,3 +1,5 @@
+package sample;
+
 public class AmphibiousAnimal extends Animal {
     private int landSpace, waterSpace;
 

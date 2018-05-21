@@ -1,5 +1,6 @@
+package sample;
+
 import javafx.application.Application;
-//JavaFX applications inherit all the functionality of JavaFX thorugh extending the Application class in the above package
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;

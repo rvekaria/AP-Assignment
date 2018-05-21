@@ -1,3 +1,5 @@
+package sample;
+
 public class LandAnimal extends Animal {
     private int landSpace;
 
