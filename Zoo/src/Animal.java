@@ -5,6 +5,7 @@ public abstract class Animal {
     private String species;
     protected animalType type;
     private Pen assignedPen;
+    private static ArrayList<Animal> listOfAllAnimals;
 
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 
@@ -31,11 +32,15 @@ public abstract class Animal {
         return assignedPen;
     }
 
+    public static ArrayList<Animal> getListOfAllAnimals() {
+        return listOfAllAnimals;
+    }
+
     public void setAssignedPen(Pen pen) {
         this.assignedPen = pen;
     }
 
-    public void assignToPen(Pen pen){
+    public void assignToPen(Pen pen) {
         pen.assignAnimalToPen(this);
     }
 }

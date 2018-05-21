@@ -6,6 +6,7 @@ public abstract class Pen {
     private penType type;
     private ArrayList<ZooKeeper> zooKeepers;
     private ArrayList<Animal> animalsInPen;
+    private static ArrayList<Pen> listOfAllPens;
 
     public enum penType {DRY, AQUARIUM, PARTWATERDRY, AVIARY, PETTING}
 
@@ -17,6 +18,7 @@ public abstract class Pen {
         this.type = type;
         this.zooKeepers = zooKeepers;
         this.animalsInPen = animalsInPen;
+        listOfAllPens.add(this);
     }
 
     public String getName() {
@@ -39,6 +41,10 @@ public abstract class Pen {
         return type;
     }
 
+    public static ArrayList<Pen> getListOfAllPens() {
+        return listOfAllPens;
+    }
+
     public ArrayList<ZooKeeper> getZooKeepers() {
         return zooKeepers;
     }
@@ -52,11 +58,24 @@ public abstract class Pen {
     }
 
     public void assignZooKeeper(ZooKeeper keeper) {
-        if (!zooKeepers.contains(keeper)) {
-            zooKeepers.add(keeper);
+        if (!zooKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
+            zooKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
+            keeper.assignToPen(this); //update zookeeper's list of pens that they are looking after
             System.out.println(keeper.getName() + " has been assigned to look after this pen.");
         } else
+            assignKeeperErrorMessage(keeper);
+    }
+
+    public void assignKeeperErrorMessage(ZooKeeper keeper) {
+        if (zooKeepers.contains(keeper)) {
             System.out.println(keeper.getName() + " is already a keeper of this pen.");
+        }
+        if (!keeper.isTrainedFor(getType())) {
+            System.out.println(keeper.getName() + " is not trained to look after " + getType() + " pens.");
+        }
+        if (!ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
+            System.out.println("This zookeeper does not exist.");
+        }
     }
 
     public ArrayList<Animal> getAnimalsInPen() {
@@ -64,12 +83,25 @@ public abstract class Pen {
     }
 
     public void assignAnimalToPen(Animal animal) {
-        if (isPenSuitable(this.type, animal.getType())) {
+        //TODO check that the capacity of the pen is not exceeded by adding the animal
+        //TODO check that the animal is compatible with other animals in that pen
+        if (isPenSuitable(getType(), animal.getType())) {
             animalsInPen.add(animal); //update the pen's list of animals
             animal.setAssignedPen(this); //update the animal's pen attribute
             System.out.println(animal.getName() + " has been added to this pen.");
         } else
-            System.out.println("Animals ");
+            System.out.println("This pen is not suitable for" + animal.getType() + " animals.");
+    }
+
+    public void removeAnimalFromPen(Animal animal) {
+        if (animalsInPen.contains(animal)) {
+            animalsInPen.remove(animalsInPen.indexOf(animal));
+            animal.setAssignedPen(null);
+            System.out.println(animal.getName() + " has been removed from this pen. This animal must be assigned to another suitable pen.");
+
+        } else {
+            System.out.println(animal.getName() + " is not in this pen. Cannot remove.");
+        }
     }
 
     public boolean isPenSuitable(penType penType, Animal.animalType animalType) {
@@ -85,15 +117,5 @@ public abstract class Pen {
             return true;
         } else
             return false;
-    }
-
-    public void removeAnimalFromPen(Animal animal) {
-        if (animalsInPen.contains(animal)) {
-            animalsInPen.remove(animalsInPen.indexOf(animal));
-            animal.setAssignedPen(null);
-            System.out.println(animal.getName() + " has been removed from this pen.");
-        } else {
-            System.out.println(animal.getName() + " is not in this pen. Cannot remove.");
-        }
     }
 }
