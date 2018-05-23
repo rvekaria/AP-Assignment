@@ -8,7 +8,8 @@ public class FlyingAnimal extends Animal {
         this.airSpace = airSpace;
     }
 
-    public int getAirSpace() {
+    @Override
+    public int getAnimalSpace() {
         return airSpace;
     }
 }

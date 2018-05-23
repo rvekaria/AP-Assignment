@@ -31,6 +31,16 @@ public abstract class Animal {
         return type;
     }
 
+    public int getAnimalSpace(){
+        System.out.println("This returns the space requirements for an animal.");
+        return 0;
+    }
+
+    public int getAnimalSpace(String type){
+        System.out.println("This returns a space requirement for an animal based on the type that is passed in.");
+        return 0;
+    }
+
     public Pen getAssignedPen() {
         return assignedPen;
     }
