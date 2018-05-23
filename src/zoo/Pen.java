@@ -5,14 +5,14 @@ import java.util.ArrayList;
 public abstract class Pen {
     private String name;
     private int length, width, temp;
-    private penType type;
+    private PenType type;
     private ArrayList<ZooKeeper> zooKeepers;
     private ArrayList<Animal> animalsInPen;
     private static ArrayList<Pen> listOfAllPens;
 
-    public enum penType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
+    public enum PenType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
 
-    public Pen(String name, int length, int width, int temp, penType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Animal> animalsInPen) {
+    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Animal> animalsInPen) {
         this.name = name;
         this.length = length;
         this.width = width;
@@ -39,8 +39,18 @@ public abstract class Pen {
         return temp;
     }
 
-    public penType getType() {
+    public PenType getType() {
         return type;
+    }
+
+    public int getCapacity(){
+        System.out.println("This returns the capacity of the pen.");
+        return 0;
+    }
+
+    public int getCapacity(String type){
+        System.out.println("This returns the land/water capacity of the pen depending on the type that is passed in.");
+        return 0;
     }
 
     public static ArrayList<Pen> getListOfAllPens() {
@@ -106,16 +116,16 @@ public abstract class Pen {
         }
     }
 
-    public boolean isPenSuitable(penType penType, Animal.animalType animalType) {
-        if (penType == penType.DRY && (animalType == Animal.animalType.LAND || animalType == Animal.animalType.PETTABLE)) {
+    public boolean isPenSuitable(PenType penType, Animal.animalType animalType) {
+        if (penType == PenType.DRY && (animalType == Animal.animalType.LAND || animalType == Animal.animalType.PETTABLE)) {
             return true;
-        } else if (penType == penType.AQUARIUM && animalType == Animal.animalType.WATER) {
+        } else if (penType == PenType.AQUARIUM && animalType == Animal.animalType.WATER) {
             return true;
-        } else if (penType == penType.PARTDRYWATER && animalType == Animal.animalType.AMPHIBIOUS) {
+        } else if (penType == PenType.PARTDRYWATER && animalType == Animal.animalType.AMPHIBIOUS) {
             return true;
-        } else if (penType == penType.AVIARY && animalType == Animal.animalType.FLYING) {
+        } else if (penType == PenType.AVIARY && animalType == Animal.animalType.FLYING) {
             return true;
-        } else if (penType == penType.PETTING && animalType == Animal.animalType.PETTABLE) {
+        } else if (penType == PenType.PETTING && animalType == Animal.animalType.PETTABLE) {
             return true;
         } else
             return false;
