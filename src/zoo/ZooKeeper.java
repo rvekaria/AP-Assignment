@@ -1,12 +1,14 @@
+package zoo;
+
 import java.util.ArrayList;
 
 public class ZooKeeper {
     private String name;
-    private ArrayList<Pen.penType> pensTrainedFor;
+    private ArrayList<Pen.PenType> pensTrainedFor;
     private ArrayList<Pen> assignedPens;
-    private static ArrayList<ZooKeeper> listOfAllZooKeepers;
+    private static ArrayList<ZooKeeper> listOfAllZooKeepers = new ArrayList<>();
 
-    public ZooKeeper(String name, ArrayList<Pen.penType> pensTrainedFor, ArrayList<Pen> assignedPens) {
+    public ZooKeeper(String name, ArrayList<Pen.PenType> pensTrainedFor, ArrayList<Pen> assignedPens) {
         this.name = name;
         this.pensTrainedFor = pensTrainedFor;
         this.assignedPens = assignedPens;
@@ -21,7 +23,7 @@ public class ZooKeeper {
         return listOfAllZooKeepers;
     }
 
-    public boolean isTrainedFor(Pen.penType penType) {
+    public boolean isTrainedFor(Pen.PenType penType) {
         if (pensTrainedFor.contains(penType)) {
             return true;
         } else

@@ -1,16 +1,18 @@
+package zoo;
+
 import java.util.ArrayList;
 
 public abstract class Pen {
     private String name;
     private int length, width, temp;
-    private penType type;
+    private PenType type;
     private ArrayList<ZooKeeper> zooKeepers;
     private ArrayList<Animal> animalsInPen;
-    private static ArrayList<Pen> listOfAllPens;
+    private static ArrayList<Pen> listOfAllPens = new ArrayList<>();
 
-    public enum penType {DRY, AQUARIUM, PARTWATERDRY, AVIARY, PETTING}
+    public enum PenType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
 
-    public Pen(String name, int length, int width, int temp, penType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Animal> animalsInPen) {
+    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Animal> animalsInPen) {
         this.name = name;
         this.length = length;
         this.width = width;
@@ -37,8 +39,18 @@ public abstract class Pen {
         return temp;
     }
 
-    public penType getType() {
+    public PenType getType() {
         return type;
+    }
+
+    public int getCapacity() {
+        System.out.println("This returns the capacity of the pen.");
+        return 0;
+    }
+
+    public int getCapacity(String type) {
+        System.out.println("This returns the land/water capacity of the pen depending on the type that is passed in.");
+        return 0;
     }
 
     public static ArrayList<Pen> getListOfAllPens() {
@@ -83,9 +95,8 @@ public abstract class Pen {
     }
 
     public void assignAnimalToPen(Animal animal) {
-        //TODO check that the capacity of the pen is not exceeded by adding the animal
         //TODO check that the animal is compatible with other animals in that pen
-        if (isPenSuitable(getType(), animal.getType())) {
+        if (isPenSuitable(getType(), animal.getType()) && canAccommodateAnimal(animal)) {
             animalsInPen.add(animal); //update the pen's list of animals
             animal.setAssignedPen(this); //update the animal's pen attribute
             System.out.println(animal.getName() + " has been added to this pen.");
@@ -104,16 +115,53 @@ public abstract class Pen {
         }
     }
 
-    public boolean isPenSuitable(penType penType, Animal.animalType animalType) {
-        if (penType == penType.DRY && (animalType == Animal.animalType.LAND || animalType == Animal.animalType.PETTABLE)) {
+    public boolean isPenSuitable(PenType penType, Animal.animalType animalType) {
+        if (penType == PenType.DRY && (animalType == Animal.animalType.LAND || animalType == Animal.animalType.PETTABLE)) {
             return true;
-        } else if (penType == penType.AQUARIUM && animalType == Animal.animalType.WATER) {
+        } else if (penType == PenType.AQUARIUM && animalType == Animal.animalType.WATER) {
             return true;
-        } else if (penType == penType.PARTWATERDRY && animalType == Animal.animalType.AMPHIBIOUS) {
+        } else if (penType == PenType.PARTDRYWATER && animalType == Animal.animalType.AMPHIBIOUS) {
             return true;
-        } else if (penType == penType.AVIARY && animalType == Animal.animalType.FLYING) {
+        } else if (penType == PenType.AVIARY && animalType == Animal.animalType.FLYING) {
             return true;
-        } else if (penType == penType.PETTING && animalType == Animal.animalType.PETTABLE) {
+        } else if (penType == PenType.PETTING && animalType == Animal.animalType.PETTABLE) {
+            return true;
+        } else
+            return false;
+    }
+
+    //TODO maybe each of the pen sublcasses need their own version of this method and override it??
+    public int spaceOccupiedByAnimals() {
+        int occupiedSpace = 0;
+        for (Animal animal : animalsInPen) {
+            occupiedSpace += animal.getAnimalSpace();
+        }
+        return occupiedSpace;
+    }
+
+    public int spaceOccupiedByAnimals(String type) {
+        int occupiedSpace = 0;
+        for (Animal animal : animalsInPen) {
+            occupiedSpace += animal.getAnimalSpace(type);
+        }
+        return occupiedSpace;
+    }
+
+    public int getRemainingSpace() {
+        return getCapacity() - spaceOccupiedByAnimals();
+    }
+
+    public int getRemainingSpace(String type) {
+        return getCapacity(type) - spaceOccupiedByAnimals(type);
+    }
+
+    public boolean canAccommodateAnimal(Animal animal) {
+        if (animal.type.equals(Animal.animalType.AMPHIBIOUS)) {
+            if (getRemainingSpace("land") - animal.getAnimalSpace("land") >= 0 && getRemainingSpace("water") - animal.getAnimalSpace("water") >= 0) {
+                return true;
+            } else
+                return false;
+        } else if (getRemainingSpace() - animal.getAnimalSpace() >= 0) {
             return true;
         } else
             return false;

@@ -1,3 +1,5 @@
+package zoo;
+
 public class PettingAnimal extends Animal {
     private int landSpace;
 
@@ -6,7 +8,8 @@ public class PettingAnimal extends Animal {
         this.landSpace = landSpace;
     }
 
-    public int getLandSpace() {
+    @Override
+    public int getAnimalSpace() {
         return landSpace;
     }
 }

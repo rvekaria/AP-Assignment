@@ -1,3 +1,5 @@
+package zoo;
+
 public class WaterAnimal extends Animal {
     private int waterSpace;
 
@@ -7,6 +9,11 @@ public class WaterAnimal extends Animal {
     }
 
     public int getWaterSpace() {
+        return waterSpace;
+    }
+
+    @Override
+    public int getAnimalSpace() {
         return waterSpace;
     }
 }
