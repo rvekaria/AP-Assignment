@@ -7,7 +7,7 @@ public abstract class Animal {
     private String species;
     protected animalType type;
     private Pen assignedPen;
-    private static ArrayList<Animal> listOfAllAnimals;
+    private static ArrayList<Animal> listOfAllAnimals = new ArrayList<>();
 
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 

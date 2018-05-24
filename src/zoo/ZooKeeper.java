@@ -6,7 +6,7 @@ public class ZooKeeper {
     private String name;
     private ArrayList<Pen.PenType> pensTrainedFor;
     private ArrayList<Pen> assignedPens;
-    private static ArrayList<ZooKeeper> listOfAllZooKeepers;
+    private static ArrayList<ZooKeeper> listOfAllZooKeepers = new ArrayList<>();
 
     public ZooKeeper(String name, ArrayList<Pen.PenType> pensTrainedFor, ArrayList<Pen> assignedPens) {
         this.name = name;
