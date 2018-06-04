@@ -26,6 +26,7 @@ public abstract class Pen {
         this.zooKeepers = zooKeepers;
         this.animalsInPen = animalsInPen;
         listOfAllPens.add(this);
+        //TODO - create a method which is called in this constructor that appends the information of the newly created Pen to the penData file
     }
 
     public String getName() {
@@ -178,6 +179,7 @@ public abstract class Pen {
 
     //TODO - have a separate method which overwrites the file as opposed to appends to file. The method below will only work once with append set to true because of the for loop. You only want to append new pens not the whole list of pens again.
     //TODO - maybe you can get around this by having a boolean parameter for the append?
+    //TODO - but if changes are made to an existing pen as opposed to a new pen being created, you don't want a completely new record, you want to overwrite the old data. Although, there are no setters so this is not possible - check if it is a requirement to allow changes to pens.
     public void writePensToFile() {
         File penData = new File("penData.csv");
         try {
@@ -219,6 +221,14 @@ public abstract class Pen {
             printWriter.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+
+    public void writePensToFile(boolean overwrite){
+        if (overwrite){
+            writePensToFile();
+        } else{
+
         }
     }
 }
