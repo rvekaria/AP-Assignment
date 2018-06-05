@@ -180,10 +180,12 @@ public abstract class Pen {
     //TODO - have a separate method which overwrites the file as opposed to appends to file. The method below will only work once with append set to true because of the for loop. You only want to append new pens not the whole list of pens again.
     //TODO - maybe you can get around this by having a boolean parameter for the append?
     //TODO - but if changes are made to an existing pen as opposed to a new pen being created, you don't want a completely new record, you want to overwrite the old data. Although, there are no setters so this is not possible - check if it is a requirement to allow changes to pens.
+    //TODO - with regard to the previous TODO, the only requirement is to be able to add new animals to a pen and assign staff to a pen
     public void writePensToFile() {
         File penData = new File("penData.csv");
         try {
             PrintWriter printWriter = new PrintWriter(new FileOutputStream(penData, true));
+            //TODO - consider having a normal PrintWriter, without the FileOutputStream. The whole file will be overwritten with changes/additions each time.
             for (Pen pen : listOfAllPens) {
                 String name, type;
                 int length, width, height, temp, area, volume, remainingArea, remainingVolume, assignedKeepers;
@@ -213,8 +215,8 @@ public abstract class Pen {
                 }
 
                 printWriter.println(
-                        name + ", " + type + ", " + length + ", " + width + ", " + height + ", " + temp
-                                +  ", " + area + ", " + volume + ", " + remainingArea + ", " + remainingVolume + ", " + zooKeepers);
+                        name + ", " + type + ", " + length + ", " + width + ", " + height + ", " + temp + ", " + area
+                                + ", " + volume + ", " + remainingArea + ", " + remainingVolume + ", " + zooKeepers + ", " + animalsInPen);
             }
 
 
@@ -224,11 +226,4 @@ public abstract class Pen {
         }
     }
 
-    public void writePensToFile(boolean overwrite){
-        if (overwrite){
-            writePensToFile();
-        } else{
-
-        }
-    }
 }
