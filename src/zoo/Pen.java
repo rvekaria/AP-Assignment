@@ -215,10 +215,9 @@ public abstract class Pen {
                 }
 
                 printWriter.println(
-                        name + ", " + type + ", " + length + ", " + width + ", " + height + ", " + temp + ", " + area
-                                + ", " + volume + ", " + remainingArea + ", " + remainingVolume + ", " + zooKeepers + ", " + animalsInPen);
+                        name + "," + type + "," + length + "," + width + "," + height + "," + temp + "," + area
+                                + "," + volume + "," + remainingArea + "," + remainingVolume + "," + zooKeepers + "," + animalsInPen);
             }
-
 
             printWriter.close();
         } catch (FileNotFoundException e) {

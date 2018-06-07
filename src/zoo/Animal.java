@@ -93,8 +93,8 @@ public abstract class Animal {
                 }
 
                 printWriter.println(
-                        name + ", " + species + ", " + type + ", " + assignedPen
-                                + ", " + landRequirement + ", " + waterRequirement + ", " + airRequirement);
+                        name + "," + species + "," + type + "," + assignedPen
+                                + "," + landRequirement + "," + waterRequirement + "," + airRequirement);
             }
 
             printWriter.close();
