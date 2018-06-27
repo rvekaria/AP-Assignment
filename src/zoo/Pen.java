@@ -109,9 +109,9 @@ public abstract class Pen {
         if (isPenSuitable(getType(), animal.getType()) && isSpaceFor(animal)) {
             animalsInPen.add(animal); //update the pen's list of animals
             //animal.setAssignedPen(this); //update the animal's pen attribute
-            System.out.println(animal.getName() + " has been added to " + name);
+            System.out.println(animal.getName() + " the " + animal.getSpecies() +" has been added to " + name + ".");
         } else
-            System.out.println("This pen is not suitable for" + animal.getType() + " animals.");
+            System.out.println("This pen is not suitable for " + animal.getType() + " animals.");
     }
 
     public void removeAnimalFromPen(Animal animal) {
