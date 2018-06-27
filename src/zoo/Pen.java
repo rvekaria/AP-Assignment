@@ -1,6 +1,11 @@
 package zoo;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.Scanner;
 
 public abstract class Pen {
     private String name;
@@ -21,6 +26,7 @@ public abstract class Pen {
         this.zooKeepers = zooKeepers;
         this.animalsInPen = animalsInPen;
         listOfAllPens.add(this);
+        //TODO - create a method which is called in this constructor that appends the information of the newly created Pen to the penData file
     }
 
     public String getName() {
@@ -37,6 +43,10 @@ public abstract class Pen {
 
     public int getTemp() {
         return temp;
+    }
+
+    public  int getHeight(){
+        return 0;
     }
 
     public PenType getType() {
@@ -96,7 +106,7 @@ public abstract class Pen {
 
     public void assignAnimalToPen(Animal animal) {
         //TODO check that the animal is compatible with other animals in that pen
-        if (isPenSuitable(getType(), animal.getType()) && canAccommodateAnimal(animal)) {
+        if (isPenSuitable(getType(), animal.getType()) && isSpaceFor(animal)) {
             animalsInPen.add(animal); //update the pen's list of animals
             animal.setAssignedPen(this); //update the animal's pen attribute
             System.out.println(animal.getName() + " has been added to this pen.");
@@ -155,7 +165,7 @@ public abstract class Pen {
         return getCapacity(type) - spaceOccupiedByAnimals(type);
     }
 
-    public boolean canAccommodateAnimal(Animal animal) {
+    public boolean isSpaceFor(Animal animal) {
         if (animal.type.equals(Animal.animalType.AMPHIBIOUS)) {
             if (getRemainingSpace("land") - animal.getAnimalSpace("land") >= 0 && getRemainingSpace("water") - animal.getAnimalSpace("water") >= 0) {
                 return true;
@@ -166,4 +176,53 @@ public abstract class Pen {
         } else
             return false;
     }
+
+    //TODO - have a separate method which overwrites the file as opposed to appends to file. The method below will only work once with append set to true because of the for loop. You only want to append new pens not the whole list of pens again.
+    //TODO - maybe you can get around this by having a boolean parameter for the append?
+    //TODO - but if changes are made to an existing pen as opposed to a new pen being created, you don't want a completely new record, you want to overwrite the old data. Although, there are no setters so this is not possible - check if it is a requirement to allow changes to pens.
+    //TODO - with regard to the previous TODO, the only requirement is to be able to add new animals to a pen and assign staff to a pen
+    public void writePensToFile() {
+        File penData = new File("penData.csv");
+        try {
+            PrintWriter printWriter = new PrintWriter(new FileOutputStream(penData, true));
+            //TODO - consider having a normal PrintWriter, without the FileOutputStream. The whole file will be overwritten with changes/additions each time.
+            for (Pen pen : listOfAllPens) {
+                String name, type;
+                int length, width, height, temp, area, volume, remainingArea, remainingVolume, assignedKeepers;
+                name = pen.name;
+                type = pen.type.toString();
+                length = pen.length;
+                width = pen.width;
+                height = pen.getHeight();
+                temp = pen.temp;
+
+
+                if (pen.type.equals(PenType.DRY) || pen.type.equals(PenType.PETTING)) {
+                    area = pen.getCapacity();
+                    volume = 0;
+                    remainingArea = pen.getRemainingSpace();
+                    remainingVolume = 0;
+                } else if (pen.type.equals(PenType.PARTDRYWATER)) {
+                    area = pen.getCapacity("land");
+                    volume = pen.getCapacity("water");
+                    remainingArea = pen.getRemainingSpace("land");
+                    remainingVolume = pen.getRemainingSpace("water");
+                } else {
+                    area = 0;
+                    remainingArea = 0;
+                    volume = pen.getCapacity();
+                    remainingVolume = pen.getRemainingSpace();
+                }
+
+                printWriter.println(
+                        name + "," + type + "," + length + "," + width + "," + height + "," + temp + "," + area
+                                + "," + volume + "," + remainingArea + "," + remainingVolume + "," + zooKeepers + "," + animalsInPen);
+            }
+
+            printWriter.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
 }
