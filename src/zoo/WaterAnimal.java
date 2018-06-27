@@ -16,4 +16,9 @@ public class WaterAnimal extends Animal {
     public int getAnimalSpace() {
         return waterSpace;
     }
+
+    @Override
+    public int getAnimalSpace(String type) {
+        return getAnimalSpace();
+    }
 }

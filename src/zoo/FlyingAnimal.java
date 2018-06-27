@@ -9,7 +9,11 @@ public class FlyingAnimal extends Animal {
     }
 
     @Override
-    public int getAnimalSpace(String type) {
+    public int getAnimalSpace() {
         return airSpace;
+    }
+
+    public int getAnimalSpace(String type) {
+        return getAnimalSpace();
     }
 }

@@ -12,4 +12,9 @@ public class LandAnimal extends Animal {
     public int getAnimalSpace() {
         return landSpace;
     }
+
+    @Override
+    public int getAnimalSpace(String type) {
+        return getAnimalSpace();
+    }
 }
