@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 public abstract class Pen {
     private String name;
@@ -110,13 +109,9 @@ public abstract class Pen {
 
     public void assignAnimalToPen(Animal animal) {
         //TODO check that the animal is compatible with other animals in that pen
-//        int soace = animal.getAnimalSpace();
-//        boolean isPenSuitable = isPenSuitable(getType(), animal.getType());
-//        boolean isSpaceForAnimal = isSpaceFor(animal);
         if (isPenSuitable(getType(), animal.getType())) {
             if (isSpaceFor(animal)) {
                 animalsInPen.add(animal); //update the pen's list of animals
-                //animal.setAssignedPen(this); //update the animal's pen attribute
                 System.out.println(animal.getName() + " the " + animal.getSpecies() + " has been added to " + name + ".");
             } else {
                 System.out.println("There is no space for " + animal.getName() + "in " + name + ".");
@@ -169,8 +164,6 @@ public abstract class Pen {
     }
 
     public int getRemainingSpace() {
-//        int totalCapacity = getCapacity();
-//        int spaceOccupiedByAnimals = spaceOccupiedByAnimals();
         return getCapacity() - spaceOccupiedByAnimals();
     }
 
@@ -179,15 +172,12 @@ public abstract class Pen {
     }
 
     public boolean isSpaceFor(Animal animal) {
-//        int space = animal.getAnimalSpace();
         if (animal.getType() == Animal.animalType.AMPHIBIOUS) {
             if (getRemainingSpace("land") - animal.getAnimalSpace("land") >= 0 && getRemainingSpace("water") - animal.getAnimalSpace("water") >= 0) {
                 return true;
             } else
                 return false;
         } else if (getRemainingSpace() - animal.getAnimalSpace() >= 0) {
-            int remainingSpace = getRemainingSpace();
-            int animalRequirement = animal.getAnimalSpace();
             return true;
         } else
             return false;

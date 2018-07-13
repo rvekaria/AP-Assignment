@@ -21,7 +21,6 @@ public class WaterUTest {
         animalsInPenList = new ArrayList<>();
         aquarium = new Aquarium("aquarium", 20, 25, 10, 18, keepersList, animalsInPenList);
         waterAnimal = new WaterAnimal("Siobhan", "Shark", aquarium, 200);
-        //THIS SHOULD FAIL, THERE IS NO CAPACITY IN THE PEN
     }
 
     @After

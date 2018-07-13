@@ -19,8 +19,6 @@ public abstract class Animal {
         this.species = species;
         this.type = type;
         this.assignedPen = assignedPen;
-//        assignedPen.assignAnimalToPen(this);
-//        allAnimalsInZooList.add(this);
     }
 
     public String getName() {
