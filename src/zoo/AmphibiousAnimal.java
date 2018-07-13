@@ -7,6 +7,8 @@ public class AmphibiousAnimal extends Animal {
         super(name, species, animalType.AMPHIBIOUS, assignedPen);
         this.landSpace = landSpace;
         this.waterSpace = waterSpace;
+        assignedPen.assignAnimalToPen(this);
+        allAnimalsInZooList.add(this);
     }
 
     public int getAnimalSpace() {

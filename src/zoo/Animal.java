@@ -10,7 +10,7 @@ public abstract class Animal {
     private String species;
     protected animalType type;
     private Pen assignedPen;
-    private static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
+    protected static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
 
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 
@@ -19,8 +19,8 @@ public abstract class Animal {
         this.species = species;
         this.type = type;
         this.assignedPen = assignedPen;
-        assignedPen.assignAnimalToPen(this);
-        allAnimalsInZooList.add(this);
+//        assignedPen.assignAnimalToPen(this);
+//        allAnimalsInZooList.add(this);
     }
 
     public String getName() {

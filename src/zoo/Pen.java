@@ -45,7 +45,7 @@ public abstract class Pen {
         return temp;
     }
 
-    public  int getHeight(){
+    public int getHeight() {
         return 0;
     }
 
@@ -75,8 +75,12 @@ public abstract class Pen {
         if (zooKeepers.contains(keeper)) {
             zooKeepers.remove(zooKeepers.indexOf(keeper));
             System.out.println(keeper.getName() + " is no longer a keeper of this pen.");
-        } else
+            if (zooKeepers.isEmpty()) {
+                System.out.println("There are no more keepers looking after " + name + ". At least one keeper must be assigned to this pen!");
+            }
+        } else {
             System.out.println(keeper.getName() + " is not a keeper of this pen. Cannot remove.");
+        }
     }
 
     public void assignZooKeeper(ZooKeeper keeper) {
@@ -106,10 +110,18 @@ public abstract class Pen {
 
     public void assignAnimalToPen(Animal animal) {
         //TODO check that the animal is compatible with other animals in that pen
-        if (isPenSuitable(getType(), animal.getType()) && isSpaceFor(animal)) {
-            animalsInPen.add(animal); //update the pen's list of animals
-            //animal.setAssignedPen(this); //update the animal's pen attribute
-            System.out.println(animal.getName() + " the " + animal.getSpecies() +" has been added to " + name + ".");
+//        int soace = animal.getAnimalSpace();
+//        boolean isPenSuitable = isPenSuitable(getType(), animal.getType());
+//        boolean isSpaceForAnimal = isSpaceFor(animal);
+        if (isPenSuitable(getType(), animal.getType())) {
+            if (isSpaceFor(animal)) {
+                animalsInPen.add(animal); //update the pen's list of animals
+                //animal.setAssignedPen(this); //update the animal's pen attribute
+                System.out.println(animal.getName() + " the " + animal.getSpecies() + " has been added to " + name + ".");
+            } else {
+                System.out.println("There is no space for " + animal.getName() + "in " + name + ".");
+            }
+
         } else
             System.out.println("This pen is not suitable for " + animal.getType() + " animals.");
     }
@@ -117,7 +129,6 @@ public abstract class Pen {
     public void removeAnimalFromPen(Animal animal) {
         if (animalsInPen.contains(animal)) {
             animalsInPen.remove(animalsInPen.indexOf(animal));
-            //animal.setAssignedPen(null);
             System.out.println(animal.getName() + " has been removed from this pen. This animal must be assigned to another suitable pen.");
 
         } else {
@@ -158,6 +169,8 @@ public abstract class Pen {
     }
 
     public int getRemainingSpace() {
+//        int totalCapacity = getCapacity();
+//        int spaceOccupiedByAnimals = spaceOccupiedByAnimals();
         return getCapacity() - spaceOccupiedByAnimals();
     }
 
@@ -166,12 +179,15 @@ public abstract class Pen {
     }
 
     public boolean isSpaceFor(Animal animal) {
+//        int space = animal.getAnimalSpace();
         if (animal.getType() == Animal.animalType.AMPHIBIOUS) {
             if (getRemainingSpace("land") - animal.getAnimalSpace("land") >= 0 && getRemainingSpace("water") - animal.getAnimalSpace("water") >= 0) {
                 return true;
             } else
                 return false;
         } else if (getRemainingSpace() - animal.getAnimalSpace() >= 0) {
+            int remainingSpace = getRemainingSpace();
+            int animalRequirement = animal.getAnimalSpace();
             return true;
         } else
             return false;

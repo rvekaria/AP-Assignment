@@ -6,6 +6,8 @@ public class LandAnimal extends Animal {
     public LandAnimal(String name, String species, Pen assignedPen, int landSpace) {
         super(name, species, animalType.LAND, assignedPen);
         this.landSpace = landSpace;
+        assignedPen.assignAnimalToPen(this);
+        allAnimalsInZooList.add(this);
     }
 
     @Override
