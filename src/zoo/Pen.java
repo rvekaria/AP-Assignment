@@ -85,7 +85,7 @@ public abstract class Pen {
     public void assignZooKeeper(ZooKeeper keeper) {
         if (!zooKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
             zooKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
-            keeper.assignToPen(this); //update zookeeper's list of pens that they are looking after
+            keeper.addToAssignedPens(this); //update zookeeper's list of pens that they are looking after
             System.out.println(keeper.getName() + " has been assigned to look after this pen.");
         } else
             assignKeeperErrorMessage(keeper);
