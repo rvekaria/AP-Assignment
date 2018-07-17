@@ -34,7 +34,7 @@ public class ZooKeeper {
         return assignedPens;
     }
 
-    public void assignToPen(Pen pen) {
-        pen.assignZooKeeper(this);
+    public void addToAssignedPens(Pen pen) {
+        assignedPens.add(pen);
     }
 }

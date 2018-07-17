@@ -2,7 +2,6 @@ package zoo;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
@@ -11,7 +10,7 @@ public abstract class Animal {
     private String species;
     protected animalType type;
     private Pen assignedPen;
-    private static ArrayList<Animal> listOfAllAnimals = new ArrayList<>();
+    protected static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
 
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 
@@ -20,7 +19,6 @@ public abstract class Animal {
         this.species = species;
         this.type = type;
         this.assignedPen = assignedPen;
-        listOfAllAnimals.add(this);
     }
 
     public String getName() {
@@ -35,44 +33,43 @@ public abstract class Animal {
         return type;
     }
 
-    public int getAnimalSpace() {
-        System.out.println("This returns the space requirements for an animal.");
-        return 0;
-    }
+    public abstract int getAnimalSpace();
 
-    public int getAnimalSpace(String type) {
-        System.out.println("This returns a space requirement for an animal based on the type that is passed in.");
-        return 0;
-    }
+    public abstract int getAnimalSpace(String type);
 
     public Pen getAssignedPen() {
         return assignedPen;
     }
 
-    public static ArrayList<Animal> getListOfAllAnimals() {
-        return listOfAllAnimals;
+    public static ArrayList<Animal> getAllAnimalsInZooList() {
+        return allAnimalsInZooList;
     }
 
     public void setAssignedPen(Pen pen) {
-        this.assignedPen = pen;
+        String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.csv";
+        File file = new File(pathname);
+        setAssignedPen(pen, file);
     }
 
-    public void assignToPen(Pen pen) {
+    public void setAssignedPen(Pen pen, File file) {
+        assignedPen.removeAnimalFromPen(this);
         pen.assignAnimalToPen(this);
+        this.assignedPen = pen;
+        writeAnimalsToFile(file);
     }
 
-    public void writeAnimalsToFile() {
-        File penData = new File("animalData.csv");
+    public static void writeAnimalsToFile(File animalData) {
         try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream(penData, true));
-            for (Animal animal : listOfAllAnimals) {
+            PrintWriter printWriter = new PrintWriter(animalData);
+            printWriter.println("NAME,SPECIES,TYPE,ASSIGNED_PEN,LAND_REQUIREMENT,WATER_REQUIREMENT,AIR_REQUIREMENT");
+            for (Animal animal : allAnimalsInZooList) {
                 String name, species, type, assignedPen;
                 int landRequirement, waterRequirement, airRequirement;
 
-                name = this.name;
-                species = this.species;
-                type = this.type.toString();
-                assignedPen = this.assignedPen.toString();
+                name = animal.getName();
+                species = animal.getSpecies();
+                type = animal.getType().toString();
+                assignedPen = animal.getAssignedPen().getName();
 
                 if (animal.type.equals(animalType.LAND) || animal.type.equals(animalType.PETTABLE)) {
                     landRequirement = animal.getAnimalSpace();

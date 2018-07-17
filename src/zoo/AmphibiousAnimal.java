@@ -7,6 +7,12 @@ public class AmphibiousAnimal extends Animal {
         super(name, species, animalType.AMPHIBIOUS, assignedPen);
         this.landSpace = landSpace;
         this.waterSpace = waterSpace;
+        assignedPen.assignAnimalToPen(this);
+        allAnimalsInZooList.add(this);
+    }
+
+    public int getAnimalSpace() {
+        return getAnimalSpace("must specify land or water");
     }
 
     public int getAnimalSpace(String type) {
@@ -14,8 +20,8 @@ public class AmphibiousAnimal extends Animal {
             return landSpace;
         } else if (type.equals("water")){
             return waterSpace;
-        } else
-            System.out.println("land or water must be specified. (returned -1)");
-            return -1;
+        } else {
+            throw new IllegalArgumentException("land or water must be specified.");
+        }
     }
 }

@@ -6,10 +6,16 @@ public class FlyingAnimal extends Animal {
     public FlyingAnimal(String name, String species, Pen assignedPen, int airSpace) {
         super(name, species, animalType.FLYING, assignedPen);
         this.airSpace = airSpace;
+        assignedPen.assignAnimalToPen(this);
+        allAnimalsInZooList.add(this);
     }
 
     @Override
-    public int getAnimalSpace(String type) {
+    public int getAnimalSpace() {
         return airSpace;
+    }
+
+    public int getAnimalSpace(String type) {
+        return getAnimalSpace();
     }
 }
