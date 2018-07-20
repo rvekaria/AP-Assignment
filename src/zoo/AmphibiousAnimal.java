@@ -14,7 +14,7 @@ public class AmphibiousAnimal extends Animal {
         allAnimalsInZooList.add(this);
         animalId = allAnimalsInZooList.indexOf(this);
         setAssignedPen(assignedPenId);
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.json", allAmphibiousAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json", allAmphibiousAnimals);
     }
 
     public int getAnimalSpace() {

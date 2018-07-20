@@ -13,7 +13,7 @@ public class PettingAnimal extends Animal {
         allAnimalsInZooList.add(this);
         animalId = allAnimalsInZooList.indexOf(this);
         setAssignedPen(assignedPenId);
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.json", allPettingAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json", allPettingAnimals);
     }
 
     @Override

@@ -83,6 +83,7 @@ public class ZooKeeperUTest {
     public void tearDown() {
         Animal.getAllAnimalsInZooList().clear();
         Pen.getListOfAllPens().clear();
+        ZooKeeper.getListOfAllZooKeepers().clear();
     }
 
     @Test

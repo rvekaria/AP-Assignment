@@ -13,7 +13,7 @@ public class LandAnimal extends Animal {
         allAnimalsInZooList.add(this);
         animalId = allAnimalsInZooList.indexOf(this);
         setAssignedPen(assignedPenId);
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.json", allLandAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", allLandAnimals);
     }
 
     @Override
