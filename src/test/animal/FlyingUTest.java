@@ -11,21 +11,22 @@ import static org.junit.Assert.assertEquals;
 
 public class FlyingUTest {
     ArrayList<ZooKeeper> keepersList;
-    ArrayList<Animal> animalsInPenList;
+    ArrayList<Integer> animalsInPenIdList;
     Pen aviary1;
     Animal flyingAnimal;
 
     @Before
     public void setUp() {
         keepersList = new ArrayList<>();
-        animalsInPenList = new ArrayList<>();
-        aviary1 = new Aviary("aquarium", 20, 25, 10, 400, keepersList, animalsInPenList);
-        flyingAnimal = new FlyingAnimal("Oleg", "Owl", aviary1, 100);
+        animalsInPenIdList = new ArrayList<>();
+        aviary1 = new Aviary("aquarium", 20, 25, 10, 400, keepersList, animalsInPenIdList);
+        flyingAnimal = new FlyingAnimal("Oleg", "Owl", aviary1.getPenId(), 100);
     }
 
     @After
     public void tearDown() {
         Animal.getAllAnimalsInZooList().clear();
+        Pen.getListOfAllPens().clear();
     }
 
     @Test

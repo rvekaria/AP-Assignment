@@ -14,23 +14,23 @@ import static org.junit.Assert.*;
 
 public class AnimalUTest {
     ArrayList<ZooKeeper> keepersList;
-    ArrayList<Animal> animalsInDryWaterPenList;
+    ArrayList<Integer> animalsInDryWaterPenIdList;
     Pen dryWaterPen;
     Animal penguin;
 
-    ArrayList<Animal> animalsInDryPenList;
+    ArrayList<Integer> animalsInDryPenIdList;
     Pen dryPen;
     Animal dog;
 
-    ArrayList<Animal> animalsInPetPenList;
+    ArrayList<Integer> animalsInPetPenIdList;
     Pen pettingPen;
     Animal goat;
 
-    ArrayList<Animal> animalsInAviaryList;
+    ArrayList<Integer> animalsInAviaryIdList;
     Pen aviary;
     Animal owl;
 
-    ArrayList<Animal> animalsInAquarium;
+    ArrayList<Integer> animalsInAquariumIdList;
     Pen aquarium;
     Animal shark;
 
@@ -38,32 +38,32 @@ public class AnimalUTest {
     @Before
     public void setUp() {
         keepersList = new ArrayList<>();
-        animalsInDryWaterPenList = new ArrayList<>();
-        dryWaterPen = new PartDryWaterPen("dryWaterPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInDryWaterPenList);
-        penguin = new AmphibiousAnimal("Penny", "Penguin", dryWaterPen, 2, 4);
+        animalsInDryWaterPenIdList = new ArrayList<>();
+        dryWaterPen = new PartDryWaterPen("dryWaterPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInDryWaterPenIdList);
+        penguin = new AmphibiousAnimal("Penny", "Penguin", dryWaterPen.getPenId(), 2, 4);
 
-        animalsInDryPenList = new ArrayList<>();
-        dryPen = new DryPen("dryPen", 40, 50, 10, keepersList, animalsInDryPenList);
-        dog = new LandAnimal("Douglas", "Dog", dryPen, 13);
+        animalsInDryPenIdList = new ArrayList<>();
+        dryPen = new DryPen("dryPen", 40, 50, 10, keepersList, animalsInDryPenIdList);
+        dog = new LandAnimal("Douglas", "Dog", dryPen.getPenId(), 13);
 
+        animalsInPetPenIdList = new ArrayList<>();
+        pettingPen = new PettingPen("pettingPen", 20, 20, 15, keepersList, animalsInPetPenIdList);
+        goat = new PettingAnimal("Gary", "Goat", pettingPen.getPenId(), 11);
 
-        animalsInPetPenList = new ArrayList<>();
-        pettingPen = new PettingPen("pettingPen", 20, 20, 15, keepersList, animalsInPetPenList);
-        goat = new PettingAnimal("Gary", "Goat", pettingPen, 11);
+        animalsInAviaryIdList = new ArrayList<>();
+        aviary = new Aviary("aviaryPen", 13, 15, 15, 17, keepersList, animalsInAviaryIdList);
+        owl = new FlyingAnimal("Owen", "Owl", aviary.getPenId(), 1000);
 
-        animalsInAviaryList = new ArrayList<>();
-        aviary = new Aviary("aviaryPen", 13, 15, 15, 17, keepersList, animalsInAviaryList);
-        owl = new FlyingAnimal("Owen", "Owl", aviary, 1000);
-
-        animalsInAquarium = new ArrayList<>();
-        aquarium = new Aquarium("aquaPen", 100, 100, 10, 20, keepersList, animalsInAquarium);
-        shark = new WaterAnimal("Shaniqua", "Shark", aquarium, 4000);
+        animalsInAquariumIdList = new ArrayList<>();
+        aquarium = new Aquarium("aquaPen", 100, 100, 10, 20, keepersList, animalsInAquariumIdList);
+        shark = new WaterAnimal("Shaniqua", "Shark", aquarium.getPenId(), 4000);
 
     }
 
     @After
     public void tearDown() {
         Animal.getAllAnimalsInZooList().clear();
+        Pen.getListOfAllPens().clear();
     }
 
     @Test
@@ -137,9 +137,9 @@ public class AnimalUTest {
     @Test
     public void testAnimalIsInZooAnimalsList() {
         //setup
-        ArrayList<Animal> animalsInDryPenList = new ArrayList<>();
-        Pen dryPen = new DryPen("dryPen", 40, 50, 10, keepersList, animalsInDryPenList);
-        Animal giraffe = new LandAnimal("Jeff", "Giraffe", dryPen, 10);
+        ArrayList<Integer> animalsInDryPenIdList = new ArrayList<>();
+        Pen dryPen = new DryPen("dryPen", 40, 50, 10, keepersList, animalsInDryPenIdList);
+        Animal giraffe = new LandAnimal("Jeff", "Giraffe", dryPen.getPenId(), 10);
 
         //act
         ArrayList<Animal> animalsInZoo = Animal.getAllAnimalsInZooList();
@@ -157,53 +157,38 @@ public class AnimalUTest {
     @Test
     public void testSetAssignedPen() {
         //setUp
-        ArrayList<Animal> animalsInPenList2 = new ArrayList<>();
-        Pen newPen = new PartDryWaterPen("newPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenList2);
+        ArrayList<Integer> animalsInPenIdList2 = new ArrayList<>();
+        Pen newPen = new PartDryWaterPen("newPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenIdList2);
         String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.csv";
-        File animalData = new File(pathname);
+        //File animalData = new File(pathname);
 
         //act
-        penguin.setAssignedPen(newPen, animalData);
-        ArrayList<Animal> animalsInOldPen = dryWaterPen.getAnimalsInPen();
-        ArrayList<Animal> animalsInNewPen = newPen.getAnimalsInPen();
+        penguin.setAssignedPen(newPen.getPenId());
+        ArrayList<Integer> animalsInOldPen = dryWaterPen.getAnimalIDsInPen();
+        ArrayList<Integer> animalsInNewPen = newPen.getAnimalIDsInPen();
 
         //assert
         assertEquals(newPen, penguin.getAssignedPen());
-        assertFalse(animalsInOldPen.contains(penguin));
-        assertTrue(animalsInNewPen.contains(penguin));
+        assertFalse(animalsInOldPen.contains(penguin.getAnimalId()));
+        assertTrue(animalsInNewPen.contains(penguin.getAnimalId()));
     }
 
     @Test
     public void testWriteAnimalToFile() {
         //setup
-        String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.csv";
+        String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.json";
         File animalData = new File(pathname);
-        String expectedHeading = "NAME,SPECIES,TYPE,ASSIGNED_PEN,LAND_REQUIREMENT,WATER_REQUIREMENT,AIR_REQUIREMENT";
-        String expectedAnimal1 = "Penny,Penguin,AMPHIBIOUS,dryWaterPen,2,4,0";
-        String expectedAnimal2 = "Douglas,Dog,LAND,dryPen,13,0,0";
-        String expectedAnimal3 = "Gary,Goat,PETTABLE,pettingPen,11,0,0";
-        String expectedAnimal4 = "Owen,Owl,FLYING,aviaryPen,0,0,1000";
-        String expectedAnimal5 = "Shaniqua,Shark,WATER,aquaPen,0,4000,0";
+        String expectedJson = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"animalId\":4}]";
 
         //act
-        Animal.writeAnimalsToFile(animalData);
+        Animal.writeAnimalsToJsonFile(pathname);
 
         //assert
         try {
             Scanner scanner = new Scanner(animalData);
-            String header = scanner.nextLine();
-            String animal1 = scanner.nextLine();
-            String animal2 = scanner.nextLine();
-            String animal3 = scanner.nextLine();
-            String animal4 = scanner.nextLine();
-            String animal5 = scanner.nextLine();
+            String readFromJsonFile = scanner.nextLine();
 
-            assertEquals(expectedHeading, header);
-            assertEquals(expectedAnimal1, animal1);
-            assertEquals(expectedAnimal2, animal2);
-            assertEquals(expectedAnimal3, animal3);
-            assertEquals(expectedAnimal4, animal4);
-            assertEquals(expectedAnimal5, animal5);
+            assertEquals(expectedJson, readFromJsonFile);
 
             scanner.close();
         } catch (FileNotFoundException e) {
@@ -214,53 +199,42 @@ public class AnimalUTest {
     @Test
     public void testWriteAnimalToFileAfterChangingPen() {
         //setup
-        ArrayList<Animal> animalsInPenList2 = new ArrayList<>();
-        Pen newPen = new PartDryWaterPen("newPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenList2);
-        String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.csv";
-        File animalData = new File(pathname);
-        String expectedHeading = "NAME,SPECIES,TYPE,ASSIGNED_PEN,LAND_REQUIREMENT,WATER_REQUIREMENT,AIR_REQUIREMENT";
-        String expectedBeforeAssignPen = "Penny,Penguin,AMPHIBIOUS,dryWaterPen,2,4,0";
-        String expectedChange = "Penny,Penguin,AMPHIBIOUS,newPen,2,4,0";
-
-        String expectedAnimal2 = "Douglas,Dog,LAND,dryPen,13,0,0";
-        String expectedAnimal3 = "Gary,Goat,PETTABLE,pettingPen,11,0,0";
-        String expectedAnimal4 = "Owen,Owl,FLYING,aviaryPen,0,0,1000";
-        String expectedAnimal5 = "Shaniqua,Shark,WATER,aquaPen,0,4000,0";
+        ArrayList<Integer> animalsInPenIdList2 = new ArrayList<>();
+        Pen newPen = new PartDryWaterPen("newPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenIdList2);
+        String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.json";
+        //File animalData = new File(pathname);
+        String expectedJsonBeforeChange = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"animalId\":4}]";
+        String expectedJsonAfterChange = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":5,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"animalId\":4}]";
 
         //act
-        penguin.setAssignedPen(dryWaterPen, animalData);
+        Animal.writeAnimalsToJsonFile(pathname);
 
         //assert
+        Scanner scanner = null;
+        String readFromJsonFile = new String();
         try {
-            Scanner scanner = new Scanner(animalData);
-            String header = scanner.nextLine();
-            String animal1 = scanner.nextLine();
-            String animal2 = scanner.nextLine();
-            String animal3 = scanner.nextLine();
-            String animal4 = scanner.nextLine();
-            String animal5 = scanner.nextLine();
-
-            scanner.close();
-            assertEquals(expectedHeading, header);
-            assertEquals(expectedBeforeAssignPen, animal1);
-
-            penguin.setAssignedPen(newPen, animalData);
-
-            Scanner scanner1 = new Scanner(animalData);
-            scanner1.nextLine();
-            String animal1Changed = scanner1.nextLine();
-
-            assertEquals(expectedHeading, header);
-            assertEquals(expectedChange, animal1Changed);
-            assertEquals(expectedAnimal2, animal2);
-            assertEquals(expectedAnimal3, animal3);
-            assertEquals(expectedAnimal4, animal4);
-            assertEquals(expectedAnimal5, animal5);
-
-            scanner.close();
+            scanner = new Scanner(new File(pathname));
+            readFromJsonFile = scanner.nextLine();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+        scanner.close();
+        assertEquals(expectedJsonBeforeChange, readFromJsonFile);
+
+        penguin.setAssignedPen(newPen.getPenId());
+        Animal.writeAnimalsToJsonFile(pathname);
+
+        Scanner scanner1 = null;
+        String readFromJsonFileAfter = new String();
+        try {
+            scanner1 = new Scanner(new File((pathname)));
+            readFromJsonFileAfter = scanner1.nextLine();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        scanner1.close();
+
+        assertEquals(expectedJsonAfterChange, readFromJsonFileAfter);
     }
 
 }

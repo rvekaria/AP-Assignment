@@ -3,11 +3,13 @@ package zoo;
 public class PettingAnimal extends Animal {
     private int landSpace;
 
-    public PettingAnimal(String name, String species, Pen assignedPen, int landSpace) {
-        super(name, species, animalType.PETTABLE, assignedPen);
+    public PettingAnimal(String name, String species, int assignedPenId, int landSpace) {
+        super(name, species, animalType.PETTABLE, assignedPenId);
         this.landSpace = landSpace;
-        assignedPen.assignAnimalToPen(this);
         allAnimalsInZooList.add(this);
+        animalId = allAnimalsInZooList.indexOf(this);
+        setAssignedPen(assignedPenId);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.json");
     }
 
     @Override

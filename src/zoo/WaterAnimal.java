@@ -3,11 +3,13 @@ package zoo;
 public class WaterAnimal extends Animal {
     private int waterSpace;
 
-    public WaterAnimal(String name, String species, Pen assignedPen, int waterSpace) {
-        super(name, species, animalType.WATER, assignedPen);
+    public WaterAnimal(String name, String species, int assignedPenId, int waterSpace) {
+        super(name, species, animalType.WATER, assignedPenId);
         this.waterSpace = waterSpace;
-        assignedPen.assignAnimalToPen(this);
         allAnimalsInZooList.add(this);
+        animalId = allAnimalsInZooList.indexOf(this);
+        setAssignedPen(assignedPenId);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.json");
     }
 
     @Override
