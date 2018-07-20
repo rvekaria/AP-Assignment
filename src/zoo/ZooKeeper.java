@@ -23,6 +23,7 @@ public class ZooKeeper {
         this.assignedPenIds = assignedPenIds;
         listOfAllZooKeepers.add(this);
         addKeeperToPensListOfKeepers();
+        writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
     }
 
     public String getName() {
@@ -40,16 +41,8 @@ public class ZooKeeper {
             return false;
     }
 
-    public ArrayList<Pen> getAssignedPens() {
-        ArrayList<Pen> assignedPens = new ArrayList<>();
-        for (int penId : assignedPenIds){
-            assignedPens.add(Pen.getListOfAllPens().get(penId));
-        }
-        return assignedPens;
-    }
-
-    public void addToAssignedPenIds(Pen pen) {
-        assignedPenIds.add(pen.getPenId());
+    public ArrayList<Integer> getAssignedPenIds() {
+        return assignedPenIds;
     }
 
     private void addKeeperToPensListOfKeepers(){
@@ -72,16 +65,17 @@ public class ZooKeeper {
         }
     }
 
-    public static void instantiateKeepersFromJsonFile(String filePath) {
+    public static ArrayList<ZooKeeper> instantiateKeepersFromJsonFile(String filePath) {
         //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/zooKeeper/resources/testKeeperData.json";
         File keepersJsonFile = new File(filePath);
         Gson jsonConverter = new Gson();
-
+        ArrayList<ZooKeeper> keepersFromFile = new ArrayList<>();
         try {
             String keepersListJsonString = new String(Files.readAllBytes(keepersJsonFile.toPath()));
-            listOfAllZooKeepers = jsonConverter.fromJson(keepersListJsonString, new TypeToken<List<Pen>>() {}.getType());
+            keepersFromFile = jsonConverter.fromJson(keepersListJsonString, new TypeToken<List<ZooKeeper>>() {}.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return keepersFromFile;
     }
 }

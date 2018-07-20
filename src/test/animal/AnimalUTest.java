@@ -181,7 +181,7 @@ public class AnimalUTest {
         String expectedJson = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"animalId\":4}]";
 
         //act
-        Animal.writeAnimalsToJsonFile(pathname);
+        Animal.writeAnimalsToJsonFile(pathname, Animal.getAllAnimalsInZooList());
 
         //assert
         try {
@@ -207,7 +207,7 @@ public class AnimalUTest {
         String expectedJsonAfterChange = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":5,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"animalId\":4}]";
 
         //act
-        Animal.writeAnimalsToJsonFile(pathname);
+        Animal.writeAnimalsToJsonFile(pathname, Animal.getAllAnimalsInZooList());
 
         //assert
         Scanner scanner = null;
@@ -222,7 +222,7 @@ public class AnimalUTest {
         assertEquals(expectedJsonBeforeChange, readFromJsonFile);
 
         penguin.setAssignedPen(newPen.getPenId());
-        Animal.writeAnimalsToJsonFile(pathname);
+        Animal.writeAnimalsToJsonFile(pathname, Animal.getAllAnimalsInZooList());
 
         Scanner scanner1 = null;
         String readFromJsonFileAfter = new String();
@@ -235,6 +235,25 @@ public class AnimalUTest {
         scanner1.close();
 
         assertEquals(expectedJsonAfterChange, readFromJsonFileAfter);
+    }
+
+    @Test
+    public void testLoadAnimalFromFile() {
+        //setup
+        String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testInstantiateAnimalObject.json";
+
+        //act
+        ArrayList<AmphibiousAnimal> animalsLoadedFromFile = Animal.instantiateAnimalsFromJsonFile(pathname, AmphibiousAnimal.class);
+        AmphibiousAnimal animalFromFile = animalsLoadedFromFile.get(0);
+
+        //assert
+        assertEquals(penguin.getAnimalId(), animalFromFile.getAnimalId());
+        assertEquals(penguin.getAssignedPenId(), animalFromFile.getAssignedPenId());
+        assertEquals(penguin.getSpecies(), animalFromFile.getSpecies());
+        assertEquals(penguin.getAnimalSpace("land"), animalFromFile.getAnimalSpace("land"));
+        assertEquals(penguin.getAnimalSpace("water"), animalFromFile.getAnimalSpace("water"));
+        assertEquals(penguin.getName(), animalFromFile.getName());
+        assertEquals(penguin.getType(), animalFromFile.getType());
     }
 
 }

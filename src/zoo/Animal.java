@@ -77,13 +77,19 @@ public abstract class Animal {
         }
     }
 
-    public static void writeAnimalsToJsonFile(String filePath) {
-        //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.json";
+    public static void writeAnimalsToJsonFile(String filePath, ArrayList<Animal> animalArrayList) {
+        String allAnimalsFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/animalData.json";
+        File allAnimalsJsonFile = new File(allAnimalsFilePath);
+
         File animalsJsonFile = new File(filePath);
         Gson jsonConverter = new Gson();
 
         try {
             PrintWriter writer = new PrintWriter(animalsJsonFile);
+            writer.print(jsonConverter.toJson(animalArrayList));
+            writer.close();
+
+            writer = new PrintWriter(allAnimalsJsonFile);
             writer.print(jsonConverter.toJson(allAnimalsInZooList));
             writer.close();
         } catch (FileNotFoundException e) {

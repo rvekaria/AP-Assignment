@@ -1,1 +1,43 @@
-[{"landSpace":2,"waterSpace":4,"name":"Penny","species":"Penguin","type":"AMPHIBIOUS","assignedPenId":0,"animalId":0},{"landSpace":13,"name":"Douglas","species":"Dog","type":"LAND","assignedPenId":1,"animalId":1},{"landSpace":11,"name":"Gary","species":"Goat","type":"PETTABLE","assignedPenId":2,"animalId":2},{"airSpace":1000,"name":"Owen","species":"Owl","type":"FLYING","assignedPenId":3,"animalId":3},{"waterSpace":4000,"name":"Shaniqua","species":"Shark","type":"WATER","assignedPenId":4,"animalId":4}]
+[
+  {
+    "landSpace": 2,
+    "waterSpace": 4,
+    "name": "Penny",
+    "species": "Penguin",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 0,
+    "animalId": 0
+  },
+  {
+    "landSpace": 13,
+    "name": "Douglas",
+    "species": "Dog",
+    "type": "LAND",
+    "assignedPenId": 1,
+    "animalId": 1
+  },
+  {
+    "landSpace": 11,
+    "name": "Gary",
+    "species": "Goat",
+    "type": "PETTABLE",
+    "assignedPenId": 2,
+    "animalId": 2
+  },
+  {
+    "airSpace": 1000,
+    "name": "Owen",
+    "species": "Owl",
+    "type": "FLYING",
+    "assignedPenId": 3,
+    "animalId": 3
+  },
+  {
+    "waterSpace": 4000,
+    "name": "Shaniqua",
+    "species": "Shark",
+    "type": "WATER",
+    "assignedPenId": 4,
+    "animalId": 4
+  }
+]

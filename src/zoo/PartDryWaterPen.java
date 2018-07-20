@@ -23,14 +23,6 @@ public class PartDryWaterPen extends Pen {
         return height;
     }
 
-    public int getWaterVolume() {
-        return waterVolume;
-    }
-
-    public int getLandArea() {
-        return landArea;
-    }
-
     @Override
     public int getCapacity(String type) {
         if (type.equals("land")) {

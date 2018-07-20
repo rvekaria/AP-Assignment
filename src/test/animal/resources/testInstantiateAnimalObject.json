@@ -1,0 +1,11 @@
+[
+  {
+    "landSpace": 2,
+    "waterSpace": 4,
+    "name": "Penny",
+    "species": "Penguin",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 0,
+    "animalId": 0
+  }
+]
