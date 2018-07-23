@@ -77,6 +77,16 @@ public abstract class Animal {
         }
     }
 
+    public static ArrayList<Animal> getAnimalsWithoutPens(){
+        ArrayList<Animal> animalsWithoutPensList = new ArrayList<>();
+        for (Animal animal : allAnimalsInZooList){
+            if(animal.animalId == -1){
+                animalsWithoutPensList.add(animal);
+            }
+        }
+        return animalsWithoutPensList;
+    }
+
     public static void writeAnimalsToJsonFile(String filePath, ArrayList<Animal> animalArrayList) {
         String allAnimalsFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/animalData.json";
         File allAnimalsJsonFile = new File(allAnimalsFilePath);
