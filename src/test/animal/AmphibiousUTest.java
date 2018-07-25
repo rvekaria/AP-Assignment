@@ -5,30 +5,28 @@ import org.junit.Before;
 import org.junit.Test;
 import zoo.*;
 
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import java.util.Scanner;
 
 import static org.junit.Assert.*;
 
 public class AmphibiousUTest {
     ArrayList<ZooKeeper> keepersList;
-    ArrayList<Animal> animalsInPenList;
+    ArrayList<Integer> animalsInPenIdList;
     Pen dryWaterPen1;
     Animal amphAnimal;
 
     @Before
     public void setUp() {
         keepersList = new ArrayList<>();
-        animalsInPenList = new ArrayList<>();
-        dryWaterPen1 = new PartDryWaterPen("dryWaterPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenList);
-        amphAnimal = new AmphibiousAnimal("Penny", "Penguin", dryWaterPen1, 2, 4);
+        animalsInPenIdList = new ArrayList<>();
+        dryWaterPen1 = new PartDryWaterPen("dryWaterPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenIdList);
+        amphAnimal = new AmphibiousAnimal("Penny", "Penguin", dryWaterPen1.getPenId(), 2, 4);
     }
 
     @After
     public void tearDown(){
         Animal.getAllAnimalsInZooList().clear();
+        Pen.getListOfAllPens().clear();
     }
 
     @Test(expected = IllegalArgumentException.class)

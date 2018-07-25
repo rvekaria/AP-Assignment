@@ -1,13 +1,19 @@
 package zoo;
 
+import java.util.ArrayList;
+
 public class LandAnimal extends Animal {
     private int landSpace;
+    private static ArrayList<Animal> allLandAnimals = new ArrayList<>();
 
-    public LandAnimal(String name, String species, Pen assignedPen, int landSpace) {
-        super(name, species, animalType.LAND, assignedPen);
+    public LandAnimal(String name, String species, int assignedPenId, int landSpace) {
+        super(name, species, animalType.LAND, assignedPenId);
         this.landSpace = landSpace;
-        assignedPen.assignAnimalToPen(this);
+        allLandAnimals.add(this);
         allAnimalsInZooList.add(this);
+        animalId = allAnimalsInZooList.indexOf(this);
+        setAssignedPen(assignedPenId);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", allLandAnimals);
     }
 
     @Override

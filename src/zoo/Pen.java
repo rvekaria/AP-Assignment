@@ -1,31 +1,32 @@
 package zoo;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.PrintWriter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.io.*;
+import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Pen {
     private String name;
     private int length, width, temp;
     private PenType type;
+    protected int penId;
     private ArrayList<ZooKeeper> zooKeepers;
-    private ArrayList<Animal> animalsInPen;
-    private static ArrayList<Pen> listOfAllPens = new ArrayList<>();
+    private ArrayList<Integer> animalIDsInPen;
+    static ArrayList<Pen> listOfAllPens = new ArrayList<>();
 
     public enum PenType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
 
-    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Animal> animalsInPen) {
+    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
         this.name = name;
         this.length = length;
         this.width = width;
         this.temp = temp;
         this.type = type;
         this.zooKeepers = zooKeepers;
-        this.animalsInPen = animalsInPen;
-        listOfAllPens.add(this);
-        //TODO - create a method which is called in this constructor that appends the information of the newly created Pen to the penData file
+        this.animalIDsInPen = animalIDsInPen;
     }
 
     public String getName() {
@@ -44,8 +45,8 @@ public abstract class Pen {
         return temp;
     }
 
-    public int getHeight() {
-        return 0;
+    public int getPenId() {
+        return penId;
     }
 
     public PenType getType() {
@@ -85,8 +86,11 @@ public abstract class Pen {
     public void assignZooKeeper(ZooKeeper keeper) {
         if (!zooKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
             zooKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
-            keeper.addToAssignedPens(this); //update zookeeper's list of pens that they are looking after
-            System.out.println(keeper.getName() + " has been assigned to look after this pen.");
+            //keeper.addToAssignedPens(this); //update zookeeper's list of pens that they are looking after
+            if (!keeper.getAssignedPenIds().contains(penId)) {
+                keeper.getAssignedPenIds().add(penId);
+            }
+            System.out.println(keeper.getName() + " has been assigned to look after " + name + ".");
         } else
             assignKeeperErrorMessage(keeper);
     }
@@ -103,27 +107,30 @@ public abstract class Pen {
         }
     }
 
-    public ArrayList<Animal> getAnimalsInPen() {
-        return animalsInPen;
+    public ArrayList<Integer> getAnimalIDsInPen() {
+        return animalIDsInPen;
     }
 
-    public void assignAnimalToPen(Animal animal) {
+    public boolean assignAnimalToPen(Animal animal) {
         //TODO check that the animal is compatible with other animals in that pen
         if (isPenSuitable(getType(), animal.getType())) {
             if (isSpaceFor(animal)) {
-                animalsInPen.add(animal); //update the pen's list of animals
+                animalIDsInPen.add(animal.getAnimalId()); //update the pen's list of animals
                 System.out.println(animal.getName() + " the " + animal.getSpecies() + " has been added to " + name + ".");
+                return true;
             } else {
-                System.out.println("There is no space for " + animal.getName() + "in " + name + ".");
+                System.out.println("There is no space for " + animal.getName() + " in " + name + ".");
+                return false;
             }
 
         } else
             System.out.println("This pen is not suitable for " + animal.getType() + " animals.");
+        return false;
     }
 
     public void removeAnimalFromPen(Animal animal) {
-        if (animalsInPen.contains(animal)) {
-            animalsInPen.remove(animalsInPen.indexOf(animal));
+        if (animalIDsInPen.contains(animal.getAnimalId())) {
+            animalIDsInPen.remove(animalIDsInPen.indexOf(animal.getAnimalId()));
             System.out.println(animal.getName() + " has been removed from this pen. This animal must be assigned to another suitable pen.");
 
         } else {
@@ -131,7 +138,7 @@ public abstract class Pen {
         }
     }
 
-    public boolean isPenSuitable(PenType penType, Animal.animalType animalType) {
+    private boolean isPenSuitable(PenType penType, Animal.animalType animalType) {
         if (penType == PenType.DRY && (animalType == Animal.animalType.LAND || animalType == Animal.animalType.PETTABLE)) {
             return true;
         } else if (penType == PenType.AQUARIUM && animalType == Animal.animalType.WATER) {
@@ -147,31 +154,31 @@ public abstract class Pen {
     }
 
     //TODO maybe each of the pen sublcasses need their own version of this method and override it??
-    public int spaceOccupiedByAnimals() {
+    private int spaceOccupiedByAnimals() {
         int occupiedSpace = 0;
-        for (Animal animal : animalsInPen) {
-            occupiedSpace += animal.getAnimalSpace();
+        for (int animalId : animalIDsInPen) {
+            occupiedSpace += Animal.getAllAnimalsInZooList().get(animalId).getAnimalSpace();
         }
         return occupiedSpace;
     }
 
-    public int spaceOccupiedByAnimals(String type) {
+    private int spaceOccupiedByAnimals(String type) {
         int occupiedSpace = 0;
-        for (Animal animal : animalsInPen) {
-            occupiedSpace += animal.getAnimalSpace(type);
+        for (int animalId : animalIDsInPen) {
+            occupiedSpace += Animal.getAllAnimalsInZooList().get(animalId).getAnimalSpace(type);
         }
         return occupiedSpace;
     }
 
-    public int getRemainingSpace() {
+    private int getRemainingSpace() {
         return getCapacity() - spaceOccupiedByAnimals();
     }
 
-    public int getRemainingSpace(String type) {
+    private int getRemainingSpace(String type) {
         return getCapacity(type) - spaceOccupiedByAnimals(type);
     }
 
-    public boolean isSpaceFor(Animal animal) {
+    private boolean isSpaceFor(Animal animal) {
         if (animal.getType() == Animal.animalType.AMPHIBIOUS) {
             if (getRemainingSpace("land") - animal.getAnimalSpace("land") >= 0 && getRemainingSpace("water") - animal.getAnimalSpace("water") >= 0) {
                 return true;
@@ -187,48 +194,60 @@ public abstract class Pen {
     //TODO - maybe you can get around this by having a boolean parameter for the append?
     //TODO - but if changes are made to an existing pen as opposed to a new pen being created, you don't want a completely new record, you want to overwrite the old data. Although, there are no setters so this is not possible - check if it is a requirement to allow changes to pens.
     //TODO - with regard to the previous TODO, the only requirement is to be able to add new animals to a pen and assign staff to a pen
-    public void writePensToFile() {
-        File penData = new File("penData.csv");
+
+    public static void writePensToJsonFile(String filePath, ArrayList<Pen> penArrayList) {
+        String allPensFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/allPensData.json";
+        File allPensJsonFile = new File(allPensFilePath);
+
+        File pensJsonFile = new File(filePath);
+        Gson jsonConverter = new Gson();
+
         try {
-            PrintWriter printWriter = new PrintWriter(new FileOutputStream(penData, true));
-            //TODO - consider having a normal PrintWriter, without the FileOutputStream. The whole file will be overwritten with changes/additions each time.
-            for (Pen pen : listOfAllPens) {
-                String name, type;
-                int length, width, height, temp, area, volume, remainingArea, remainingVolume, assignedKeepers;
-                name = pen.name;
-                type = pen.type.toString();
-                length = pen.length;
-                width = pen.width;
-                height = pen.getHeight();
-                temp = pen.temp;
+            PrintWriter writer = new PrintWriter(pensJsonFile);
+            writer.print(jsonConverter.toJson(penArrayList));
+            writer.close();
 
-
-                if (pen.type.equals(PenType.DRY) || pen.type.equals(PenType.PETTING)) {
-                    area = pen.getCapacity();
-                    volume = 0;
-                    remainingArea = pen.getRemainingSpace();
-                    remainingVolume = 0;
-                } else if (pen.type.equals(PenType.PARTDRYWATER)) {
-                    area = pen.getCapacity("land");
-                    volume = pen.getCapacity("water");
-                    remainingArea = pen.getRemainingSpace("land");
-                    remainingVolume = pen.getRemainingSpace("water");
-                } else {
-                    area = 0;
-                    remainingArea = 0;
-                    volume = pen.getCapacity();
-                    remainingVolume = pen.getRemainingSpace();
-                }
-
-                printWriter.println(
-                        name + "," + type + "," + length + "," + width + "," + height + "," + temp + "," + area
-                                + "," + volume + "," + remainingArea + "," + remainingVolume + "," + zooKeepers + "," + animalsInPen);
-            }
-
-            printWriter.close();
+            writer = new PrintWriter(allPensJsonFile);
+            writer.print(jsonConverter.toJson(listOfAllPens));
+            writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    public static <T> ArrayList<T> instantiatePensFromJsonFile(String filePath, Class<T> classType) {
+        //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/pen/resources/testPenData.json";
+        File pensJsonFile = new File(filePath);
+        Gson jsonConverter = new Gson();
+
+        ArrayList<T> pensLoadedFromFile = new ArrayList<>();
+        try {
+            String pensListJsonString = new String(Files.readAllBytes(pensJsonFile.toPath()));
+            pensLoadedFromFile = loadArrayListFromJsonForPenType(classType, pensListJsonString);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return pensLoadedFromFile;
+    }
+
+    private static <T> ArrayList<T> loadArrayListFromJsonForPenType(Class<T> penClassType, String pensListJsonString) {
+        Gson jsonConverter = new Gson();
+        if (penClassType == Aquarium.class)
+            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<Aquarium>>() {
+            }.getType());
+        else if (penClassType == Aviary.class)
+            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<Aviary>>() {
+            }.getType());
+        else if (penClassType == DryPen.class)
+            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<DryPen>>() {
+            }.getType());
+        else if (penClassType == PartDryWaterPen.class)
+            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<PartDryWaterPen>>() {
+            }.getType());
+        else if (penClassType == PettingPen.class)
+            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<PettingPen>>() {
+            }.getType());
+        else return null;
     }
 
 }
