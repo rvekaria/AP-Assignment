@@ -256,4 +256,21 @@ public class AnimalUTest {
         assertEquals(penguin.getType(), animalFromFile.getType());
     }
 
+    @Test
+    public void testGetAnimalsWithoutPens(){
+        //setup
+        penguin.setAssignedPen(1);
+        owl.setAssignedPen(4);
+
+        //act
+        ArrayList<Animal> unassignedAnimals = Animal.getAnimalsWithoutPens();
+
+        //assert
+        assertEquals(2, unassignedAnimals.size());
+        assertEquals(penguin, unassignedAnimals.get(0));
+        assertEquals(owl, unassignedAnimals.get(1));
+        assertEquals(-1, penguin.getAssignedPenId());
+        assertEquals(-1, owl.getAssignedPenId());
+    }
+
 }

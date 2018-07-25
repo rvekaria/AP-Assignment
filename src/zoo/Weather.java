@@ -10,19 +10,17 @@ import java.net.URL;
 
 public class Weather {
 
-    public static String getTemp() {
-        JsonObject weatherObject = getWeatherAsJsonObject();
+    public static String getTemp(JsonObject weatherObject) {
         JsonObject mainElement = weatherObject.get("main").getAsJsonObject();
         return mainElement.get("temp").toString();
     }
 
-    public static String getWeatherDescription() {
-        JsonObject weatherObject = getWeatherAsJsonObject();
+    public static String getWeatherDescription(JsonObject weatherObject) {
         JsonObject weatherElement = weatherObject.get("weather").getAsJsonArray().get(0).getAsJsonObject();
         return weatherElement.get("description").toString();
     }
 
-    private static JsonObject getWeatherAsJsonObject() {
+    public static JsonObject getWeatherAsJsonObject() {
         String weather = getWeather();
         Gson gson = new Gson();
         return gson.fromJson(weather, JsonObject.class);

@@ -80,7 +80,7 @@ public abstract class Animal {
     public static ArrayList<Animal> getAnimalsWithoutPens(){
         ArrayList<Animal> animalsWithoutPensList = new ArrayList<>();
         for (Animal animal : allAnimalsInZooList){
-            if(animal.animalId == -1){
+            if(animal.assignedPenId == -1){
                 animalsWithoutPensList.add(animal);
             }
         }
