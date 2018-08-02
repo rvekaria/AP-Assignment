@@ -2,8 +2,10 @@ package zoo;
 
 import com.google.gson.JsonObject;
 
+import java.io.File;
 import java.time.LocalTime;
-import java.util.InputMismatchException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Scanner;
 
 //public class Main extends Application {
@@ -21,54 +23,43 @@ public class Main {
 
     public static void main(String[] args) {
         //launch(args);
+        loadKeepers();
+        loadPens();
         while (appIsRunning) {
             displayMainMenuOptions();
-            String menuOptionString = scanner.nextLine();
-
+            String menuOption = scanner.nextLine();
+            executeOption(menuOption);
         }
 
     }
 
-    private static void executeOption(String menuOption) {
-        //TODO - change this to if/else statements and use .equals() to compare string values
-        switch (menuOption) {
-            case "1":
-                addNewPen();
-                break;
-//            case "2": addNewAnimal();
-//                break;
-//            case "3": listAllZooKeepers();
-//                break;
-//            case "4": listAllPens();
-//                break;
-//            case "5": listAllAnimals();
-//                break;
-//            case "6": assignAnimalToPen();
-//                break;
-//            case "7": assignKeeperToPen();
-//                break;
-            case "8":
-                updateWeatherDisplay();
-                break;
-            case "0":
-                appIsRunning = false;
-                break;
-            default:
-                System.out.println("That is not a valid option. Please enter in one of the numbered options.");
+    private static void loadKeepers() {
+        File file = new File("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+        if (file.length() != 0) {
+            ZooKeeper.listOfAllZooKeepers = ZooKeeper.instantiateKeepersFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+        } else {
+            ZooKeeper hardip = createZooKeeper(Pen.PenType.DRY, Pen.PenType.AVIARY, "Hardip");
+            ZooKeeper alex = createZooKeeper(Pen.PenType.AQUARIUM, Pen.PenType.PARTDRYWATER, "Alex");
+            ZooKeeper farhad = createZooKeeper(Pen.PenType.AVIARY, Pen.PenType.AQUARIUM, "Farhad");
+            ZooKeeper alan = createZooKeeper(Pen.PenType.DRY, Pen.PenType.PETTING, "Alan");
         }
     }
 
-    private static void addNewPen() {
-        System.out.println("What type of pen do you want to add? Select one of the options:");
-        System.out.println("(1) Dry Pen");
-        System.out.println("(2) Petting Pen");
-        System.out.println("(3) Part Dry, Part Water Pen");
-        System.out.println("(4) Aquarium");
-        System.out.println("(5) Aviary");
+    private static ZooKeeper createZooKeeper(Pen.PenType type1, Pen.PenType type2, String keeperName) {
+        Pen.PenType[] pensTrainedFor = {type1, type2};
+        ArrayList<Pen.PenType> trainedForPensList = createTrainedForPensList(pensTrainedFor);
+        ArrayList<Integer> assignedPens = new ArrayList<>();
+        return new ZooKeeper(keeperName, trainedForPensList, assignedPens);
+    }
 
+    private static ArrayList<Pen.PenType> createTrainedForPensList(Pen.PenType[] pensList) {
+        ArrayList<Pen.PenType> trainedForPensList = new ArrayList<>();
+        trainedForPensList.addAll(Arrays.asList(pensList));
+        return trainedForPensList;
     }
 
     private static void displayMainMenuOptions() {
+        System.out.println();
         System.out.println("Select one of the following options by entering in the number:");
         System.out.println("(1) Add a new pen");
         System.out.println("(2) Add a new animal");
@@ -79,6 +70,181 @@ public class Main {
         System.out.println("(7) Assign zookeper to a pen");
         System.out.println("(8) Update weather");
         System.out.println("(0) Exit application");
+        System.out.print("> ");
+    }
+
+    private static void executeOption(String menuOption) {
+        if (menuOption.equals("1")) {
+            addNewPen();
+        } else if (menuOption.equals("2")) {
+
+        } else if (menuOption.equals("3")) {
+            displayKeeperInfo();
+        } else if (menuOption.equals("4")) {
+            displayPenInfo();
+
+        } else if (menuOption.equals("5")) {
+
+        } else if (menuOption.equals("6")) {
+
+        } else if (menuOption.equals("7")) {
+
+        } else if (menuOption.equals("8")) {
+            updateWeatherDisplay();
+        } else if (menuOption.equals("0")) {
+            appIsRunning = false;
+        } else {
+            System.out.println("That is not a valid option. Please enter in one of the numbered options.");
+        }
+
+    }
+
+    private static void displayKeeperInfo() {
+        for (int i = 0; i < ZooKeeper.listOfAllZooKeepers.size(); i++) {
+            ZooKeeper keeper = ZooKeeper.listOfAllZooKeepers.get(i);
+            System.out.println("[" + i + "] " + keeper.toString());
+        }
+    }
+
+    private static void displayPenInfo() {
+        if (!Pen.listOfAllPens.isEmpty()) {
+            for (int i = 0; i < Pen.listOfAllPens.size(); i++) {
+                Pen pen = Pen.listOfAllPens.get(i);
+                System.out.println("[" + i + "] " + pen.toString());
+            }
+        } else {
+            System.out.println("There are no pens! Press 1 to add a new pen.");
+        }
+    }
+
+    private static void displayPenOptions() {
+        System.out.println();
+        System.out.println("What type of pen do you want to add? Select one of the options:");
+        System.out.println("(1) Dry Pen");
+        System.out.println("(2) Petting Pen");
+        System.out.println("(3) Part Dry, Part Water Pen");
+        System.out.println("(4) Aquarium");
+        System.out.println("(5) Aviary");
+        System.out.println("(0) Go back to main menu");
+        System.out.print("> ");
+    }
+
+    private static void addNewPen() {
+        boolean isNotValidOption = true;
+        ArrayList<String> validOptions = new ArrayList<>();
+        validOptions.add("1");
+        validOptions.add("2");
+        validOptions.add("3");
+        validOptions.add("4");
+        validOptions.add("5");
+        while (isNotValidOption) {
+            displayPenOptions();
+            String penOption = scanner.nextLine();
+            if (validOptions.contains(penOption)) {
+                isNotValidOption = false;
+                createPen(penOption);
+            } else if (penOption.equals("0")) {
+                isNotValidOption = false;
+            } else {
+                System.out.println("That is not a valid option. Please enter in one of the numbered options.");
+            }
+        }
+
+    }
+
+    private static void createPen(String penOption) {
+        Pen pen;
+        ArrayList<ZooKeeper> assignedKeeperList = autoAssignKeeper(penOption);
+        ArrayList<Integer> animalsIdsInPen = new ArrayList<>();
+        String name;
+        int length;
+        int width;
+        int temp;
+        int height;
+        int volume;
+        System.out.println("Complete the following fields to create the pen:");
+        System.out.print("Pen name: ");
+        name = scanner.nextLine();
+        System.out.print("Pen length (metres): ");
+        length = Integer.parseInt(scanner.nextLine());
+        System.out.print("Pen width (metres): ");
+        width = Integer.parseInt(scanner.nextLine());
+        System.out.print("Pen temperature (\u00b0C): ");
+        temp = Integer.parseInt(scanner.nextLine());
+        switch (penOption) {
+            case "1"://Dry Pen
+                pen = new DryPen(name, length, width, temp, assignedKeeperList, animalsIdsInPen);
+                break;
+            case "2"://Petting Pen
+                pen = new PettingPen(name, length, width, temp, assignedKeeperList, animalsIdsInPen);
+                break;
+            case "3"://Part Dry, Part Water Pen
+                System.out.print("Water depth (metres): ");
+                height = Integer.parseInt(scanner.nextLine());
+                System.out.print("Land area (m^2): ");
+                int area = Integer.parseInt(scanner.nextLine());
+                System.out.print("Water volume (m^3): ");
+                volume = Integer.parseInt(scanner.nextLine());
+                pen = new PartDryWaterPen(name, length, width, height, area, volume, temp, assignedKeeperList, animalsIdsInPen);
+                break;
+            case "4"://Aquarium
+                System.out.print("Height (m): ");
+                height = Integer.parseInt(scanner.nextLine());
+                pen = new Aquarium(name, length, width, height, temp, assignedKeeperList, animalsIdsInPen);
+                break;
+            default://Aviary
+                System.out.print("Height (m): ");
+                height = Integer.parseInt(scanner.nextLine());
+                pen = new Aviary(name, length, width, height, temp, assignedKeeperList, animalsIdsInPen);
+                break;
+        }
+        for (ZooKeeper keeper : assignedKeeperList) {
+            keeper.addPenToAssignedPens(pen.getPenId());
+            ZooKeeper.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+        }
+    }
+
+    private static ArrayList<ZooKeeper> autoAssignKeeper(String penOption) {
+        ZooKeeper keeper;
+        ArrayList<ZooKeeper> keepersList = new ArrayList<>();
+        switch (penOption) {
+            case "1"://Dry Pen
+                keeper = keeperWithFewerPens(0, 3);
+                System.out.println(keeper.getName() + " will be the assigned keeper of this pen.");
+                break;
+            case "2"://Petting Pen
+                keeper = ZooKeeper.listOfAllZooKeepers.get(3);
+                System.out.println(keeper.getName() + " will be the assigned keeper of this pen.");
+                break;
+            case "3"://Part Dry, Part Water Pen
+                keeper = ZooKeeper.listOfAllZooKeepers.get(1);
+                System.out.println(keeper.getName() + " will be the assigned keeper of this pen.");
+                break;
+            case "4"://Aquarium
+                keeper = keeperWithFewerPens(1, 2);
+                System.out.println(keeper.getName() + " will be the assigned keeper of this pen.");
+                break;
+            default://Aviary
+                keeper = keeperWithFewerPens(0, 2);
+                System.out.println(keeper.getName() + " will be the assigned keeper of this pen.");
+                break;
+        }
+        keepersList.add(keeper);
+        return keepersList;
+    }
+
+    private static ZooKeeper keeperWithFewerPens(int keeper1, int keeper2) {
+        int keeper1NumberOfPens = ZooKeeper.listOfAllZooKeepers.get(keeper1).getAssignedPenIds().size();
+        int keeper2NumberOfPens = ZooKeeper.listOfAllZooKeepers.get(keeper2).getAssignedPenIds().size();
+        return keeper1NumberOfPens > keeper2NumberOfPens ? ZooKeeper.listOfAllZooKeepers.get(keeper2) : ZooKeeper.listOfAllZooKeepers.get(keeper1);
+    }
+
+    private static void displayListOfKeepers() {
+        System.out.println("Select a zookeeper from the below list of trained keepers to assign to this pen:");
+        System.out.println("(1) Hardip      Dry Pens, Aviaries");
+        System.out.println("(2) Alex        Aquariums, Part Water/Part Dry Pens");
+        System.out.println("(3) Farhad      Aviaries, Aquariums");
+        System.out.println("(4) Alan        Dry Pens, Petting Pens");
     }
 
     private static void updateWeatherDisplay() {
@@ -88,7 +254,35 @@ public class Main {
         String temp = Weather.getTemp(weatherObject);
 
         String weatherDisplay = "Weather: " + weatherDesc + "   Temperature: " + temp + "\nUpdated: " + timeStamp;
+        System.out.println();
         System.out.println(weatherDisplay);
     }
 
+    private static void loadPens() {
+        loadDryPens();
+        loadPettingPens();
+        loadDryWaterPens();
+        loadAquariums();
+        loadAviaries();
+    }
+
+    static void loadDryPens() {
+        DryPen.listOfAllDryPens = DryPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", DryPen.class);
+    }
+
+    static void loadPettingPens() {
+        PettingPen.listOfAllPettingPens = PettingPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", PettingPen.class);
+    }
+
+    static void loadDryWaterPens() {
+        PartDryWaterPen.listOfAllDryWaterPens = PartDryWaterPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", PartDryWaterPen.class);
+    }
+
+    static void loadAquariums() {
+        Aquarium.listOfAllAquariums = Aquarium.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", Aquarium.class);
+    }
+
+    static void loadAviaries() {
+        Aviary.listOfAllAviaries = Aviary.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", Aviary.class);
+    }
 }

@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Aviary extends Pen {
     private int height;
     private int volume;
-    private static ArrayList<Pen> listOfAllAviaries = new ArrayList<>();
+
 
     public Aviary(String name, int length, int width, int height, int temp, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
         super(name, length, width, temp, PenType.AVIARY, zooKeepers, animalIDsInPen);
@@ -19,6 +19,11 @@ public class Aviary extends Pen {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("name: %s, volume: %s, remaining area: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), volume, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 
     @Override

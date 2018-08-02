@@ -6,7 +6,7 @@ public class PartDryWaterPen extends Pen {
     private int height;
     private int waterVolume;
     private int landArea;
-    private static ArrayList<Pen> listOfAllDryWaterPens = new ArrayList<>();
+
 
     public PartDryWaterPen(String name, int length, int width, int height, int landArea, int waterVolume, int temp, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
         super(name, length, width, temp, PenType.PARTDRYWATER, zooKeepers, animalIDsInPen);
@@ -21,6 +21,11 @@ public class PartDryWaterPen extends Pen {
 
     public int getHeight() {
         return height;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("name: %s, land area: %s, volume: %s, remaining area: %s, remaining volume: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), landArea, waterVolume, getRemainingSpace("land"), getRemainingSpace("water"), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 
     @Override
