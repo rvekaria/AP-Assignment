@@ -16,8 +16,14 @@ public abstract class Animal {
     private String species;
     protected animalType type;
     private int assignedPenId;
+    boolean hasAssignedPen;
     protected int animalId;
     static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
+    static ArrayList<LandAnimal> allLandAnimals = new ArrayList<>();
+    static ArrayList<PettingAnimal> allPettingAnimals = new ArrayList<>();
+    static ArrayList<AmphibiousAnimal> allAmphibiousAnimals = new ArrayList<>();
+    static ArrayList<WaterAnimal> allWaterAnimals = new ArrayList<>();
+    static ArrayList<FlyingAnimal> allFlyingAnimals = new ArrayList<>();
 
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 
@@ -40,9 +46,9 @@ public abstract class Animal {
         return type;
     }
 
-    public abstract int getAnimalSpace();
+    public abstract double getAnimalSpace();
 
-    public abstract int getAnimalSpace(String type);
+    public abstract double getAnimalSpace(String type);
 
     public int getAssignedPenId() {
         return assignedPenId;
@@ -60,37 +66,87 @@ public abstract class Animal {
         return allAnimalsInZooList;
     }
 
+    public abstract String displayInfo();
+
     /*public void setAssignedPen(Pen pen) {
         String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData.json";
         //File file = new File(pathname);
         setAssignedPen(pen, pathname);
     }*/
 
-    public void setAssignedPen(int penId) {
-        if (!Pen.getListOfAllPens().get(penId).getAnimalIDsInPen().contains(animalId)) {
+    public boolean setAssignedPen(int penId) {
+        if (!Pen.getPenWithPenId(penId).getAnimalIDsInPen().contains(animalId)) {
             System.out.println(name + " will be removed from its current pen: " + getAssignedPen().getName());
             getAssignedPen().removeAnimalFromPen(this); //remove this animal from its current Pen
-            boolean assignSuccessful = Pen.getListOfAllPens().get(penId).assignAnimalToPen(this); //update the assigned pen's list of animals that are in it
+            boolean assignSuccessful = Pen.getPenWithPenId(penId).assignAnimalToPen(this); //update the assigned pen's list of animals that are in it
             this.assignedPenId = assignSuccessful ? penId : -1;//set the animal's assigned pen. -1 if it has no assigned pen
+            if (this.assignedPenId == -1) {
+                System.out.println(name + " was removed from its current pen but could not be assigned to the new pen.");
+                System.out.println(name + " has no assigned pen! Please assign an appropriate pen.");
+                return false;
+            } else {
+                return true;
+            }
         } else {
             System.out.println(name + " is already in " + Pen.getListOfAllPens().get(penId).getName());
+            return true;
         }
     }
 
-    public static ArrayList<Animal> getAnimalsWithoutPens(){
+    public static ArrayList<Animal> getAnimalsWithoutPens() {
         ArrayList<Animal> animalsWithoutPensList = new ArrayList<>();
-        for (Animal animal : allAnimalsInZooList){
-            if(animal.assignedPenId == -1){
+        for (Animal animal : allAnimalsInZooList) {
+            if (animal.assignedPenId == -1) {
                 animalsWithoutPensList.add(animal);
             }
         }
         return animalsWithoutPensList;
     }
 
-    public static void writeAnimalsToJsonFile(String filePath, ArrayList<Animal> animalArrayList) {
+    public static Animal getAnimalWithAnimalId(int animalId){
+        for (Animal animal : allAnimalsInZooList){
+            if (animal.animalId == animalId){
+                return animal;
+            }
+        }
+        return null;
+    }
+
+    public static void writeAllAnimalsToJsonFile() {
         String allAnimalsFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/animalData.json";
         File allAnimalsJsonFile = new File(allAnimalsFilePath);
+        Gson jsonConverter = new Gson();
 
+        try {
+            PrintWriter writer = new PrintWriter(allAnimalsJsonFile);
+            writer.print(jsonConverter.toJson(allAnimalsInZooList));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static void writeLandAnimalsToFile() {
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", allLandAnimals);
+    }
+
+    public static void writePettingAnimalsToFile() {
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json", allPettingAnimals);
+    }
+
+    public static void writeAmphibiousAnimalsToFile() {
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json", allAmphibiousAnimals);
+    }
+
+    public static void writeWaterAnimalsToFile() {
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json", allWaterAnimals);
+    }
+
+    public static void writeFlyingAnimalsToFile() {
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json", allFlyingAnimals);
+    }
+
+    public static <T extends Animal> void writeAnimalsToJsonFile(String filePath, ArrayList<T> animalArrayList) {
         File animalsJsonFile = new File(filePath);
         Gson jsonConverter = new Gson();
 
@@ -99,15 +155,13 @@ public abstract class Animal {
             writer.print(jsonConverter.toJson(animalArrayList));
             writer.close();
 
-            writer = new PrintWriter(allAnimalsJsonFile);
-            writer.print(jsonConverter.toJson(allAnimalsInZooList));
-            writer.close();
+            writeAllAnimalsToJsonFile();
         } catch (FileNotFoundException e) {
             System.out.println("File error: " + e.toString());
         }
     }
 
-    public static <T> ArrayList<T> instantiateAnimalsFromJsonFile(String filePath, Class<T> classType) {
+    public static <T extends Animal> ArrayList<T> instantiateAnimalsFromJsonFile(String filePath, Class<T> classType) {
         //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.json";
         File animalsJsonFile = new File(filePath);
 
@@ -118,7 +172,12 @@ public abstract class Animal {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return animalsLoadedFromFile;
+        if (animalsLoadedFromFile != null) {
+            allAnimalsInZooList.addAll(animalsLoadedFromFile);
+            return animalsLoadedFromFile;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
     private static <T> ArrayList<T> loadArrayListFromJsonForAnimalType(Class<T> penClassType, String animalsListJsonString) {

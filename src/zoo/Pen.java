@@ -54,7 +54,8 @@ public abstract class Pen {
     public int getPenId() {
         return penId;
     }
-    public abstract String toString();
+
+    public abstract String displayInfo();
 
     public PenType getType() {
         return type;
@@ -74,13 +75,22 @@ public abstract class Pen {
         return listOfAllPens;
     }
 
+    public static Pen getPenWithPenId(int penId){
+        for (Pen pen : listOfAllPens){
+            if (pen.penId == penId){
+                return pen;
+            }
+        }
+        return null;
+    }
+
     public ArrayList<ZooKeeper> getZooKeepers() {
         return zooKeepers;
     }
 
-    public String getKeeperNames(){
+    public String getKeeperNames() {
         ArrayList<String> keeperNames = new ArrayList<>();
-        for (ZooKeeper keeper : zooKeepers){
+        for (ZooKeeper keeper : zooKeepers) {
             keeperNames.add(keeper.getName());
         }
         String[] keeperNamesArray = new String[keeperNames.size()];
@@ -170,27 +180,28 @@ public abstract class Pen {
             return false;
     }
 
-    private int spaceOccupiedByAnimals() {
-        int occupiedSpace = 0;
+    private double spaceOccupiedByAnimals() {
+        double occupiedSpace = 0;
         for (int animalId : animalIDsInPen) {
-            occupiedSpace += Animal.getAllAnimalsInZooList().get(animalId).getAnimalSpace();
+            occupiedSpace += Animal.getAnimalWithAnimalId(animalId).getAnimalSpace();
         }
         return occupiedSpace;
     }
 
-    private int spaceOccupiedByAnimals(String type) {
-        int occupiedSpace = 0;
+    private double spaceOccupiedByAnimals(String type) {
+        double occupiedSpace = 0;
         for (int animalId : animalIDsInPen) {
-            occupiedSpace += Animal.getAllAnimalsInZooList().get(animalId).getAnimalSpace(type);
+            occupiedSpace += Animal.getAnimalWithAnimalId(animalId).getAnimalSpace(type);
         }
         return occupiedSpace;
     }
 
-    public int getRemainingSpace() {
+
+    public double getRemainingSpace() {
         return getCapacity() - spaceOccupiedByAnimals();
     }
 
-    public int getRemainingSpace(String type) {
+    public double getRemainingSpace(String type) {
         return getCapacity(type) - spaceOccupiedByAnimals(type);
     }
 
@@ -206,7 +217,7 @@ public abstract class Pen {
             return false;
     }
 
-    static void writeAllPensListToJsonFile(){
+    static void writeAllPensListToJsonFile() {
         String allPensFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/allPensData.json";
         File allPensJsonFile = new File(allPensFilePath);
         Gson jsonConverter = new Gson();
@@ -218,6 +229,26 @@ public abstract class Pen {
             e.printStackTrace();
         }
 
+    }
+
+    public static void writeDryPensToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", listOfAllDryPens);
+    }
+
+    public static void writePettingPensToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", listOfAllPettingPens);
+    }
+
+    public static void writePartDryWaterToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", listOfAllDryWaterPens);
+    }
+
+    public static void writeAquariumsToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", listOfAllAquariums);
+    }
+
+    public static void writeAviariesToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", listOfAllAviaries);
     }
 
     public static <T extends Pen> void writePensToJsonFile(String filePath, ArrayList<T> penArrayList) {
@@ -238,7 +269,6 @@ public abstract class Pen {
     public static <T extends Pen> ArrayList<T> instantiatePensFromJsonFile(String filePath, Class<T> classType) {
         //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/pen/resources/testPenData.json";
         File pensJsonFile = new File(filePath);
-        Gson jsonConverter = new Gson();
 
         ArrayList<T> pensLoadedFromFile = new ArrayList<>();
         try {

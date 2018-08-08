@@ -16,7 +16,7 @@ public class PartDryWaterPen extends Pen {
         listOfAllDryWaterPens.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", listOfAllDryWaterPens);
+        writePartDryWaterToFile();
     }
 
     public int getHeight() {
@@ -24,7 +24,7 @@ public class PartDryWaterPen extends Pen {
     }
 
     @Override
-    public String toString() {
+    public String displayInfo() {
         return String.format("name: %s, land area: %s, volume: %s, remaining area: %s, remaining volume: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), landArea, waterVolume, getRemainingSpace("land"), getRemainingSpace("water"), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 

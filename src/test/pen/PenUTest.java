@@ -307,7 +307,9 @@ public class PenUTest {
         //setup
         String expectedOutput = "Obese will be removed from its current pen: aviaryPen\n" +
                 "Obese is not in this pen. Cannot remove.\n" +
-                "There is no space for Obese in aviaryPen.\n";
+                "There is no space for Obese in aviaryPen.\n" +
+                "Obese was removed from its current pen but could not be assigned to the new pen.\n" +
+                "Obese has no assigned pen! Please assign an appropriate pen.\n";
 
         //act
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -327,7 +329,9 @@ public class PenUTest {
         //setup
         String expectedOutput = "Big P will be removed from its current pen: dryWaterPen\n" +
                 "Big P is not in this pen. Cannot remove.\n" +
-                "There is no space for Big P in dryWaterPen.\n";
+                "There is no space for Big P in dryWaterPen.\n" +
+                "Big P was removed from its current pen but could not be assigned to the new pen.\n" +
+                "Big P has no assigned pen! Please assign an appropriate pen.\n";
 
         //act
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();

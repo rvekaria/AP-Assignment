@@ -11,11 +11,11 @@ public class DryPen extends Pen {
         listOfAllPens.add(this);
         listOfAllDryPens.add(this);
         penId = listOfAllPens.indexOf(this);
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", listOfAllDryPens);
+        writeDryPensToFile();
     }
 
     @Override
-    public String toString() {
+    public String displayInfo() {
         return String.format("name: %s, area: %s, remaining area: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), area, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 

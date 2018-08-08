@@ -14,7 +14,7 @@ public class Aviary extends Pen {
         listOfAllAviaries.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", listOfAllAviaries);
+        writeAviariesToFile();
     }
 
     public int getHeight() {
@@ -22,8 +22,8 @@ public class Aviary extends Pen {
     }
 
     @Override
-    public String toString() {
-        return String.format("name: %s, volume: %s, remaining area: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), volume, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
+    public String displayInfo() {
+        return String.format("name: %s, volume: %s, remaining volume: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), volume, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 
     @Override

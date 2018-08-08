@@ -1,6 +1,7 @@
 package zoo;
 
 import com.google.gson.JsonObject;
+import com.sun.tools.classfile.Synthetic_attribute;
 
 import java.io.File;
 import java.time.LocalTime;
@@ -25,6 +26,7 @@ public class Main {
         //launch(args);
         loadKeepers();
         loadPens();
+        loadAnimals();
         while (appIsRunning) {
             displayMainMenuOptions();
             String menuOption = scanner.nextLine();
@@ -77,16 +79,15 @@ public class Main {
         if (menuOption.equals("1")) {
             addNewPen();
         } else if (menuOption.equals("2")) {
-
+            addNewAnimal();
         } else if (menuOption.equals("3")) {
             displayKeeperInfo();
         } else if (menuOption.equals("4")) {
             displayPenInfo();
-
         } else if (menuOption.equals("5")) {
-
+            displayAnimalInfo();
         } else if (menuOption.equals("6")) {
-
+            assignAnimalToPen();
         } else if (menuOption.equals("7")) {
 
         } else if (menuOption.equals("8")) {
@@ -97,6 +98,109 @@ public class Main {
             System.out.println("That is not a valid option. Please enter in one of the numbered options.");
         }
 
+    }
+
+    private static void assignAnimalToPen() {
+        System.out.println("Which of these animals do you want to assign to a pen:");
+        displayAnimalInfo();
+        System.out.print("> ");
+        int animalId = Integer.parseInt(scanner.nextLine());
+        System.out.println("Which pen do you want to assign the animal to:");
+        displayPenInfo();
+        System.out.print("> ");
+        int penId = Integer.parseInt(scanner.nextLine());
+        Animal animal = Animal.getAnimalWithAnimalId(animalId);
+        animal.setAssignedPen(penId);
+    }
+
+    private static void addNewAnimal() {
+        boolean isNotValidOption = true;
+        ArrayList<String> validOptions = new ArrayList<>();
+        validOptions.add("1");
+        validOptions.add("2");
+        validOptions.add("3");
+        validOptions.add("4");
+        validOptions.add("5");
+        while (isNotValidOption) {
+            displayAnimalOptions();
+            String animalOption = scanner.nextLine();
+            if (validOptions.contains(animalOption)) {
+                isNotValidOption = false;
+                createAnimal(animalOption);
+            } else if (animalOption.equals("0")) {
+                isNotValidOption = false;
+            } else {
+                System.out.println("That is not a valid option. Please enter in one of the numbered options.");
+            }
+        }
+
+    }
+
+    private static void createAnimal(String animalOption) {
+        Animal animal;
+        String name;
+        String species;
+        int assignedPenId;
+        double landSpace;
+        double waterSpace;
+        System.out.println("Complete the following fields to add the animal:");
+        System.out.print("Species: ");
+        species = scanner.nextLine();
+        System.out.print("Name: ");
+        name = scanner.nextLine();
+        System.out.println("Which pen do you want to assign the animal to? Pick a number from the list: ");
+        displayPenInfo();
+        System.out.print("> ");
+        assignedPenId = Integer.parseInt(scanner.nextLine());
+        switch (animalOption) {
+            case "1"://Land Animal
+                System.out.print("Land space required: ");
+                landSpace = Double.parseDouble(scanner.nextLine());
+                animal = new LandAnimal(name, species, assignedPenId, landSpace);
+                Pen.writeDryPensToFile();
+                Pen.writePettingPensToFile();
+                //TODO - Don't I need to write the corresponding Pen file here?
+                break;
+            case "2"://Petting Animal
+                System.out.print("Land space required: ");
+                landSpace = Double.parseDouble(scanner.nextLine());
+                animal = new PettingAnimal(name, species, assignedPenId, landSpace);
+                Pen.writeDryPensToFile();
+                Pen.writePettingPensToFile();
+                break;
+            case "3"://Amphibious Animal
+                System.out.print("Land space required: ");
+                landSpace = Double.parseDouble(scanner.nextLine());
+                System.out.print("Water space required: ");
+                waterSpace = Double.parseDouble(scanner.nextLine());
+                animal = new AmphibiousAnimal(name, species, assignedPenId, landSpace, waterSpace);
+                Pen.writePartDryWaterToFile();
+                break;
+            case "4"://Water Animal
+                System.out.print("Water space required: ");
+                waterSpace = Double.parseDouble(scanner.nextLine());
+                animal = new WaterAnimal(name, species, assignedPenId, waterSpace);
+                Pen.writeAquariumsToFile();
+                break;
+            default://Flying Animal
+                System.out.print("Air space required: ");
+                double airSpace = Double.parseDouble(scanner.nextLine());
+                animal = new FlyingAnimal(name, species, assignedPenId, airSpace);
+                Pen.writeAviariesToFile();
+                break;
+        }
+    }
+
+    private static void displayAnimalOptions() {
+        System.out.println();
+        System.out.println("What type of animal do you want to add? Select one of the options:");
+        System.out.println("(1) Land Animal");
+        System.out.println("(2) Petting Animal");
+        System.out.println("(3) Amphibious Animal");
+        System.out.println("(4) Water Animal");
+        System.out.println("(5) Flying Animal");
+        System.out.println("(0) Go back to main menu");
+        System.out.print("> ");
     }
 
     private static void displayKeeperInfo() {
@@ -110,10 +214,21 @@ public class Main {
         if (!Pen.listOfAllPens.isEmpty()) {
             for (int i = 0; i < Pen.listOfAllPens.size(); i++) {
                 Pen pen = Pen.listOfAllPens.get(i);
-                System.out.println("[" + i + "] " + pen.toString());
+                System.out.println("[" + pen.penId + "] " + pen.displayInfo());
             }
         } else {
             System.out.println("There are no pens! Press 1 to add a new pen.");
+        }
+    }
+
+    private static void displayAnimalInfo(){
+        if (!Animal.allAnimalsInZooList.isEmpty()){
+            for (int i=0; i<Animal.allAnimalsInZooList.size(); i++){
+                Animal animal = Animal.getAnimalWithAnimalId(i);
+                System.out.println("[" + i + "] " + animal.displayInfo());
+            }
+        } else {
+            System.out.println("There are no animals! Press 2 to add a new animal.");
         }
     }
 
@@ -267,22 +382,50 @@ public class Main {
     }
 
     static void loadDryPens() {
-        DryPen.listOfAllDryPens = DryPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", DryPen.class);
+        Pen.listOfAllDryPens = DryPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", DryPen.class);
     }
 
     static void loadPettingPens() {
-        PettingPen.listOfAllPettingPens = PettingPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", PettingPen.class);
+        Pen.listOfAllPettingPens = PettingPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", PettingPen.class);
     }
 
     static void loadDryWaterPens() {
-        PartDryWaterPen.listOfAllDryWaterPens = PartDryWaterPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", PartDryWaterPen.class);
+        Pen.listOfAllDryWaterPens = PartDryWaterPen.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", PartDryWaterPen.class);
     }
 
     static void loadAquariums() {
-        Aquarium.listOfAllAquariums = Aquarium.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", Aquarium.class);
+        Pen.listOfAllAquariums = Aquarium.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", Aquarium.class);
     }
 
     static void loadAviaries() {
-        Aviary.listOfAllAviaries = Aviary.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", Aviary.class);
+        Pen.listOfAllAviaries = Aviary.instantiatePensFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", Aviary.class);
+    }
+
+    private static void loadAnimals() {
+        loadLandAnimals();
+        loadPettingAnimals();
+        loadAmphibiousAnimals();
+        loadWaterAnimals();
+        loadFlyingAnimals();
+    }
+
+    private static void loadLandAnimals() {
+        Animal.allLandAnimals = LandAnimal.instantiateAnimalsFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", LandAnimal.class);
+    }
+
+    private static void loadPettingAnimals() {
+        Animal.allPettingAnimals = PettingAnimal.instantiateAnimalsFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json", PettingAnimal.class);
+    }
+
+    private static void loadAmphibiousAnimals() {
+        Animal.allAmphibiousAnimals = AmphibiousAnimal.instantiateAnimalsFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json", AmphibiousAnimal.class);
+    }
+
+    private static void loadWaterAnimals() {
+        Animal.allWaterAnimals = WaterAnimal.instantiateAnimalsFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json", WaterAnimal.class);
+    }
+
+    private static void loadFlyingAnimals() {
+        Animal.allFlyingAnimals = FlyingAnimal.instantiateAnimalsFromJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json", FlyingAnimal.class);
     }
 }

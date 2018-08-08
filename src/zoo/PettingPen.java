@@ -12,11 +12,11 @@ public class PettingPen extends Pen {
         listOfAllPettingPens.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", listOfAllPettingPens);
+        writePettingPensToFile();
     }
 
     @Override
-    public String toString() {
+    public String displayInfo() {
         return String.format("name: %s, area: %s, remaining area: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), area, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 

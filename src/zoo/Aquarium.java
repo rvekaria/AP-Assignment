@@ -14,7 +14,7 @@ public class Aquarium extends Pen {
         listOfAllAquariums.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", listOfAllAquariums);
+        writeAquariumsToFile();
     }
 
     public int getHeight() {
@@ -22,7 +22,7 @@ public class Aquarium extends Pen {
     }
 
     @Override
-    public String toString() {
+    public String displayInfo() {
         return String.format("name: %s, volume: %s, remaining area: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), volume, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 

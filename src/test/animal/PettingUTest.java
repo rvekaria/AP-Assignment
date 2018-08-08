@@ -32,7 +32,7 @@ public class PettingUTest {
     @Test
     public void testGetAnimalSpaceString(){
         //act
-        int landSpace = pettingAnimal.getAnimalSpace("blah");
+        double landSpace = pettingAnimal.getAnimalSpace("blah");
 
         //assert
         assertEquals(100, landSpace);
@@ -41,7 +41,7 @@ public class PettingUTest {
     @Test
     public void testGetAnimalSpaceNoParam(){
         //act
-        int landSpace = pettingAnimal.getAnimalSpace();
+        double landSpace = pettingAnimal.getAnimalSpace();
 
         //assert
         assertEquals(100, landSpace);
