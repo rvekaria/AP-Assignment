@@ -111,6 +111,40 @@ public class Main {
         int penId = Integer.parseInt(scanner.nextLine());
         Animal animal = Animal.getAnimalWithAnimalId(animalId);
         animal.setAssignedPen(penId);
+        writeToRelevantAnimalFile(animalId);
+        writeToRelevantPenFile(penId);
+    }
+
+    private static void writeToRelevantAnimalFile(int animalId){
+        Animal animal = Animal.getAnimalWithAnimalId(animalId);
+        String type = animal.getType().toString();
+        if(type.equals("LAND")){
+            Animal.writeLandAnimalsToFile();
+        } else if (type.equals("PETTABLE")){
+            Animal.writePettingAnimalsToFile();
+        }else if (type.equals("AMPHIBIOUS")){
+            Animal.writeAmphibiousAnimalsToFile();
+        }else if (type.equals("WATER")){
+            Animal.writeWaterAnimalsToFile();
+        }else if (type.equals("FLYING")){
+            Animal.writeFlyingAnimalsToFile();
+        }
+    }
+
+    private static void writeToRelevantPenFile(int penId){
+        Pen pen = Pen.getPenWithPenId(penId);
+        String type = pen.getType().toString();
+        if(type.equals("DRY")){
+            Pen.writeDryPensToFile();
+        } else if (type.equals("PETTING")){
+            Pen.writePettingPensToFile();
+        }else if (type.equals("PARTDRYWATER")){
+            Pen.writePartDryWaterToFile();
+        }else if (type.equals("AQUARIUM")){
+            Pen.writeAquariumsToFile();
+        }else if (type.equals("AVIARY")){
+            Pen.writeAviariesToFile();
+        }
     }
 
     private static void addNewAnimal() {
@@ -159,7 +193,6 @@ public class Main {
                 animal = new LandAnimal(name, species, assignedPenId, landSpace);
                 Pen.writeDryPensToFile();
                 Pen.writePettingPensToFile();
-                //TODO - Don't I need to write the corresponding Pen file here?
                 break;
             case "2"://Petting Animal
                 System.out.print("Land space required: ");

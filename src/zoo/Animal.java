@@ -76,8 +76,10 @@ public abstract class Animal {
 
     public boolean setAssignedPen(int penId) {
         if (!Pen.getPenWithPenId(penId).getAnimalIDsInPen().contains(animalId)) {
-            System.out.println(name + " will be removed from its current pen: " + getAssignedPen().getName());
-            getAssignedPen().removeAnimalFromPen(this); //remove this animal from its current Pen
+            if (assignedPenId != -1) {
+                System.out.println(name + " will be removed from its current pen: " + getAssignedPen().getName());
+                getAssignedPen().removeAnimalFromPen(this); //remove this animal from its current Pen
+            }
             boolean assignSuccessful = Pen.getPenWithPenId(penId).assignAnimalToPen(this); //update the assigned pen's list of animals that are in it
             this.assignedPenId = assignSuccessful ? penId : -1;//set the animal's assigned pen. -1 if it has no assigned pen
             if (this.assignedPenId == -1) {
@@ -103,9 +105,9 @@ public abstract class Animal {
         return animalsWithoutPensList;
     }
 
-    public static Animal getAnimalWithAnimalId(int animalId){
-        for (Animal animal : allAnimalsInZooList){
-            if (animal.animalId == animalId){
+    public static Animal getAnimalWithAnimalId(int animalId) {
+        for (Animal animal : allAnimalsInZooList) {
+            if (animal.animalId == animalId) {
                 return animal;
             }
         }
