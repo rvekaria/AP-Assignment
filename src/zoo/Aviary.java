@@ -14,6 +14,7 @@ public class Aviary extends Pen {
         listOfAllAviaries.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
+        updateKeepersAssignedPens(zooKeepers);
         writeAviariesToFile();
     }
 

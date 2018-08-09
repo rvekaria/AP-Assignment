@@ -154,10 +154,10 @@ public class ZooKeeperUTest {
     @Test
     public void testAddKeeperToPensListOfKeepers(){
         //assert
-        assertTrue(dryPen.getZooKeepers().contains(hardip));
-        assertTrue(aquarium.getZooKeepers().contains(alex));
-        assertTrue(aviary.getZooKeepers().contains(farhad));
-        assertTrue(pettingPen.getZooKeepers().contains(alan));
+        assertTrue(dryPen.getAssignedKeepers().contains(hardip));
+        assertTrue(aquarium.getAssignedKeepers().contains(alex));
+        assertTrue(aviary.getAssignedKeepers().contains(farhad));
+        assertTrue(pettingPen.getAssignedKeepers().contains(alan));
     }
 
     @Test

@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ZooKeeper {
     private String name;
@@ -89,5 +90,21 @@ public class ZooKeeper {
     public String toString() {
         String string = String.format("name: %s, trained for: %s, assigned pens: %s", name, pensTrainedFor, assignedPenIds);
         return string;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ZooKeeper keeper = (ZooKeeper) o;
+        return Objects.equals(name, keeper.name) &&
+                Objects.equals(pensTrainedFor, keeper.pensTrainedFor) &&
+                Objects.equals(assignedPenIds, keeper.assignedPenIds);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, pensTrainedFor, assignedPenIds);
     }
 }

@@ -1,1 +1,25 @@
-[{"area":200,"name":"Dry Pen 1","length":10,"width":20,"temp":17,"type":"DRY","penId":0,"zooKeepers":[{"name":"Hardip","pensTrainedFor":["DRY","AVIARY"],"assignedPenIds":[]}],"animalIDsInPen":[0,7]}]
+[
+  {
+    "area": 200,
+    "name": "Dry Pen 1",
+    "length": 10,
+    "width": 20,
+    "temp": 17,
+    "type": "DRY",
+    "penId": 0,
+    "assignedKeepers": [
+      {
+        "name": "Hardip",
+        "pensTrainedFor": [
+          "DRY",
+          "AVIARY"
+        ],
+        "assignedPenIds": []
+      }
+    ],
+    "animalIDsInPen": [
+      0,
+      7
+    ]
+  }
+]

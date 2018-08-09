@@ -12,6 +12,7 @@ public class PettingPen extends Pen {
         listOfAllPettingPens.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
+        updateKeepersAssignedPens(zooKeepers);
         writePettingPensToFile();
     }
 

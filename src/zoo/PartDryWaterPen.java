@@ -16,6 +16,7 @@ public class PartDryWaterPen extends Pen {
         listOfAllDryWaterPens.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
+        updateKeepersAssignedPens(zooKeepers);
         writePartDryWaterToFile();
     }
 

@@ -89,7 +89,7 @@ public class Main {
         } else if (menuOption.equals("6")) {
             assignAnimalToPen();
         } else if (menuOption.equals("7")) {
-
+            assignKeeperToPen();
         } else if (menuOption.equals("8")) {
             updateWeatherDisplay();
         } else if (menuOption.equals("0")) {
@@ -98,6 +98,51 @@ public class Main {
             System.out.println("That is not a valid option. Please enter in one of the numbered options.");
         }
 
+    }
+
+    private static void assignKeeperToPen() {
+        System.out.println("Which of these pens do you want to assign a zookeeper:");
+        displayPenInfo();
+        int penId = Integer.parseInt(scanner.nextLine());
+        Pen pen = Pen.getPenWithPenId(penId);
+        System.out.print("> ");
+        boolean isValidKeeperName = false;
+        String keeperName = "";
+        System.out.println("Which of these zookeeper do you want to assign to this pen:");
+        while (!isValidKeeperName) {
+            ArrayList<String> suitableKeepersNames = displaySuitableKeepersForPen(pen.getType());
+            System.out.print("> ");
+            keeperName = scanner.nextLine();
+            if (suitableKeepersNames.contains(keeperName)) {
+                isValidKeeperName = true;
+            } else {
+                System.out.println("That is not a valid keeper name. Please select the name of a keeper from the list:");
+            }
+        }
+        pen.assignZooKeeper(getKeeperWithName(keeperName));
+        ZooKeeper.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+        writeToRelevantPenFile(penId);
+
+    }
+
+    private static ZooKeeper getKeeperWithName(String keeperName) {
+        for (ZooKeeper keeper : ZooKeeper.listOfAllZooKeepers) {
+            if (keeper.getName().equals(keeperName)) {
+                return keeper;
+            }
+        }
+        return null;
+    }
+
+    private static ArrayList<String> displaySuitableKeepersForPen(Pen.PenType penType) {
+        ArrayList<String> suitableKeeperNames = new ArrayList<>();
+        for (ZooKeeper keeper : ZooKeeper.listOfAllZooKeepers) {
+            if (keeper.isTrainedFor(penType)) {
+                suitableKeeperNames.add(keeper.getName());
+                System.out.println(keeper.toString());
+            }
+        }
+        return suitableKeeperNames;
     }
 
     private static void assignAnimalToPen() {
@@ -115,34 +160,34 @@ public class Main {
         writeToRelevantPenFile(penId);
     }
 
-    private static void writeToRelevantAnimalFile(int animalId){
+    private static void writeToRelevantAnimalFile(int animalId) {
         Animal animal = Animal.getAnimalWithAnimalId(animalId);
         String type = animal.getType().toString();
-        if(type.equals("LAND")){
+        if (type.equals("LAND")) {
             Animal.writeLandAnimalsToFile();
-        } else if (type.equals("PETTABLE")){
+        } else if (type.equals("PETTABLE")) {
             Animal.writePettingAnimalsToFile();
-        }else if (type.equals("AMPHIBIOUS")){
+        } else if (type.equals("AMPHIBIOUS")) {
             Animal.writeAmphibiousAnimalsToFile();
-        }else if (type.equals("WATER")){
+        } else if (type.equals("WATER")) {
             Animal.writeWaterAnimalsToFile();
-        }else if (type.equals("FLYING")){
+        } else if (type.equals("FLYING")) {
             Animal.writeFlyingAnimalsToFile();
         }
     }
 
-    private static void writeToRelevantPenFile(int penId){
+    private static void writeToRelevantPenFile(int penId) {
         Pen pen = Pen.getPenWithPenId(penId);
         String type = pen.getType().toString();
-        if(type.equals("DRY")){
+        if (type.equals("DRY")) {
             Pen.writeDryPensToFile();
-        } else if (type.equals("PETTING")){
+        } else if (type.equals("PETTING")) {
             Pen.writePettingPensToFile();
-        }else if (type.equals("PARTDRYWATER")){
+        } else if (type.equals("PARTDRYWATER")) {
             Pen.writePartDryWaterToFile();
-        }else if (type.equals("AQUARIUM")){
+        } else if (type.equals("AQUARIUM")) {
             Pen.writeAquariumsToFile();
-        }else if (type.equals("AVIARY")){
+        } else if (type.equals("AVIARY")) {
             Pen.writeAviariesToFile();
         }
     }
@@ -254,9 +299,9 @@ public class Main {
         }
     }
 
-    private static void displayAnimalInfo(){
-        if (!Animal.allAnimalsInZooList.isEmpty()){
-            for (int i=0; i<Animal.allAnimalsInZooList.size(); i++){
+    private static void displayAnimalInfo() {
+        if (!Animal.allAnimalsInZooList.isEmpty()) {
+            for (int i = 0; i < Animal.allAnimalsInZooList.size(); i++) {
                 Animal animal = Animal.getAnimalWithAnimalId(i);
                 System.out.println("[" + i + "] " + animal.displayInfo());
             }

@@ -14,6 +14,7 @@ public class Aquarium extends Pen {
         listOfAllAquariums.add(this);
         listOfAllPens.add(this);
         penId = listOfAllPens.indexOf(this);
+        updateKeepersAssignedPens(zooKeepers);
         writeAquariumsToFile();
     }
 

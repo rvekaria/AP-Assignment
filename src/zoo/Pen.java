@@ -14,7 +14,7 @@ public abstract class Pen {
     private int length, width, temp;
     private PenType type;
     protected int penId;
-    private ArrayList<ZooKeeper> zooKeepers;
+    private ArrayList<ZooKeeper> assignedKeepers;
     private ArrayList<Integer> animalIDsInPen;
     static ArrayList<Pen> listOfAllPens = new ArrayList<>();
     static ArrayList<Aquarium> listOfAllAquariums = new ArrayList<>();
@@ -25,14 +25,21 @@ public abstract class Pen {
 
     public enum PenType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
 
-    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
+    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> assignedKeepers, ArrayList<Integer> animalIDsInPen) {
         this.name = name;
         this.length = length;
         this.width = width;
         this.temp = temp;
         this.type = type;
-        this.zooKeepers = zooKeepers;
+        this.assignedKeepers = assignedKeepers;
         this.animalIDsInPen = animalIDsInPen;
+    }
+
+    protected void updateKeepersAssignedPens(ArrayList<ZooKeeper> assignedKeepers) {
+        for (ZooKeeper keeper : assignedKeepers) {
+            keeper.addPenToAssignedPens(penId);
+            ZooKeeper.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+        }
     }
 
     public String getName() {
@@ -84,13 +91,13 @@ public abstract class Pen {
         return null;
     }
 
-    public ArrayList<ZooKeeper> getZooKeepers() {
-        return zooKeepers;
+    public ArrayList<ZooKeeper> getAssignedKeepers() {
+        return assignedKeepers;
     }
 
     public String getKeeperNames() {
         ArrayList<String> keeperNames = new ArrayList<>();
-        for (ZooKeeper keeper : zooKeepers) {
+        for (ZooKeeper keeper : assignedKeepers) {
             keeperNames.add(keeper.getName());
         }
         String[] keeperNamesArray = new String[keeperNames.size()];
@@ -99,10 +106,10 @@ public abstract class Pen {
     }
 
     public void removeZooKeeper(ZooKeeper keeper) {
-        if (zooKeepers.contains(keeper)) {
-            zooKeepers.remove(zooKeepers.indexOf(keeper));
+        if (assignedKeepers.contains(keeper)) {
+            assignedKeepers.remove(assignedKeepers.indexOf(keeper));
             System.out.println(keeper.getName() + " is no longer a keeper of this pen.");
-            if (zooKeepers.isEmpty()) {
+            if (assignedKeepers.isEmpty()) {
                 System.out.println("There are no more keepers looking after " + name + ". At least one keeper must be assigned to this pen!");
             }
         } else {
@@ -111,19 +118,26 @@ public abstract class Pen {
     }
 
     public void assignZooKeeper(ZooKeeper keeper) {
-        if (!zooKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
-            zooKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
+        if (!hasKeeper(keeper, assignedKeepers) && keeper.isTrainedFor(getType()) && hasKeeper(keeper, ZooKeeper.getListOfAllZooKeepers())) {
+            assignedKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
             writeAllPensListToJsonFile();
-            if (!keeper.getAssignedPenIds().contains(penId)) {
-                keeper.getAssignedPenIds().add(penId);
-            }
+            keeper.addPenToAssignedPens(penId);//update keeper's list of pens they are looking after
             System.out.println(keeper.getName() + " has been assigned to look after " + name + ".");
         } else
             assignKeeperErrorMessage(keeper);
     }
 
+    private boolean hasKeeper(ZooKeeper hasKeeper, ArrayList<ZooKeeper> keepersList) {
+        for (ZooKeeper keeper : keepersList){
+            if (keeper.equals(hasKeeper)){
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void assignKeeperErrorMessage(ZooKeeper keeper) {
-        if (zooKeepers.contains(keeper)) {
+        if (assignedKeepers.contains(keeper)) {
             System.out.println(keeper.getName() + " is already a keeper of this pen.");
         }
         if (!keeper.isTrainedFor(getType())) {
