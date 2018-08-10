@@ -16,13 +16,13 @@ public class ZooKeeper {
     private String name;
     private ArrayList<Pen.PenType> pensTrainedFor;
     private ArrayList<Integer> assignedPenIds;
-    static ArrayList<ZooKeeper> listOfAllZooKeepers = new ArrayList<>();
+    private static ArrayList<ZooKeeper> listOfAllZooKeepers = new ArrayList<>();
 
     public ZooKeeper(String name, ArrayList<Pen.PenType> pensTrainedFor, ArrayList<Integer> assignedPenIds) {
         this.name = name;
         this.pensTrainedFor = pensTrainedFor;
         this.assignedPenIds = assignedPenIds;
-        listOfAllZooKeepers.add(this);
+        getListOfAllZooKeepers().add(this);
         addKeeperToPensListOfKeepers();
         writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
     }
@@ -33,6 +33,10 @@ public class ZooKeeper {
 
     public static ArrayList<ZooKeeper> getListOfAllZooKeepers() {
         return listOfAllZooKeepers;
+    }
+
+    public static void setListOfAllZooKeepers(ArrayList<ZooKeeper> listOfAllZooKeepers) {
+         ZooKeeper.listOfAllZooKeepers = listOfAllZooKeepers;
     }
 
     public boolean isTrainedFor(Pen.PenType penType) {
@@ -65,7 +69,7 @@ public class ZooKeeper {
 
         try {
             PrintWriter writer = new PrintWriter(keepersJsonFile);
-            writer.print(jsonConverter.toJson(listOfAllZooKeepers));
+            writer.print(jsonConverter.toJson(getListOfAllZooKeepers()));
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();

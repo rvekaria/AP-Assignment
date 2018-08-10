@@ -7,9 +7,9 @@ public class AmphibiousAnimal extends Animal {
         super(name, species, animalType.AMPHIBIOUS, assignedPenId);
         this.landSpace = landSpace;
         this.waterSpace = waterSpace;
-        allAmphibiousAnimals.add(this);
-        allAnimalsInZooList.add(this);
-        animalId = allAnimalsInZooList.indexOf(this);
+        getAllAmphibiousAnimals().add(this);
+        getAllAnimalsInZooList().add(this);
+        animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
         writeAmphibiousAnimalsToFile();
     }

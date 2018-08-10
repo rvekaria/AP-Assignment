@@ -11,9 +11,9 @@ public class Aquarium extends Pen {
         super(name, length, width, temp, PenType.AQUARIUM, zooKeepers, animalIDsInPen);
         this.height = height;
         this.volume = length * width * height;
-        listOfAllAquariums.add(this);
-        listOfAllPens.add(this);
-        penId = listOfAllPens.indexOf(this);
+        getListOfAllAquariums().add(this);
+        getListOfAllPens().add(this);
+        penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
         writeAquariumsToFile();
     }

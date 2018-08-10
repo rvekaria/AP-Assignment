@@ -11,9 +11,9 @@ public class Aviary extends Pen {
         super(name, length, width, temp, PenType.AVIARY, zooKeepers, animalIDsInPen);
         this.height = height;
         this.volume = length * width * height;
-        listOfAllAviaries.add(this);
-        listOfAllPens.add(this);
-        penId = listOfAllPens.indexOf(this);
+        getListOfAllAviaries().add(this);
+        getListOfAllPens().add(this);
+        penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
         writeAviariesToFile();
     }

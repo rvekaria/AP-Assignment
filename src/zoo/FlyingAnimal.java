@@ -6,9 +6,9 @@ public class FlyingAnimal extends Animal {
     public FlyingAnimal(String name, String species, int assignedPenId, double airSpace) {
         super(name, species, animalType.FLYING, assignedPenId);
         this.airSpace = airSpace;
-        allFlyingAnimals.add(this);
-        allAnimalsInZooList.add(this);
-        animalId = allAnimalsInZooList.indexOf(this);
+        getAllFlyingAnimals().add(this);
+        getAllAnimalsInZooList().add(this);
+        animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
         writeFlyingAnimalsToFile();
     }

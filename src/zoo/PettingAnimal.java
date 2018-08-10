@@ -6,9 +6,9 @@ public class PettingAnimal extends Animal {
     public PettingAnimal(String name, String species, int assignedPenId, double landSpace) {
         super(name, species, animalType.PETTABLE, assignedPenId);
         this.landSpace = landSpace;
-        allPettingAnimals.add(this);
-        allAnimalsInZooList.add(this);
-        animalId = allAnimalsInZooList.indexOf(this);
+        getAllPettingAnimals().add(this);
+        getAllAnimalsInZooList().add(this);
+        animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
         writePettingAnimalsToFile();
     }

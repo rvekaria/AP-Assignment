@@ -13,9 +13,9 @@ public class PartDryWaterPen extends Pen {
         this.height = height;
         this.waterVolume = waterVolume;
         this.landArea = landArea;
-        listOfAllDryWaterPens.add(this);
-        listOfAllPens.add(this);
-        penId = listOfAllPens.indexOf(this);
+        getListOfAllDryWaterPens().add(this);
+        getListOfAllPens().add(this);
+        penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
         writePartDryWaterToFile();
     }

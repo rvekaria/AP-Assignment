@@ -8,9 +8,9 @@ public class DryPen extends Pen {
     public DryPen(String name, int length, int width, int temp, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
         super(name, length, width, temp, PenType.DRY, zooKeepers, animalIDsInPen);
         this.area = length * width;
-        listOfAllPens.add(this);
-        listOfAllDryPens.add(this);
-        penId = listOfAllPens.indexOf(this);
+        getListOfAllPens().add(this);
+        getListOfAllDryPens().add(this);
+        penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
         writeDryPensToFile();
     }

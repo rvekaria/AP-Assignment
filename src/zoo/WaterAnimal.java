@@ -6,9 +6,9 @@ public class WaterAnimal extends Animal {
     public WaterAnimal(String name, String species, int assignedPenId, double waterSpace) {
         super(name, species, animalType.WATER, assignedPenId);
         this.waterSpace = waterSpace;
-        allWaterAnimals.add(this);
-        allAnimalsInZooList.add(this);
-        animalId = allAnimalsInZooList.indexOf(this);
+        getAllWaterAnimals().add(this);
+        getAllAnimalsInZooList().add(this);
+        animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
         writeWaterAnimalsToFile();
     }

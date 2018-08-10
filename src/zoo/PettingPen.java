@@ -9,9 +9,9 @@ public class PettingPen extends Pen {
     public PettingPen(String name, int length, int width, int temp, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
         super(name, length, width, temp, PenType.PETTING, zooKeepers, animalIDsInPen);
         this.area = length * width;
-        listOfAllPettingPens.add(this);
-        listOfAllPens.add(this);
-        penId = listOfAllPens.indexOf(this);
+        getListOfAllPettingPens().add(this);
+        getListOfAllPens().add(this);
+        penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
         writePettingPensToFile();
     }

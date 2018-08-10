@@ -7,9 +7,9 @@ public class LandAnimal extends Animal {
     public LandAnimal(String name, String species, int assignedPenId, double landSpace) {
         super(name, species, animalType.LAND, assignedPenId);
         this.landSpace = landSpace;
-        allLandAnimals.add(this);
-        allAnimalsInZooList.add(this);
-        animalId = allAnimalsInZooList.indexOf(this);
+        getAllLandAnimals().add(this);
+        getAllAnimalsInZooList().add(this);
+        animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
         writeLandAnimalsToFile();
     }

@@ -18,12 +18,56 @@ public abstract class Animal {
     private int assignedPenId;
     boolean hasAssignedPen;
     protected int animalId;
-    static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
-    static ArrayList<LandAnimal> allLandAnimals = new ArrayList<>();
-    static ArrayList<PettingAnimal> allPettingAnimals = new ArrayList<>();
-    static ArrayList<AmphibiousAnimal> allAmphibiousAnimals = new ArrayList<>();
-    static ArrayList<WaterAnimal> allWaterAnimals = new ArrayList<>();
-    static ArrayList<FlyingAnimal> allFlyingAnimals = new ArrayList<>();
+    private static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
+    private static ArrayList<LandAnimal> allLandAnimals = new ArrayList<>();
+    private static ArrayList<PettingAnimal> allPettingAnimals = new ArrayList<>();
+    private static ArrayList<AmphibiousAnimal> allAmphibiousAnimals = new ArrayList<>();
+    private static ArrayList<WaterAnimal> allWaterAnimals = new ArrayList<>();
+    private static ArrayList<FlyingAnimal> allFlyingAnimals = new ArrayList<>();
+
+    public static void setAllAnimalsInZooList(ArrayList<Animal> allAnimalsInZooList) {
+        Animal.allAnimalsInZooList = allAnimalsInZooList;
+    }
+
+    public static ArrayList<LandAnimal> getAllLandAnimals() {
+        return allLandAnimals;
+    }
+
+    public static void setAllLandAnimals(ArrayList<LandAnimal> allLandAnimals) {
+        Animal.allLandAnimals = allLandAnimals;
+    }
+
+    public static ArrayList<PettingAnimal> getAllPettingAnimals() {
+        return allPettingAnimals;
+    }
+
+    public static void setAllPettingAnimals(ArrayList<PettingAnimal> allPettingAnimals) {
+        Animal.allPettingAnimals = allPettingAnimals;
+    }
+
+    public static ArrayList<AmphibiousAnimal> getAllAmphibiousAnimals() {
+        return allAmphibiousAnimals;
+    }
+
+    public static void setAllAmphibiousAnimals(ArrayList<AmphibiousAnimal> allAmphibiousAnimals) {
+        Animal.allAmphibiousAnimals = allAmphibiousAnimals;
+    }
+
+    public static ArrayList<WaterAnimal> getAllWaterAnimals() {
+        return allWaterAnimals;
+    }
+
+    public static void setAllWaterAnimals(ArrayList<WaterAnimal> allWaterAnimals) {
+        Animal.allWaterAnimals = allWaterAnimals;
+    }
+
+    public static ArrayList<FlyingAnimal> getAllFlyingAnimals() {
+        return allFlyingAnimals;
+    }
+
+    public static void setAllFlyingAnimals(ArrayList<FlyingAnimal> allFlyingAnimals) {
+        Animal.allFlyingAnimals = allFlyingAnimals;
+    }
 
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 
@@ -97,7 +141,7 @@ public abstract class Animal {
 
     public static ArrayList<Animal> getAnimalsWithoutPens() {
         ArrayList<Animal> animalsWithoutPensList = new ArrayList<>();
-        for (Animal animal : allAnimalsInZooList) {
+        for (Animal animal : getAllAnimalsInZooList()) {
             if (animal.assignedPenId == -1) {
                 animalsWithoutPensList.add(animal);
             }
@@ -106,7 +150,7 @@ public abstract class Animal {
     }
 
     public static Animal getAnimalWithAnimalId(int animalId) {
-        for (Animal animal : allAnimalsInZooList) {
+        for (Animal animal : getAllAnimalsInZooList()) {
             if (animal.animalId == animalId) {
                 return animal;
             }
@@ -121,7 +165,7 @@ public abstract class Animal {
 
         try {
             PrintWriter writer = new PrintWriter(allAnimalsJsonFile);
-            writer.print(jsonConverter.toJson(allAnimalsInZooList));
+            writer.print(jsonConverter.toJson(getAllAnimalsInZooList()));
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -129,23 +173,23 @@ public abstract class Animal {
     }
 
     public static void writeLandAnimalsToFile() {
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", allLandAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", getAllLandAnimals());
     }
 
     public static void writePettingAnimalsToFile() {
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json", allPettingAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json", getAllPettingAnimals());
     }
 
     public static void writeAmphibiousAnimalsToFile() {
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json", allAmphibiousAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json", getAllAmphibiousAnimals());
     }
 
     public static void writeWaterAnimalsToFile() {
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json", allWaterAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json", getAllWaterAnimals());
     }
 
     public static void writeFlyingAnimalsToFile() {
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json", allFlyingAnimals);
+        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json", getAllFlyingAnimals());
     }
 
     public static <T extends Animal> void writeAnimalsToJsonFile(String filePath, ArrayList<T> animalArrayList) {
@@ -175,7 +219,7 @@ public abstract class Animal {
             e.printStackTrace();
         }
         if (animalsLoadedFromFile != null) {
-            allAnimalsInZooList.addAll(animalsLoadedFromFile);
+            getAllAnimalsInZooList().addAll(animalsLoadedFromFile);
             return animalsLoadedFromFile;
         } else {
             return new ArrayList<>();
