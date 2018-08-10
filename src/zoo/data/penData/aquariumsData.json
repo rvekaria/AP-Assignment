@@ -1,1 +1,25 @@
-[{"height":10,"volume":100000,"name":"aquaPen","length":100,"width":100,"temp":20,"type":"AQUARIUM","penId":4,"zooKeepers":[],"animalIDsInPen":[]}]
+[
+  {
+    "height": 6,
+    "volume": 720,
+    "name": "Aquarium 1",
+    "length": 12,
+    "width": 10,
+    "temp": 13,
+    "type": "AQUARIUM",
+    "penId": 3,
+    "assignedKeepers": [
+      {
+        "name": "Farhad",
+        "pensTrainedFor": [
+          "AVIARY",
+          "AQUARIUM"
+        ],
+        "assignedPenIds": []
+      }
+    ],
+    "animalIDsInPen": [
+      5
+    ]
+  }
+]

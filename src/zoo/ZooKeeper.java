@@ -10,6 +10,7 @@ import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class ZooKeeper {
     private String name;
@@ -21,7 +22,7 @@ public class ZooKeeper {
         this.name = name;
         this.pensTrainedFor = pensTrainedFor;
         this.assignedPenIds = assignedPenIds;
-        listOfAllZooKeepers.add(this);
+        getListOfAllZooKeepers().add(this);
         addKeeperToPensListOfKeepers();
         writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
     }
@@ -32,6 +33,10 @@ public class ZooKeeper {
 
     public static ArrayList<ZooKeeper> getListOfAllZooKeepers() {
         return listOfAllZooKeepers;
+    }
+
+    public static void setListOfAllZooKeepers(ArrayList<ZooKeeper> listOfAllZooKeepers) {
+         ZooKeeper.listOfAllZooKeepers = listOfAllZooKeepers;
     }
 
     public boolean isTrainedFor(Pen.PenType penType) {
@@ -45,9 +50,15 @@ public class ZooKeeper {
         return assignedPenIds;
     }
 
-    private void addKeeperToPensListOfKeepers(){
-        for (int penId : assignedPenIds){
+    private void addKeeperToPensListOfKeepers() {
+        for (int penId : assignedPenIds) {
             Pen.getListOfAllPens().get(penId).assignZooKeeper(this);
+        }
+    }
+
+    void addPenToAssignedPens(int penId) {
+        if (!assignedPenIds.contains(penId)) {
+            assignedPenIds.add(penId);
         }
     }
 
@@ -58,7 +69,7 @@ public class ZooKeeper {
 
         try {
             PrintWriter writer = new PrintWriter(keepersJsonFile);
-            writer.print(jsonConverter.toJson(listOfAllZooKeepers));
+            writer.print(jsonConverter.toJson(getListOfAllZooKeepers()));
             writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
@@ -72,10 +83,32 @@ public class ZooKeeper {
         ArrayList<ZooKeeper> keepersFromFile = new ArrayList<>();
         try {
             String keepersListJsonString = new String(Files.readAllBytes(keepersJsonFile.toPath()));
-            keepersFromFile = jsonConverter.fromJson(keepersListJsonString, new TypeToken<List<ZooKeeper>>() {}.getType());
+            keepersFromFile = jsonConverter.fromJson(keepersListJsonString, new TypeToken<List<ZooKeeper>>() {
+            }.getType());
         } catch (IOException e) {
             e.printStackTrace();
         }
         return keepersFromFile;
+    }
+
+    public String toString() {
+        String string = String.format("name: %s, trained for: %s, assigned pens: %s", name, pensTrainedFor, assignedPenIds);
+        return string;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        ZooKeeper keeper = (ZooKeeper) o;
+        return Objects.equals(name, keeper.name) &&
+                Objects.equals(pensTrainedFor, keeper.pensTrainedFor) &&
+                Objects.equals(assignedPenIds, keeper.assignedPenIds);
+    }
+
+    @Override
+    public int hashCode() {
+
+        return Objects.hash(name, pensTrainedFor, assignedPenIds);
     }
 }

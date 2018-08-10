@@ -1,1 +1,1 @@
-[{"landSpace":13,"name":"Douglas","species":"Dog","type":"LAND","assignedPenId":1,"animalId":1}]
+[{"landSpace":3.0,"name":"Samuel","species":"Sloth","type":"LAND","assignedPenId":0,"hasAssignedPen":true,"animalId":0},{"landSpace":4.0,"name":"Coco","species":"Cat","type":"LAND","assignedPenId":0,"hasAssignedPen":true,"animalId":7}]

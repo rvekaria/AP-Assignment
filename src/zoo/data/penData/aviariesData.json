@@ -1,1 +1,27 @@
-[{"height":15,"volume":2925,"name":"aviaryPen","length":13,"width":15,"temp":17,"type":"AVIARY","penId":3,"zooKeepers":[],"animalIDsInPen":[]}]
+[
+  {
+    "height": 7,
+    "volume": 1260,
+    "name": "Aviary 1",
+    "length": 12,
+    "width": 15,
+    "temp": 12,
+    "type": "AVIARY",
+    "penId": 4,
+    "assignedKeepers": [
+      {
+        "name": "Hardip",
+        "pensTrainedFor": [
+          "DRY",
+          "AVIARY"
+        ],
+        "assignedPenIds": [
+          0
+        ]
+      }
+    ],
+    "animalIDsInPen": [
+      4
+    ]
+  }
+]

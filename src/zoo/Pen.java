@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import java.io.*;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public abstract class Pen {
@@ -13,20 +14,76 @@ public abstract class Pen {
     private int length, width, temp;
     private PenType type;
     protected int penId;
-    private ArrayList<ZooKeeper> zooKeepers;
+    private ArrayList<ZooKeeper> assignedKeepers;
     private ArrayList<Integer> animalIDsInPen;
-    static ArrayList<Pen> listOfAllPens = new ArrayList<>();
+    private static ArrayList<Pen> listOfAllPens = new ArrayList<>();
+    private static ArrayList<Aquarium> listOfAllAquariums = new ArrayList<>();
+    private static ArrayList<PettingPen> listOfAllPettingPens = new ArrayList<>();
+    private static ArrayList<Aviary> listOfAllAviaries = new ArrayList<>();
+    private static ArrayList<PartDryWaterPen> listOfAllDryWaterPens = new ArrayList<>();
+    private static ArrayList<DryPen> listOfAllDryPens = new ArrayList<>();
+
+    public static void setListOfAllPens(ArrayList<Pen> listOfAllPens) {
+        Pen.listOfAllPens = listOfAllPens;
+    }
+
+    public static ArrayList<Aquarium> getListOfAllAquariums() {
+        return listOfAllAquariums;
+    }
+
+    public static void setListOfAllAquariums(ArrayList<Aquarium> listOfAllAquariums) {
+        Pen.listOfAllAquariums = listOfAllAquariums;
+    }
+
+    public static ArrayList<PettingPen> getListOfAllPettingPens() {
+        return listOfAllPettingPens;
+    }
+
+    public static void setListOfAllPettingPens(ArrayList<PettingPen> listOfAllPettingPens) {
+        Pen.listOfAllPettingPens = listOfAllPettingPens;
+    }
+
+    public static ArrayList<Aviary> getListOfAllAviaries() {
+        return listOfAllAviaries;
+    }
+
+    public static void setListOfAllAviaries(ArrayList<Aviary> listOfAllAviaries) {
+        Pen.listOfAllAviaries = listOfAllAviaries;
+    }
+
+    public static ArrayList<PartDryWaterPen> getListOfAllDryWaterPens() {
+        return listOfAllDryWaterPens;
+    }
+
+    public static void setListOfAllDryWaterPens(ArrayList<PartDryWaterPen> listOfAllDryWaterPens) {
+        Pen.listOfAllDryWaterPens = listOfAllDryWaterPens;
+    }
+
+    public static ArrayList<DryPen> getListOfAllDryPens() {
+        return listOfAllDryPens;
+    }
+
+    public static void setListOfAllDryPens(ArrayList<DryPen> listOfAllDryPens) {
+        Pen.listOfAllDryPens = listOfAllDryPens;
+    }
 
     public enum PenType {DRY, AQUARIUM, PARTDRYWATER, AVIARY, PETTING}
 
-    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> zooKeepers, ArrayList<Integer> animalIDsInPen) {
+    public Pen(String name, int length, int width, int temp, PenType type, ArrayList<ZooKeeper> assignedKeepers, ArrayList<Integer> animalIDsInPen) {
         this.name = name;
         this.length = length;
         this.width = width;
         this.temp = temp;
         this.type = type;
-        this.zooKeepers = zooKeepers;
+        this.assignedKeepers = assignedKeepers;
         this.animalIDsInPen = animalIDsInPen;
+    }
+
+    protected void updateKeepersAssignedPens(ArrayList<ZooKeeper> assignedKeepers) {
+        for (ZooKeeper keeper : assignedKeepers) {
+            keeper.addPenToAssignedPens(penId);
+            ZooKeeper.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+        }
     }
 
     public String getName() {
@@ -49,6 +106,8 @@ public abstract class Pen {
         return penId;
     }
 
+    public abstract String displayInfo();
+
     public PenType getType() {
         return type;
     }
@@ -67,15 +126,34 @@ public abstract class Pen {
         return listOfAllPens;
     }
 
-    public ArrayList<ZooKeeper> getZooKeepers() {
-        return zooKeepers;
+    public static Pen getPenWithPenId(int penId){
+        for (Pen pen : getListOfAllPens()){
+            if (pen.penId == penId){
+                return pen;
+            }
+        }
+        return null;
+    }
+
+    public ArrayList<ZooKeeper> getAssignedKeepers() {
+        return assignedKeepers;
+    }
+
+    public String getKeeperNames() {
+        ArrayList<String> keeperNames = new ArrayList<>();
+        for (ZooKeeper keeper : assignedKeepers) {
+            keeperNames.add(keeper.getName());
+        }
+        String[] keeperNamesArray = new String[keeperNames.size()];
+        keeperNamesArray = keeperNames.toArray(keeperNamesArray);
+        return Arrays.toString(keeperNamesArray);
     }
 
     public void removeZooKeeper(ZooKeeper keeper) {
-        if (zooKeepers.contains(keeper)) {
-            zooKeepers.remove(zooKeepers.indexOf(keeper));
+        if (assignedKeepers.contains(keeper)) {
+            assignedKeepers.remove(assignedKeepers.indexOf(keeper));
             System.out.println(keeper.getName() + " is no longer a keeper of this pen.");
-            if (zooKeepers.isEmpty()) {
+            if (assignedKeepers.isEmpty()) {
                 System.out.println("There are no more keepers looking after " + name + ". At least one keeper must be assigned to this pen!");
             }
         } else {
@@ -84,19 +162,17 @@ public abstract class Pen {
     }
 
     public void assignZooKeeper(ZooKeeper keeper) {
-        if (!zooKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
-            zooKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
-            //keeper.addToAssignedPens(this); //update zookeeper's list of pens that they are looking after
-            if (!keeper.getAssignedPenIds().contains(penId)) {
-                keeper.getAssignedPenIds().add(penId);
-            }
+        if (!assignedKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
+            assignedKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
+            writeAllPensListToJsonFile();
+            keeper.addPenToAssignedPens(penId);//update keeper's list of pens they are looking after
             System.out.println(keeper.getName() + " has been assigned to look after " + name + ".");
         } else
             assignKeeperErrorMessage(keeper);
     }
 
     public void assignKeeperErrorMessage(ZooKeeper keeper) {
-        if (zooKeepers.contains(keeper)) {
+        if (assignedKeepers.contains(keeper)) {
             System.out.println(keeper.getName() + " is already a keeper of this pen.");
         }
         if (!keeper.isTrainedFor(getType())) {
@@ -153,28 +229,28 @@ public abstract class Pen {
             return false;
     }
 
-    //TODO maybe each of the pen sublcasses need their own version of this method and override it??
-    private int spaceOccupiedByAnimals() {
-        int occupiedSpace = 0;
+    private double spaceOccupiedByAnimals() {
+        double occupiedSpace = 0;
         for (int animalId : animalIDsInPen) {
-            occupiedSpace += Animal.getAllAnimalsInZooList().get(animalId).getAnimalSpace();
+            occupiedSpace += Animal.getAnimalWithAnimalId(animalId).getAnimalSpace();
         }
         return occupiedSpace;
     }
 
-    private int spaceOccupiedByAnimals(String type) {
-        int occupiedSpace = 0;
+    private double spaceOccupiedByAnimals(String type) {
+        double occupiedSpace = 0;
         for (int animalId : animalIDsInPen) {
-            occupiedSpace += Animal.getAllAnimalsInZooList().get(animalId).getAnimalSpace(type);
+            occupiedSpace += Animal.getAnimalWithAnimalId(animalId).getAnimalSpace(type);
         }
         return occupiedSpace;
     }
 
-    private int getRemainingSpace() {
+
+    public double getRemainingSpace() {
         return getCapacity() - spaceOccupiedByAnimals();
     }
 
-    private int getRemainingSpace(String type) {
+    public double getRemainingSpace(String type) {
         return getCapacity(type) - spaceOccupiedByAnimals(type);
     }
 
@@ -190,15 +266,41 @@ public abstract class Pen {
             return false;
     }
 
-    //TODO - have a separate method which overwrites the file as opposed to appends to file. The method below will only work once with append set to true because of the for loop. You only want to append new pens not the whole list of pens again.
-    //TODO - maybe you can get around this by having a boolean parameter for the append?
-    //TODO - but if changes are made to an existing pen as opposed to a new pen being created, you don't want a completely new record, you want to overwrite the old data. Although, there are no setters so this is not possible - check if it is a requirement to allow changes to pens.
-    //TODO - with regard to the previous TODO, the only requirement is to be able to add new animals to a pen and assign staff to a pen
-
-    public static void writePensToJsonFile(String filePath, ArrayList<Pen> penArrayList) {
+    static void writeAllPensListToJsonFile() {
         String allPensFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/allPensData.json";
         File allPensJsonFile = new File(allPensFilePath);
+        Gson jsonConverter = new Gson();
+        try {
+            PrintWriter writer = new PrintWriter(allPensJsonFile);
+            writer.print(jsonConverter.toJson(getListOfAllPens()));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public static void writeDryPensToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", getListOfAllDryPens());
+    }
+
+    public static void writePettingPensToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", getListOfAllPettingPens());
+    }
+
+    public static void writePartDryWaterToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", getListOfAllDryWaterPens());
+    }
+
+    public static void writeAquariumsToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", getListOfAllAquariums());
+    }
+
+    public static void writeAviariesToFile() {
+        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", getListOfAllAviaries());
+    }
+
+    public static <T extends Pen> void writePensToJsonFile(String filePath, ArrayList<T> penArrayList) {
         File pensJsonFile = new File(filePath);
         Gson jsonConverter = new Gson();
 
@@ -207,18 +309,15 @@ public abstract class Pen {
             writer.print(jsonConverter.toJson(penArrayList));
             writer.close();
 
-            writer = new PrintWriter(allPensJsonFile);
-            writer.print(jsonConverter.toJson(listOfAllPens));
-            writer.close();
+            writeAllPensListToJsonFile();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
     }
 
-    public static <T> ArrayList<T> instantiatePensFromJsonFile(String filePath, Class<T> classType) {
+    public static <T extends Pen> ArrayList<T> instantiatePensFromJsonFile(String filePath, Class<T> classType) {
         //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/pen/resources/testPenData.json";
         File pensJsonFile = new File(filePath);
-        Gson jsonConverter = new Gson();
 
         ArrayList<T> pensLoadedFromFile = new ArrayList<>();
         try {
@@ -227,7 +326,13 @@ public abstract class Pen {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return pensLoadedFromFile;
+        if (pensLoadedFromFile != null) {
+            getListOfAllPens().addAll(pensLoadedFromFile);
+            return pensLoadedFromFile;
+        } else {
+            return new ArrayList<>();
+        }
+
     }
 
     private static <T> ArrayList<T> loadArrayListFromJsonForPenType(Class<T> penClassType, String pensListJsonString) {

@@ -32,7 +32,7 @@ public class WaterUTest {
     @Test
     public void testGetAnimalSpaceString(){
         //act
-        int waterSpace = waterAnimal.getAnimalSpace("blah");
+        double waterSpace = waterAnimal.getAnimalSpace("blah");
 
         //assert
         assertEquals(200, waterSpace);
@@ -41,7 +41,7 @@ public class WaterUTest {
     @Test
     public void testGetAnimalSpaceNoParam(){
         //act
-        int waterSpace = waterAnimal.getAnimalSpace();
+        double waterSpace = waterAnimal.getAnimalSpace();
 
         //assert
         assertEquals(200, waterSpace);

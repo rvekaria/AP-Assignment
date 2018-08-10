@@ -32,19 +32,19 @@ public class AmphibiousUTest {
     @Test(expected = IllegalArgumentException.class)
     public void testGetAnimalSpaceString() {
         //act
-        int landSpace = amphAnimal.getAnimalSpace("land");
-        int waterSpace = amphAnimal.getAnimalSpace("water");
+        double landSpace = amphAnimal.getAnimalSpace("land");
+        double waterSpace = amphAnimal.getAnimalSpace("water");
 
         //assert
         assertEquals(2, landSpace);
         assertEquals(4, waterSpace);
-        int animalSpace = amphAnimal.getAnimalSpace("blah");
+        double animalSpace = amphAnimal.getAnimalSpace("blah");
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void testGetAnimalSpaceNoParam() {
         //act
-        int animalSpace = amphAnimal.getAnimalSpace();
+        double animalSpace = amphAnimal.getAnimalSpace();
 
     }
 

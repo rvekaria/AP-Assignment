@@ -1,1 +1,1 @@
-[{"area":2000,"name":"dryPen","length":40,"width":50,"temp":10,"type":"DRY","penId":1,"zooKeepers":[],"animalIDsInPen":[]}]
+[{"area":200,"name":"Dry Pen 1","length":10,"width":20,"temp":17,"type":"DRY","penId":0,"assignedKeepers":[{"name":"Hardip","pensTrainedFor":["DRY","AVIARY"],"assignedPenIds":[]},{"name":"Alan","pensTrainedFor":["DRY","PETTING"],"assignedPenIds":[1,0]}],"animalIDsInPen":[0,7]}]

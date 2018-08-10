@@ -32,7 +32,7 @@ public class FlyingUTest {
     @Test
     public void testGetAnimalSpaceString(){
         //act
-        int airSpace = flyingAnimal.getAnimalSpace("blah");
+        double airSpace = flyingAnimal.getAnimalSpace("blah");
 
         //assert
         assertEquals(100, airSpace);
@@ -41,7 +41,7 @@ public class FlyingUTest {
     @Test
     public void testGetAnimalSpaceNoParam(){
         //act
-        int airSpace = flyingAnimal.getAnimalSpace();
+        double airSpace = flyingAnimal.getAnimalSpace();
 
         //assert
         assertEquals(100, airSpace);

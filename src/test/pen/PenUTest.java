@@ -219,11 +219,11 @@ public class PenUTest {
         ZooKeeper alan = createZooKeeper(Pen.PenType.DRY, Pen.PenType.PETTING, pettingPen.getPenId(), "Alan");
 
         //act
-        ArrayList<ZooKeeper> listOfDryWaterPenKeepers = dryWaterPen.getZooKeepers();
-        ArrayList<ZooKeeper> listOfDryPenKeepers = dryPen.getZooKeepers();
-        ArrayList<ZooKeeper> listOfPettingPenKeepers = pettingPen.getZooKeepers();
-        ArrayList<ZooKeeper> listOfAviaryKeepers = aviary.getZooKeepers();
-        ArrayList<ZooKeeper> listOfAquariumKeepers = aquarium.getZooKeepers();
+        ArrayList<ZooKeeper> listOfDryWaterPenKeepers = dryWaterPen.getAssignedKeepers();
+        ArrayList<ZooKeeper> listOfDryPenKeepers = dryPen.getAssignedKeepers();
+        ArrayList<ZooKeeper> listOfPettingPenKeepers = pettingPen.getAssignedKeepers();
+        ArrayList<ZooKeeper> listOfAviaryKeepers = aviary.getAssignedKeepers();
+        ArrayList<ZooKeeper> listOfAquariumKeepers = aquarium.getAssignedKeepers();
 
         aviary.assignZooKeeper(hardip);
 
@@ -250,8 +250,8 @@ public class PenUTest {
 
         //assert
         assertEquals(expectedOutput, outContent.toString());
-        assertEquals(0, dryPen.getZooKeepers().size());
-        assertEquals(1, aviary.getZooKeepers().size());
+        assertEquals(0, dryPen.getAssignedKeepers().size());
+        assertEquals(1, aviary.getAssignedKeepers().size());
 
     }
 
@@ -269,7 +269,7 @@ public class PenUTest {
 
         //assert
         assertEquals(expectedOutput, outContent.toString());
-        assertEquals(1, aviary.getZooKeepers().size());
+        assertEquals(1, aviary.getAssignedKeepers().size());
 
     }
 
@@ -307,7 +307,9 @@ public class PenUTest {
         //setup
         String expectedOutput = "Obese will be removed from its current pen: aviaryPen\n" +
                 "Obese is not in this pen. Cannot remove.\n" +
-                "There is no space for Obese in aviaryPen.\n";
+                "There is no space for Obese in aviaryPen.\n" +
+                "Obese was removed from its current pen but could not be assigned to the new pen.\n" +
+                "Obese has no assigned pen! Please assign an appropriate pen.\n";
 
         //act
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -327,7 +329,9 @@ public class PenUTest {
         //setup
         String expectedOutput = "Big P will be removed from its current pen: dryWaterPen\n" +
                 "Big P is not in this pen. Cannot remove.\n" +
-                "There is no space for Big P in dryWaterPen.\n";
+                "There is no space for Big P in dryWaterPen.\n" +
+                "Big P was removed from its current pen but could not be assigned to the new pen.\n" +
+                "Big P has no assigned pen! Please assign an appropriate pen.\n";
 
         //act
         ByteArrayOutputStream outContent = new ByteArrayOutputStream();
@@ -443,7 +447,7 @@ public class PenUTest {
 
         //assert
         assertEquals(dryWaterPen.getPenId(), penFromFile.getPenId());
-        assertEquals(dryWaterPen.getZooKeepers().get(0).getName(), penFromFile.getZooKeepers().get(0).getName());
+        assertEquals(dryWaterPen.getAssignedKeepers().get(0).getName(), penFromFile.getAssignedKeepers().get(0).getName());
         assertEquals(dryWaterPen.getHeight(), penFromFile.getHeight());
         assertEquals(dryWaterPen.getCapacity("land"), penFromFile.getCapacity("land"));
         assertEquals(dryWaterPen.getCapacity("water"), penFromFile.getCapacity("water"));

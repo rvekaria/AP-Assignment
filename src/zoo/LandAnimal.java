@@ -1,28 +1,32 @@
 package zoo;
 
-import java.util.ArrayList;
-
 public class LandAnimal extends Animal {
-    private int landSpace;
-    private static ArrayList<Animal> allLandAnimals = new ArrayList<>();
+    private double landSpace;
 
-    public LandAnimal(String name, String species, int assignedPenId, int landSpace) {
+
+    public LandAnimal(String name, String species, int assignedPenId, double landSpace) {
         super(name, species, animalType.LAND, assignedPenId);
         this.landSpace = landSpace;
-        allLandAnimals.add(this);
-        allAnimalsInZooList.add(this);
-        animalId = allAnimalsInZooList.indexOf(this);
-        setAssignedPen(assignedPenId);
-        writeAnimalsToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json", allLandAnimals);
+        getAllLandAnimals().add(this);
+        getAllAnimalsInZooList().add(this);
+        animalId = getAllAnimalsInZooList().indexOf(this);
+        this.hasAssignedPen = setAssignedPen(assignedPenId);
+        writeLandAnimalsToFile();
     }
 
     @Override
-    public int getAnimalSpace() {
+    public double getAnimalSpace() {
         return landSpace;
     }
 
     @Override
-    public int getAnimalSpace(String type) {
+    public double getAnimalSpace(String type) {
         return getAnimalSpace();
+    }
+
+    @Override
+    public String displayInfo() {
+        return String.format("type: %s, species: %s, name: %s, assigned pen: %s, land space: %s", getType(), getSpecies(), getName(), getAssignedPenId() != -1 ? getAssignedPenId() : "NO PEN ASSIGNED!", getAnimalSpace());
+
     }
 }
