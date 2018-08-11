@@ -11,7 +11,6 @@ public class AmphibiousAnimal extends Animal {
         getAllAnimalsInZooList().add(this);
         animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
-        writeAmphibiousAnimalsToFile();
     }
 
     public double getAnimalSpace() {

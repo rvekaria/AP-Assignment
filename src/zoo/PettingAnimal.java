@@ -10,7 +10,6 @@ public class PettingAnimal extends Animal {
         getAllAnimalsInZooList().add(this);
         animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
-        writePettingAnimalsToFile();
     }
 
     @Override

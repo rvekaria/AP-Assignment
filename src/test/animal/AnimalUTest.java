@@ -160,7 +160,6 @@ public class AnimalUTest {
         ArrayList<Integer> animalsInPenIdList2 = new ArrayList<>();
         Pen newPen = new PartDryWaterPen("newPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenIdList2);
         String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.csv";
-        //File animalData = new File(pathname);
 
         //act
         penguin.setAssignedPen(newPen.getPenId());
