@@ -9,18 +9,18 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class WaterUTest {
+public class LandTest {
     ArrayList<ZooKeeper> keepersList;
     ArrayList<Integer> animalsInPenIdList;
-    Pen aquarium;
-    Animal waterAnimal;
+    Pen dryPen;
+    Animal landAnimal;
 
     @Before
     public void setUp() {
         keepersList = new ArrayList<>();
         animalsInPenIdList = new ArrayList<>();
-        aquarium = new Aquarium("aquarium", 20, 25, 10, 18, keepersList, animalsInPenIdList);
-        waterAnimal = new WaterAnimal("Siobhan", "Shark", aquarium.getPenId(), 200);
+        dryPen = new DryPen("aquarium", 20, 25, 10, keepersList, animalsInPenIdList);
+        landAnimal = new LandAnimal("Zidane", "Zebra", dryPen.getPenId(), 100);
     }
 
     @After
@@ -32,18 +32,18 @@ public class WaterUTest {
     @Test
     public void testGetAnimalSpaceString(){
         //act
-        double waterSpace = waterAnimal.getAnimalSpace("blah");
+        double landSpace = landAnimal.getAnimalSpace("blah");
 
         //assert
-        assertEquals(200, waterSpace);
+        assertEquals(100, landSpace);
     }
 
     @Test
     public void testGetAnimalSpaceNoParam(){
         //act
-        double waterSpace = waterAnimal.getAnimalSpace();
+        double landSpace = landAnimal.getAnimalSpace();
 
         //assert
-        assertEquals(200, waterSpace);
+        assertEquals(100, landSpace);
     }
 }

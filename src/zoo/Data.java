@@ -30,19 +30,6 @@ public class Data {
     private static final String ALL_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/animalData.json";
 
 
-    private static void writeAllAnimalsToJsonFile() {
-        File allAnimalsJsonFile = new File(ALL_ANIMAL_DATA);
-        Gson jsonConverter = new Gson();
-
-        try {
-            PrintWriter writer = new PrintWriter(allAnimalsJsonFile);
-            writer.print(jsonConverter.toJson(Animal.getAllAnimalsInZooList()));
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
     public static void writeLandAnimalsToFile() {
         writeAnimalsToJsonFile(LAND_ANIMAL_DATA, Animal.getAllLandAnimals());
     }
@@ -63,16 +50,18 @@ public class Data {
         writeAnimalsToJsonFile(FLYING_ANIMAL_DATA, Animal.getAllFlyingAnimals());
     }
 
-    private static <T extends Animal> void writeAnimalsToJsonFile(String filePath, ArrayList<T> animalArrayList) {
+    public static <T extends Animal> void writeAnimalsToJsonFile(String filePath, ArrayList<T> animalArrayList) {
         File animalsJsonFile = new File(filePath);
+        File allAnimalsJsonFile = new File(ALL_ANIMAL_DATA);
         Gson jsonConverter = new Gson();
 
         try {
             PrintWriter writer = new PrintWriter(animalsJsonFile);
             writer.print(jsonConverter.toJson(animalArrayList));
             writer.close();
-
-            writeAllAnimalsToJsonFile();
+            writer = new PrintWriter(allAnimalsJsonFile);
+            writer.print(jsonConverter.toJson(Animal.getAllAnimalsInZooList()));
+            writer.close();
         } catch (FileNotFoundException e) {
             System.out.println("File error: " + e.toString());
         }
@@ -116,19 +105,6 @@ public class Data {
         else return null;
     }
 
-    static void writeAllPensListToJsonFile() {
-        File allPensJsonFile = new File(ALL_PENS_FILE_PATH);
-        Gson jsonConverter = new Gson();
-        try {
-            PrintWriter writer = new PrintWriter(allPensJsonFile);
-            writer.print(jsonConverter.toJson(Pen.getListOfAllPens()));
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
-
     public static void writeDryPensToFile() {
         writePensToJsonFile(DRY_PEN_DATA, Pen.getListOfAllDryPens());
     }
@@ -151,14 +127,16 @@ public class Data {
 
     public static <T extends Pen> void writePensToJsonFile(String filePath, ArrayList<T> penArrayList) {
         File pensJsonFile = new File(filePath);
+        File allPensJsonFile = new File(ALL_PENS_FILE_PATH);
         Gson jsonConverter = new Gson();
 
         try {
             PrintWriter writer = new PrintWriter(pensJsonFile);
             writer.print(jsonConverter.toJson(penArrayList));
             writer.close();
-
-            writeAllPensListToJsonFile();
+            writer = new PrintWriter(allPensJsonFile);
+            writer.print(jsonConverter.toJson(Pen.getListOfAllPens()));
+            writer.close();
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }

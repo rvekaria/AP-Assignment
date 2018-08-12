@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.assertEquals;
 
-public class FlyingUTest {
+public class FlyingTest {
     ArrayList<ZooKeeper> keepersList;
     ArrayList<Integer> animalsInPenIdList;
     Pen aviary1;

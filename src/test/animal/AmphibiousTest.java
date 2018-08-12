@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 import static org.junit.Assert.*;
 
-public class AmphibiousUTest {
+public class AmphibiousTest {
     ArrayList<ZooKeeper> keepersList;
     ArrayList<Integer> animalsInPenIdList;
     Pen dryWaterPen1;
