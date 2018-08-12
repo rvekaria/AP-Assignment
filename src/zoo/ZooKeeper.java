@@ -1,15 +1,6 @@
 package zoo;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.file.Files;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 public class ZooKeeper {
@@ -24,7 +15,6 @@ public class ZooKeeper {
         this.assignedPenIds = assignedPenIds;
         getListOfAllZooKeepers().add(this);
         addKeeperToPensListOfKeepers();
-        writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
     }
 
     public String getName() {
@@ -60,35 +50,6 @@ public class ZooKeeper {
         if (!assignedPenIds.contains(penId)) {
             assignedPenIds.add(penId);
         }
-    }
-
-    public static void writeKeepersToJsonFile(String filePath) {
-        //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/zooKeeper/resources/testKeeperData.json";
-        File keepersJsonFile = new File(filePath);
-        Gson jsonConverter = new Gson();
-
-        try {
-            PrintWriter writer = new PrintWriter(keepersJsonFile);
-            writer.print(jsonConverter.toJson(getListOfAllZooKeepers()));
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static ArrayList<ZooKeeper> instantiateKeepersFromJsonFile(String filePath) {
-        //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/zooKeeper/resources/testKeeperData.json";
-        File keepersJsonFile = new File(filePath);
-        Gson jsonConverter = new Gson();
-        ArrayList<ZooKeeper> keepersFromFile = new ArrayList<>();
-        try {
-            String keepersListJsonString = new String(Files.readAllBytes(keepersJsonFile.toPath()));
-            keepersFromFile = jsonConverter.fromJson(keepersListJsonString, new TypeToken<List<ZooKeeper>>() {
-            }.getType());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return keepersFromFile;
     }
 
     public String toString() {

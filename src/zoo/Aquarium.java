@@ -15,7 +15,6 @@ public class Aquarium extends Pen {
         getListOfAllPens().add(this);
         penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
-        writeAquariumsToFile();
     }
 
     public int getHeight() {

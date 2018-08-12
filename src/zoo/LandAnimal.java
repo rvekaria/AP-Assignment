@@ -3,7 +3,6 @@ package zoo;
 public class LandAnimal extends Animal {
     private double landSpace;
 
-
     public LandAnimal(String name, String species, int assignedPenId, double landSpace) {
         super(name, species, animalType.LAND, assignedPenId);
         this.landSpace = landSpace;
@@ -11,7 +10,6 @@ public class LandAnimal extends Animal {
         getAllAnimalsInZooList().add(this);
         animalId = getAllAnimalsInZooList().indexOf(this);
         this.hasAssignedPen = setAssignedPen(assignedPenId);
-        writeLandAnimalsToFile();
     }
 
     @Override

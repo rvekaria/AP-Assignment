@@ -17,7 +17,6 @@ public class PartDryWaterPen extends Pen {
         getListOfAllPens().add(this);
         penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
-        writePartDryWaterToFile();
     }
 
     public int getHeight() {

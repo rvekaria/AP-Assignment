@@ -1,13 +1,7 @@
 package zoo;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-
-import java.io.*;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 public abstract class Pen {
     private String name;
@@ -82,7 +76,7 @@ public abstract class Pen {
     protected void updateKeepersAssignedPens(ArrayList<ZooKeeper> assignedKeepers) {
         for (ZooKeeper keeper : assignedKeepers) {
             keeper.addPenToAssignedPens(penId);
-            ZooKeeper.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+            Data.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
         }
     }
 
@@ -164,7 +158,6 @@ public abstract class Pen {
     public void assignZooKeeper(ZooKeeper keeper) {
         if (!assignedKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
             assignedKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
-            writeAllPensListToJsonFile();
             keeper.addPenToAssignedPens(penId);//update keeper's list of pens they are looking after
             System.out.println(keeper.getName() + " has been assigned to look after " + name + ".");
         } else
@@ -264,95 +257,6 @@ public abstract class Pen {
             return true;
         } else
             return false;
-    }
-
-    static void writeAllPensListToJsonFile() {
-        String allPensFilePath = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/allPensData.json";
-        File allPensJsonFile = new File(allPensFilePath);
-        Gson jsonConverter = new Gson();
-        try {
-            PrintWriter writer = new PrintWriter(allPensJsonFile);
-            writer.print(jsonConverter.toJson(getListOfAllPens()));
-            writer.close();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public static void writeDryPensToFile() {
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json", getListOfAllDryPens());
-    }
-
-    public static void writePettingPensToFile() {
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json", getListOfAllPettingPens());
-    }
-
-    public static void writePartDryWaterToFile() {
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json", getListOfAllDryWaterPens());
-    }
-
-    public static void writeAquariumsToFile() {
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json", getListOfAllAquariums());
-    }
-
-    public static void writeAviariesToFile() {
-        writePensToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json", getListOfAllAviaries());
-    }
-
-    public static <T extends Pen> void writePensToJsonFile(String filePath, ArrayList<T> penArrayList) {
-        File pensJsonFile = new File(filePath);
-        Gson jsonConverter = new Gson();
-
-        try {
-            PrintWriter writer = new PrintWriter(pensJsonFile);
-            writer.print(jsonConverter.toJson(penArrayList));
-            writer.close();
-
-            writeAllPensListToJsonFile();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public static <T extends Pen> ArrayList<T> instantiatePensFromJsonFile(String filePath, Class<T> classType) {
-        //String filePath = "/Users/rupesh.vekaria/AP-Assignment/src/test/pen/resources/testPenData.json";
-        File pensJsonFile = new File(filePath);
-
-        ArrayList<T> pensLoadedFromFile = new ArrayList<>();
-        try {
-            String pensListJsonString = new String(Files.readAllBytes(pensJsonFile.toPath()));
-            pensLoadedFromFile = loadArrayListFromJsonForPenType(classType, pensListJsonString);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (pensLoadedFromFile != null) {
-            getListOfAllPens().addAll(pensLoadedFromFile);
-            return pensLoadedFromFile;
-        } else {
-            return new ArrayList<>();
-        }
-
-    }
-
-    private static <T> ArrayList<T> loadArrayListFromJsonForPenType(Class<T> penClassType, String pensListJsonString) {
-        Gson jsonConverter = new Gson();
-        if (penClassType == Aquarium.class)
-            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<Aquarium>>() {
-            }.getType());
-        else if (penClassType == Aviary.class)
-            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<Aviary>>() {
-            }.getType());
-        else if (penClassType == DryPen.class)
-            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<DryPen>>() {
-            }.getType());
-        else if (penClassType == PartDryWaterPen.class)
-            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<PartDryWaterPen>>() {
-            }.getType());
-        else if (penClassType == PettingPen.class)
-            return jsonConverter.fromJson(pensListJsonString, new TypeToken<List<PettingPen>>() {
-            }.getType());
-        else return null;
     }
 
 }

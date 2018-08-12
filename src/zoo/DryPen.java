@@ -12,7 +12,6 @@ public class DryPen extends Pen {
         getListOfAllDryPens().add(this);
         penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
-        writeDryPensToFile();
     }
 
     @Override

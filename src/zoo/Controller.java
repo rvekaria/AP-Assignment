@@ -25,12 +25,13 @@ public class Controller {
     public static void loadKeepers() {
         File file = new File(KEEPER_DATA);
         if (file.length() != 0) {
-            ZooKeeper.setListOfAllZooKeepers(ZooKeeper.instantiateKeepersFromJsonFile(KEEPER_DATA));
+            ZooKeeper.setListOfAllZooKeepers(Data.instantiateKeepersFromJsonFile(KEEPER_DATA));
         } else {
             ZooKeeper hardip = createZooKeeper(Pen.PenType.DRY, Pen.PenType.AVIARY, "Hardip");
             ZooKeeper alex = createZooKeeper(Pen.PenType.AQUARIUM, Pen.PenType.PARTDRYWATER, "Alex");
             ZooKeeper farhad = createZooKeeper(Pen.PenType.AVIARY, Pen.PenType.AQUARIUM, "Farhad");
             ZooKeeper alan = createZooKeeper(Pen.PenType.DRY, Pen.PenType.PETTING, "Alan");
+            Data.writeKeepersToJsonFile(KEEPER_DATA);
         }
     }
 
@@ -50,23 +51,23 @@ public class Controller {
     }
 
     private static void loadDryPens() {
-        Pen.setListOfAllDryPens(DryPen.instantiatePensFromJsonFile(DRY_PEN_DATA, DryPen.class));
+        Pen.setListOfAllDryPens(Data.instantiatePensFromJsonFile(DRY_PEN_DATA, DryPen.class));
     }
 
     private static void loadPettingPens() {
-        Pen.setListOfAllPettingPens(PettingPen.instantiatePensFromJsonFile(PETTING_PEN_DATA, PettingPen.class));
+        Pen.setListOfAllPettingPens(Data.instantiatePensFromJsonFile(PETTING_PEN_DATA, PettingPen.class));
     }
 
     private static void loadDryWaterPens() {
-        Pen.setListOfAllDryWaterPens(PartDryWaterPen.instantiatePensFromJsonFile(PART_DRY_WATER_PEN_DATA, PartDryWaterPen.class));
+        Pen.setListOfAllDryWaterPens(Data.instantiatePensFromJsonFile(PART_DRY_WATER_PEN_DATA, PartDryWaterPen.class));
     }
 
     private static void loadAquariums() {
-        Pen.setListOfAllAquariums(Aquarium.instantiatePensFromJsonFile(AQUARIUM_DATA, Aquarium.class));
+        Pen.setListOfAllAquariums(Data.instantiatePensFromJsonFile(AQUARIUM_DATA, Aquarium.class));
     }
 
     private static void loadAviaries() {
-        Pen.setListOfAllAviaries(Aviary.instantiatePensFromJsonFile(AVIARY_DATA, Aviary.class));
+        Pen.setListOfAllAviaries(Data.instantiatePensFromJsonFile(AVIARY_DATA, Aviary.class));
     }
 
     public static void loadAnimals() {
@@ -78,23 +79,23 @@ public class Controller {
     }
 
     private static void loadLandAnimals() {
-        Animal.setAllLandAnimals(LandAnimal.instantiateAnimalsFromJsonFile(LAND_ANIMAL_DATA, LandAnimal.class));
+        Animal.setAllLandAnimals(Data.instantiateAnimalsFromJsonFile(LAND_ANIMAL_DATA, LandAnimal.class));
     }
 
     private static void loadPettingAnimals() {
-        Animal.setAllPettingAnimals(PettingAnimal.instantiateAnimalsFromJsonFile(PETTING_ANIMAL_DATA, PettingAnimal.class));
+        Animal.setAllPettingAnimals(Data.instantiateAnimalsFromJsonFile(PETTING_ANIMAL_DATA, PettingAnimal.class));
     }
 
     private static void loadAmphibiousAnimals() {
-        Animal.setAllAmphibiousAnimals(AmphibiousAnimal.instantiateAnimalsFromJsonFile(AMPHIBIANS_DATA, AmphibiousAnimal.class));
+        Animal.setAllAmphibiousAnimals(Data.instantiateAnimalsFromJsonFile(AMPHIBIANS_DATA, AmphibiousAnimal.class));
     }
 
     private static void loadWaterAnimals() {
-        Animal.setAllWaterAnimals(WaterAnimal.instantiateAnimalsFromJsonFile(WATER_ANIMAL_DATA, WaterAnimal.class));
+        Animal.setAllWaterAnimals(Data.instantiateAnimalsFromJsonFile(WATER_ANIMAL_DATA, WaterAnimal.class));
     }
 
     private static void loadFlyingAnimals() {
-        Animal.setAllFlyingAnimals(FlyingAnimal.instantiateAnimalsFromJsonFile(FLYING_ANIMAL_DATA, FlyingAnimal.class));
+        Animal.setAllFlyingAnimals(Data.instantiateAnimalsFromJsonFile(FLYING_ANIMAL_DATA, FlyingAnimal.class));
     }
 
     public static void addNewPen(Scanner scanner) {
@@ -180,7 +181,7 @@ public class Controller {
         }
         for (ZooKeeper keeper : assignedKeeperList) {
             keeper.addPenToAssignedPens(pen.getPenId());
-            ZooKeeper.writeKeepersToJsonFile(KEEPER_DATA);
+            Data.writeKeepersToJsonFile(KEEPER_DATA);
         }
     }
 
@@ -275,15 +276,17 @@ public class Controller {
                 System.out.print("Land space required: ");
                 landSpace = Double.parseDouble(scanner.nextLine());
                 animal = new LandAnimal(name, species, assignedPenId, landSpace);
-                Pen.writeDryPensToFile();
-                Pen.writePettingPensToFile();
+                Data.writeDryPensToFile();
+                Data.writePettingPensToFile();
+                Data.writeLandAnimalsToFile();
                 break;
             case "2"://Petting Animal
                 System.out.print("Land space required: ");
                 landSpace = Double.parseDouble(scanner.nextLine());
                 animal = new PettingAnimal(name, species, assignedPenId, landSpace);
-                Pen.writeDryPensToFile();
-                Pen.writePettingPensToFile();
+                Data.writeDryPensToFile();
+                Data.writePettingPensToFile();
+                Data.writePettingAnimalsToFile();
                 break;
             case "3"://Amphibious Animal
                 System.out.print("Land space required: ");
@@ -291,19 +294,22 @@ public class Controller {
                 System.out.print("Water space required: ");
                 waterSpace = Double.parseDouble(scanner.nextLine());
                 animal = new AmphibiousAnimal(name, species, assignedPenId, landSpace, waterSpace);
-                Pen.writePartDryWaterToFile();
+                Data.writePartDryWaterToFile();
+                Data.writeAmphibiousAnimalsToFile();
                 break;
             case "4"://Water Animal
                 System.out.print("Water space required: ");
                 waterSpace = Double.parseDouble(scanner.nextLine());
                 animal = new WaterAnimal(name, species, assignedPenId, waterSpace);
-                Pen.writeAquariumsToFile();
+                Data.writeAquariumsToFile();
+                Data.writeWaterAnimalsToFile();
                 break;
             default://Flying Animal
                 System.out.print("Air space required: ");
                 double airSpace = Double.parseDouble(scanner.nextLine());
                 animal = new FlyingAnimal(name, species, assignedPenId, airSpace);
-                Pen.writeAviariesToFile();
+                Data.writeAviariesToFile();
+                Data.writeFlyingAnimalsToFile();
                 break;
         }
     }
@@ -356,15 +362,15 @@ public class Controller {
         Animal animal = Animal.getAnimalWithAnimalId(animalId);
         String type = animal.getType().toString();
         if (type.equals("LAND")) {
-            Animal.writeLandAnimalsToFile();
+            Data.writeLandAnimalsToFile();
         } else if (type.equals("PETTABLE")) {
-            Animal.writePettingAnimalsToFile();
+            Data.writePettingAnimalsToFile();
         } else if (type.equals("AMPHIBIOUS")) {
-            Animal.writeAmphibiousAnimalsToFile();
+            Data.writeAmphibiousAnimalsToFile();
         } else if (type.equals("WATER")) {
-            Animal.writeWaterAnimalsToFile();
+            Data.writeWaterAnimalsToFile();
         } else if (type.equals("FLYING")) {
-            Animal.writeFlyingAnimalsToFile();
+            Data.writeFlyingAnimalsToFile();
         }
     }
 
@@ -372,16 +378,17 @@ public class Controller {
         Pen pen = Pen.getPenWithPenId(penId);
         String type = pen.getType().toString();
         if (type.equals("DRY")) {
-            Pen.writeDryPensToFile();
+            Data.writeDryPensToFile();
         } else if (type.equals("PETTING")) {
-            Pen.writePettingPensToFile();
+            Data.writePettingPensToFile();
         } else if (type.equals("PARTDRYWATER")) {
-            Pen.writePartDryWaterToFile();
+            Data.writePartDryWaterToFile();
         } else if (type.equals("AQUARIUM")) {
-            Pen.writeAquariumsToFile();
+            Data.writeAquariumsToFile();
         } else if (type.equals("AVIARY")) {
-            Pen.writeAviariesToFile();
+            Data.writeAviariesToFile();
         }
+        Data.writeAllPensListToJsonFile();
     }
 
     public static void assignKeeperToPen(Scanner scanner) {
@@ -404,7 +411,7 @@ public class Controller {
             }
         }
         pen.assignZooKeeper(getKeeperWithName(keeperName));
-        ZooKeeper.writeKeepersToJsonFile(KEEPER_DATA);
+        Data.writeKeepersToJsonFile(KEEPER_DATA);
         writeToRelevantPenFile(penId);
 
     }

@@ -15,7 +15,6 @@ public class Aviary extends Pen {
         getListOfAllPens().add(this);
         penId = getListOfAllPens().indexOf(this);
         updateKeepersAssignedPens(zooKeepers);
-        writeAviariesToFile();
     }
 
     public int getHeight() {

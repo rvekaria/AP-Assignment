@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
-public class ZooKeeperUTest {
+public class ZooKeeperTest {
     ArrayList<ZooKeeper> dryWaterKeepersList;
     ArrayList<Integer> animalsInDryWaterPenIdList;
     PartDryWaterPen dryWaterPen;
@@ -168,7 +168,7 @@ public class ZooKeeperUTest {
         String expectedJson = "[{\"name\":\"Hardip\",\"pensTrainedFor\":[\"DRY\",\"AVIARY\"],\"assignedPenIds\":[1]},{\"name\":\"Alex\",\"pensTrainedFor\":[\"AQUARIUM\",\"PARTDRYWATER\"],\"assignedPenIds\":[4]},{\"name\":\"Farhad\",\"pensTrainedFor\":[\"AVIARY\",\"AQUARIUM\"],\"assignedPenIds\":[3]},{\"name\":\"Alan\",\"pensTrainedFor\":[\"DRY\",\"PETTING\"],\"assignedPenIds\":[2]}]";
 
         //act
-        ZooKeeper.writeKeepersToJsonFile(pathname);
+        Data.writeKeepersToJsonFile(pathname);
 
         //assert
         try {
@@ -211,7 +211,7 @@ public class ZooKeeperUTest {
         String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/zooKeeper/resources/testInstantiateKeeperObject.json";
 
         //act
-        ArrayList<ZooKeeper> keepersLoadedFromFile = ZooKeeper.instantiateKeepersFromJsonFile(pathname);
+        ArrayList<ZooKeeper> keepersLoadedFromFile = Data.instantiateKeepersFromJsonFile(pathname);
         ZooKeeper alexFromFile = keepersLoadedFromFile.get(0);
 
         //assert
