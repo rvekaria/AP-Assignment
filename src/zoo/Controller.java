@@ -10,17 +10,19 @@ import java.util.Scanner;
 
 public class Controller {
 
-    private static final String KEEPER_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json";
-    private static final String DRY_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json";
-    private static final String PETTING_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json";
-    private static final String PART_DRY_WATER_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json";
-    private static final String AQUARIUM_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json";
-    private static final String AVIARY_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json";
-    private static final String LAND_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json";
-    private static final String PETTING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json";
-    private static final String AMPHIBIANS_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json";
-    private static final String WATER_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json";
-    private static final String FLYING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json";
+    private static final String KEEPER_DATA = "src/zoo/data/zooKeeperData/keeperData.json";
+
+    private static final String DRY_PEN_DATA = "src/zoo/data/penData/dryPensData.json";
+    private static final String PETTING_PEN_DATA = "src/zoo/data/penData/pettingPensData.json";
+    private static final String PART_DRY_WATER_PEN_DATA = "src/zoo/data/penData/partDryWaterPensData.json";
+    private static final String AQUARIUM_DATA = "src/zoo/data/penData/aquariumsData.json";
+    private static final String AVIARY_DATA = "src/zoo/data/penData/aviariesData.json";
+
+    private static final String LAND_ANIMAL_DATA = "src/zoo/data/animalData/landAnimalData.json";
+    private static final String PETTING_ANIMAL_DATA = "src/zoo/data/animalData/pettingAnimalData.json";
+    private static final String AMPHIBIANS_DATA = "src/zoo/data/animalData/amphibiansData.json";
+    private static final String WATER_ANIMAL_DATA = "src/zoo/data/animalData/waterAnimalData.json";
+    private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
 
     public static void loadKeepers() {
         File file = new File(KEEPER_DATA);
@@ -388,7 +390,6 @@ public class Controller {
         } else if (type.equals("AVIARY")) {
             Data.writeAviariesToFile();
         }
-        Data.writeAllPensListToJsonFile();
     }
 
     public static void assignKeeperToPen(Scanner scanner) {
@@ -436,14 +437,23 @@ public class Controller {
         return null;
     }
 
-    public static void updateWeatherDisplay() {
+    public static String updateWeatherDisplay() {
         LocalTime timeStamp = LocalTime.now();
         JsonObject weatherObject = Weather.getWeatherAsJsonObject();
         String weatherDesc = Weather.getWeatherDescription(weatherObject);
         String temp = Weather.getTemp(weatherObject);
 
-        String weatherDisplay = "Weather: " + weatherDesc + "   Temperature: " + temp + "\nUpdated: " + timeStamp;
-        System.out.println();
-        System.out.println(weatherDisplay);
+        return "Weather: " + weatherDesc + "   Temperature: " + temp + "    Updated: " + timeStamp;
+    }
+
+    public static ArrayList<Animal> getAnimalsWithoutPens(){
+        return Animal.getAnimalsWithoutPens();
+    }
+
+    public static void printUnassignedAnimals(){
+        ArrayList<Animal> unassignedAnimals = getAnimalsWithoutPens();
+        for (Animal animal : unassignedAnimals){
+            System.out.println(animal.displayInfo());
+        }
     }
 }

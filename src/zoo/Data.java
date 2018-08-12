@@ -12,22 +12,20 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Data {
-    //TODO - change file paths to relative paths otherwise they may not work on other computers
-    private static final String KEEPER_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json";
 
-    private static final String ALL_PENS_FILE_PATH = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/allPensData.json";
-    private static final String DRY_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json";
-    private static final String PETTING_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json";
-    private static final String PART_DRY_WATER_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json";
-    private static final String AQUARIUM_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json";
-    private static final String AVIARY_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json";
+    private static final String ALL_PENS_FILE_PATH = "src/zoo/data/penData/allPensData.json";
+    private static final String DRY_PEN_DATA = "src/zoo/data/penData/dryPensData.json";
+    private static final String PETTING_PEN_DATA = "src/zoo/data/penData/pettingPensData.json";
+    private static final String PART_DRY_WATER_PEN_DATA = "src/zoo/data/penData/partDryWaterPensData.json";
+    private static final String AQUARIUM_DATA = "src/zoo/data/penData/aquariumsData.json";
+    private static final String AVIARY_DATA = "src/zoo/data/penData/aviariesData.json";
 
-    private static final String LAND_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json";
-    private static final String PETTING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json";
-    private static final String AMPHIBIANS_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json";
-    private static final String WATER_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json";
-    private static final String FLYING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json";
-    private static final String ALL_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/animalData.json";
+    private static final String LAND_ANIMAL_DATA = "src/zoo/data/animalData/landAnimalData.json";
+    private static final String PETTING_ANIMAL_DATA = "src/zoo/data/animalData/pettingAnimalData.json";
+    private static final String AMPHIBIANS_DATA = "src/zoo/data/animalData/amphibiansData.json";
+    private static final String WATER_ANIMAL_DATA = "src/zoo/data/animalData/waterAnimalData.json";
+    private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
+    private static final String ALL_ANIMAL_DATA = "src/zoo/data/animalData/animalData.json";
 
 
     public static void writeLandAnimalsToFile() {
