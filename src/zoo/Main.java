@@ -19,6 +19,7 @@ public class Main {
         Controller.loadKeepers();
         Controller.loadPens();
         Controller.loadAnimals();
+        Controller.loadIncompatibleSpeciesMap();
         Controller.updateAndPrintWeatherDisplay();
         weatherDisplay = Weather.getWeatherDisplay() == null ? weatherDisplay : Weather.getWeatherDisplay();
 

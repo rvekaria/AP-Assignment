@@ -11,7 +11,7 @@ public abstract class Animal {
     boolean hasAssignedPen;
     protected int animalId;
 
-    private static HashMap<String, ArrayList<String>> incompatibleSpeciesMap;
+    private static HashMap<String, ArrayList<String>> incompatibleSpeciesMap = new HashMap<>();
 
     private static ArrayList<String> distinctSpeciesInZoo = new ArrayList<>();
 

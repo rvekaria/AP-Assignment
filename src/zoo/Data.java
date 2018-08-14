@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Data {
@@ -26,6 +27,7 @@ public class Data {
     private static final String WATER_ANIMAL_DATA = "src/zoo/data/animalData/waterAnimalData.json";
     private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
     private static final String ALL_ANIMAL_DATA = "src/zoo/data/animalData/animalData.json";
+    private static final String INCOMPATIBLE_SPECIES_DATA = "src/zoo/data/animalData/incompatibleSpeciesData.json";
 
 
     public static void writeLandAnimalsToFile() {
@@ -205,4 +207,32 @@ public class Data {
         }
         return keepersFromFile;
     }
+
+    public static void writeIncompatibleSpeciesToJsonFile(HashMap<String, ArrayList<String>> incompatibleSpeciesMap){
+        File incompatibleSpeciesJsonFile = new File(INCOMPATIBLE_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+
+        try {
+            PrintWriter writer = new PrintWriter(incompatibleSpeciesJsonFile);
+            writer.print(jsonConverter.toJson(incompatibleSpeciesMap));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static HashMap<String, ArrayList<String>> instantiateIncompatibleSpeciesFromJsonFile(){
+        File incompatibleSpeciesJsonFile = new File(INCOMPATIBLE_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+        HashMap<String, ArrayList<String>> incompatibleSpeciesFromFile = new HashMap<>();
+        try {
+            String incompatibleSpeciesMapJsonString = new String(Files.readAllBytes(incompatibleSpeciesJsonFile.toPath()));
+            incompatibleSpeciesFromFile = jsonConverter.fromJson(incompatibleSpeciesMapJsonString, new TypeToken<HashMap<String,ArrayList<String>>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return incompatibleSpeciesFromFile;
+    }
+
 }

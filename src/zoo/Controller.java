@@ -21,6 +21,7 @@ public class Controller {
     private static final String AMPHIBIANS_DATA = "src/zoo/data/animalData/amphibiansData.json";
     private static final String WATER_ANIMAL_DATA = "src/zoo/data/animalData/waterAnimalData.json";
     private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
+    private static final String INCOMPATIBLE_SPECIES_DATA = "src/zoo/data/animalData/incompatibleSpeciesData.json";
 
     public static void loadKeepers() {
         File file = new File(KEEPER_DATA);
@@ -96,6 +97,16 @@ public class Controller {
 
     private static void loadFlyingAnimals() {
         Animal.setAllFlyingAnimals(Data.instantiateAnimalsFromJsonFile(FLYING_ANIMAL_DATA, FlyingAnimal.class));
+    }
+
+    public static void loadIncompatibleSpeciesMap(){
+        File file = new File(INCOMPATIBLE_SPECIES_DATA);
+        if (file.length() != 0) {
+            Animal.setIncompatibleSpeciesMap(Data.instantiateIncompatibleSpeciesFromJsonFile());
+        } else{
+            Animal.setIncompatibleSpeciesMap(new HashMap<>());
+        }
+
     }
 
     public static void addNewPen(Scanner scanner) {
@@ -337,6 +348,7 @@ public class Controller {
         }
         incompatibleSpeciesMap.put(species, incompatibleSpecies);
         Animal.setIncompatibleSpeciesMap(incompatibleSpeciesMap);
+        Data.writeIncompatibleSpeciesToJsonFile(Animal.getIncompatibleSpeciesMap());
     }
 
     private static void displayDistinctSpeciesInZoo() {
