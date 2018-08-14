@@ -7,7 +7,7 @@ public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
     private static boolean appIsRunning = true;
-    private static String weatherDisplay;
+    private static String weatherDisplay = "Obtaining weather information...";
     private static String unassignedAnimalsWarning;
     private static String unassignedPensWarning;
 
@@ -19,10 +19,11 @@ public class Main {
         Controller.loadKeepers();
         Controller.loadPens();
         Controller.loadAnimals();
-        weatherDisplay = Controller.updateWeatherDisplay();
+        Controller.updateAndPrintWeatherDisplay();
+        weatherDisplay = Weather.getWeatherDisplay() == null ? weatherDisplay : Weather.getWeatherDisplay();
 
         while (appIsRunning) {
-            System.out.print(weatherDisplay);
+            System.out.println("\n"+weatherDisplay);
             displayMainMenuOptions();
             unassignedAnimals = Controller.getAnimalsWithoutPens();
             if (unassignedAnimals.size() !=0) {
@@ -30,7 +31,7 @@ public class Main {
                 Controller.printUnassignedAnimals();
             }
 //            System.out.println(unassignedPensWarning);
-
+            System.out.print("> ");
             String menuOption = scanner.nextLine();
             executeOption(menuOption);
         }
@@ -49,7 +50,6 @@ public class Main {
         System.out.println("(7) Assign zookeper to a pen");
         System.out.println("(8) Update weather");
         System.out.println("(0) Exit application");
-        System.out.print("> ");
     }
 
     private static void executeOption(String menuOption) {
@@ -68,7 +68,8 @@ public class Main {
         } else if (menuOption.equals("7")) {
             Controller.assignKeeperToPen(scanner);
         } else if (menuOption.equals("8")) {
-            weatherDisplay = Controller.updateWeatherDisplay();
+            Controller.updateAndPrintWeatherDisplay();
+            weatherDisplay = Weather.getWeatherDisplay();
         } else if (menuOption.equals("0")) {
             appIsRunning = false;
         } else {

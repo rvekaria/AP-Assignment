@@ -1,6 +1,7 @@
 package zoo;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public abstract class Animal {
     private String name;
@@ -9,12 +10,42 @@ public abstract class Animal {
     private int assignedPenId;
     boolean hasAssignedPen;
     protected int animalId;
+
+    private static HashMap<String, ArrayList<String>> incompatibleSpeciesMap;
+
+    private static ArrayList<String> distinctSpeciesInZoo = new ArrayList<>();
+
     private static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
+
     private static ArrayList<LandAnimal> allLandAnimals = new ArrayList<>();
+
     private static ArrayList<PettingAnimal> allPettingAnimals = new ArrayList<>();
     private static ArrayList<AmphibiousAnimal> allAmphibiousAnimals = new ArrayList<>();
     private static ArrayList<WaterAnimal> allWaterAnimals = new ArrayList<>();
     private static ArrayList<FlyingAnimal> allFlyingAnimals = new ArrayList<>();
+
+    public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE;}
+
+    public Animal(String name, String species, animalType type, int assignedPenId) {
+        this.name = name;
+        this.species = species;
+        this.type = type;
+        this.assignedPenId = assignedPenId;
+        if(!distinctSpeciesInZoo.contains(species)){
+            distinctSpeciesInZoo.add(species);
+        }
+    }
+    public static void setIncompatibleSpeciesMap(HashMap<String, ArrayList<String>> incompatibleSpeciesMap) {
+        Animal.incompatibleSpeciesMap = incompatibleSpeciesMap;
+    }
+
+    public static HashMap<String, ArrayList<String>> getIncompatibleSpeciesMap() {
+        return incompatibleSpeciesMap;
+    }
+
+    public static ArrayList<String> getDistinctSpeciesInZoo() {
+        return distinctSpeciesInZoo;
+    }
 
     public static ArrayList<LandAnimal> getAllLandAnimals() {
         return allLandAnimals;
@@ -54,15 +85,6 @@ public abstract class Animal {
 
     public static void setAllFlyingAnimals(ArrayList<FlyingAnimal> allFlyingAnimals) {
         Animal.allFlyingAnimals = allFlyingAnimals;
-    }
-
-    public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
-
-    public Animal(String name, String species, animalType type, int assignedPenId) {
-        this.name = name;
-        this.species = species;
-        this.type = type;
-        this.assignedPenId = assignedPenId;
     }
 
     public String getName() {
@@ -137,6 +159,14 @@ public abstract class Animal {
             }
         }
         return null;
+    }
+
+    public boolean isCompatibleWith(String species){
+        if(incompatibleSpeciesMap.get(this.species).contains(species)){
+            return false;
+        } else {
+            return true;
+        }
     }
 
 }

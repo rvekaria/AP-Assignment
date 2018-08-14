@@ -1,11 +1,9 @@
 package zoo;
 
-import com.google.gson.JsonObject;
-
 import java.io.File;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Controller {
@@ -157,9 +155,11 @@ public class Controller {
         switch (penOption) {
             case "1"://Dry Pen
                 pen = new DryPen(name, length, width, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writeDryPensToFile();
                 break;
             case "2"://Petting Pen
                 pen = new PettingPen(name, length, width, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writePettingAnimalsToFile();
                 break;
             case "3"://Part Dry, Part Water Pen
                 System.out.print("Water depth (metres): ");
@@ -169,16 +169,19 @@ public class Controller {
                 System.out.print("Water volume (m^3): ");
                 volume = Integer.parseInt(scanner.nextLine());
                 pen = new PartDryWaterPen(name, length, width, height, area, volume, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writePartDryWaterToFile();
                 break;
             case "4"://Aquarium
                 System.out.print("Height (m): ");
                 height = Integer.parseInt(scanner.nextLine());
                 pen = new Aquarium(name, length, width, height, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writeAquariumsToFile();
                 break;
             default://Aviary
                 System.out.print("Height (m): ");
                 height = Integer.parseInt(scanner.nextLine());
                 pen = new Aviary(name, length, width, height, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writeAviariesToFile();
                 break;
         }
         for (ZooKeeper keeper : assignedKeeperList) {
@@ -267,6 +270,7 @@ public class Controller {
         System.out.println("Complete the following fields to add the animal:");
         System.out.print("Species: ");
         species = scanner.nextLine();
+        inputIncompatibleSpecies(species, scanner);
         System.out.print("Name: ");
         name = scanner.nextLine();
         System.out.println("Which pen do you want to assign the animal to? Pick a number from the list: ");
@@ -314,6 +318,33 @@ public class Controller {
                 Data.writeFlyingAnimalsToFile();
                 break;
         }
+    }
+
+    private static void inputIncompatibleSpecies(String species, Scanner scanner) {
+        HashMap<String, ArrayList<String>> incompatibleSpeciesMap = Animal.getIncompatibleSpeciesMap();
+        ArrayList<String> incompatibleSpecies = new ArrayList<>();
+        System.out.println("Which of these species is this animal incompatible with:");
+        displayDistinctSpeciesInZoo();
+        String speciesOption = "-1";
+        while (!speciesOption.equals("x")) {
+            System.out.print("> ");
+            speciesOption = scanner.nextLine();
+            if(!speciesOption.equals("x") && Integer.parseInt(speciesOption)<Animal.getDistinctSpeciesInZoo().size() && Integer.parseInt(speciesOption)>=0) {
+                incompatibleSpecies.add(Animal.getDistinctSpeciesInZoo().get(Integer.parseInt(speciesOption)));
+                System.out.println("Declare another incompatible species or type x to finish.");
+                System.out.print("> ");
+            }
+        }
+        incompatibleSpeciesMap.put(species, incompatibleSpecies);
+        Animal.setIncompatibleSpeciesMap(incompatibleSpeciesMap);
+    }
+
+    private static void displayDistinctSpeciesInZoo() {
+        int i;
+        for (i = 0; i < Animal.getDistinctSpeciesInZoo().size(); i++) {
+            System.out.println("[" + i + "] " + Animal.getDistinctSpeciesInZoo().get(i));
+        }
+        System.out.println("[x] Finish adding incompatible species");
     }
 
     public static void displayKeeperInfo() {
@@ -437,22 +468,19 @@ public class Controller {
         return null;
     }
 
-    public static String updateWeatherDisplay() {
-        LocalTime timeStamp = LocalTime.now();
-        JsonObject weatherObject = Weather.getWeatherAsJsonObject();
-        String weatherDesc = Weather.getWeatherDescription(weatherObject);
-        String temp = Weather.getTemp(weatherObject);
-
-        return "Weather: " + weatherDesc + "   Temperature: " + temp + "    Updated: " + timeStamp;
+    public static void updateAndPrintWeatherDisplay() {
+        Weather weather = new Weather();
+        Thread thread = new Thread(weather);
+        thread.start();
     }
 
-    public static ArrayList<Animal> getAnimalsWithoutPens(){
+    public static ArrayList<Animal> getAnimalsWithoutPens() {
         return Animal.getAnimalsWithoutPens();
     }
 
-    public static void printUnassignedAnimals(){
+    public static void printUnassignedAnimals() {
         ArrayList<Animal> unassignedAnimals = getAnimalsWithoutPens();
-        for (Animal animal : unassignedAnimals){
+        for (Animal animal : unassignedAnimals) {
             System.out.println(animal.displayInfo());
         }
     }
