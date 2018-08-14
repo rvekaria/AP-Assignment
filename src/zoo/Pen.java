@@ -221,6 +221,7 @@ public abstract class Pen {
             if (!animalInPen.isCompatibleWith(animal.getSpecies())) {
                 isCompatible = false;
             }
+            i++;
         }
         return isCompatible;
     }

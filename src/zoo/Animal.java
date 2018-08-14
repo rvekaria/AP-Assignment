@@ -20,10 +20,10 @@ public abstract class Animal {
     private static ArrayList<LandAnimal> allLandAnimals = new ArrayList<>();
 
     private static ArrayList<PettingAnimal> allPettingAnimals = new ArrayList<>();
+
     private static ArrayList<AmphibiousAnimal> allAmphibiousAnimals = new ArrayList<>();
     private static ArrayList<WaterAnimal> allWaterAnimals = new ArrayList<>();
     private static ArrayList<FlyingAnimal> allFlyingAnimals = new ArrayList<>();
-
     public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE;}
 
     public Animal(String name, String species, animalType type, int assignedPenId) {
@@ -35,8 +35,12 @@ public abstract class Animal {
             distinctSpeciesInZoo.add(species);
         }
     }
+
     public static void setIncompatibleSpeciesMap(HashMap<String, ArrayList<String>> incompatibleSpeciesMap) {
         Animal.incompatibleSpeciesMap = incompatibleSpeciesMap;
+    }
+    public static void setDistinctSpeciesInZoo(ArrayList<String> distinctSpeciesInZoo) {
+        Animal.distinctSpeciesInZoo = distinctSpeciesInZoo;
     }
 
     public static HashMap<String, ArrayList<String>> getIncompatibleSpeciesMap() {

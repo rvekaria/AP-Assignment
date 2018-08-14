@@ -28,6 +28,7 @@ public class Data {
     private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
     private static final String ALL_ANIMAL_DATA = "src/zoo/data/animalData/animalData.json";
     private static final String INCOMPATIBLE_SPECIES_DATA = "src/zoo/data/animalData/incompatibleSpeciesData.json";
+    private static final String DISTINCT_SPECIES_DATA = "src/zoo/data/animalData/distinctSpeciesData.json";
 
 
     public static void writeLandAnimalsToFile() {
@@ -232,7 +233,41 @@ public class Data {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return incompatibleSpeciesFromFile;
+        if (incompatibleSpeciesFromFile != null) {
+            return incompatibleSpeciesFromFile;
+        } else {
+            return new HashMap<>();
+        }
+    }
+
+    public static void writeDistinctSpeciesToJsonFile(ArrayList<String> distinctSpeciesList){
+        File distinctSpeciesJsonFile = new File(DISTINCT_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+
+        try {
+            PrintWriter writer = new PrintWriter(distinctSpeciesJsonFile);
+            writer.print(jsonConverter.toJson(distinctSpeciesList));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> instantiateDistinctSpeciesFromJsonFile(){
+        File distinctSpeciesJsonFile = new File(DISTINCT_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+        ArrayList<String> distinctSpeciesFromFile = new ArrayList<>();
+        try {
+            String incompatibleSpeciesMapJsonString = new String(Files.readAllBytes(distinctSpeciesJsonFile.toPath()));
+            distinctSpeciesFromFile = jsonConverter.fromJson(incompatibleSpeciesMapJsonString, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }if (distinctSpeciesFromFile != null) {
+            return distinctSpeciesFromFile;
+        } else {
+            return new ArrayList<>();
+        }
     }
 
 }

@@ -281,7 +281,9 @@ public class Controller {
         System.out.println("Complete the following fields to add the animal:");
         System.out.print("Species: ");
         species = scanner.nextLine();
-        inputIncompatibleSpecies(species, scanner);
+        if(!Animal.getDistinctSpeciesInZoo().contains(species)) {
+            inputIncompatibleSpecies(species, scanner);
+        }
         System.out.print("Name: ");
         name = scanner.nextLine();
         System.out.println("Which pen do you want to assign the animal to? Pick a number from the list: ");
@@ -329,11 +331,12 @@ public class Controller {
                 Data.writeFlyingAnimalsToFile();
                 break;
         }
+        Data.writeDistinctSpeciesToJsonFile(Animal.getDistinctSpeciesInZoo());
     }
 
     private static void inputIncompatibleSpecies(String species, Scanner scanner) {
         HashMap<String, ArrayList<String>> incompatibleSpeciesMap = Animal.getIncompatibleSpeciesMap();
-        ArrayList<String> incompatibleSpecies = new ArrayList<>();
+        ArrayList<String> incompatibleSpeciesList = new ArrayList<>();
         System.out.println("Which of these species is this animal incompatible with:");
         displayDistinctSpeciesInZoo();
         String speciesOption = "-1";
@@ -341,12 +344,15 @@ public class Controller {
             System.out.print("> ");
             speciesOption = scanner.nextLine();
             if(!speciesOption.equals("x") && Integer.parseInt(speciesOption)<Animal.getDistinctSpeciesInZoo().size() && Integer.parseInt(speciesOption)>=0) {
-                incompatibleSpecies.add(Animal.getDistinctSpeciesInZoo().get(Integer.parseInt(speciesOption)));
+                incompatibleSpeciesList.add(Animal.getDistinctSpeciesInZoo().get(Integer.parseInt(speciesOption)));
                 System.out.println("Declare another incompatible species or type x to finish.");
                 System.out.print("> ");
             }
         }
-        incompatibleSpeciesMap.put(species, incompatibleSpecies);
+        incompatibleSpeciesMap.put(species, incompatibleSpeciesList);
+        for(String incompatibleSpecies : incompatibleSpeciesList){
+            incompatibleSpeciesMap.get(incompatibleSpecies).add(species);
+        }
         Animal.setIncompatibleSpeciesMap(incompatibleSpeciesMap);
         Data.writeIncompatibleSpeciesToJsonFile(Animal.getIncompatibleSpeciesMap());
     }
@@ -495,5 +501,9 @@ public class Controller {
         for (Animal animal : unassignedAnimals) {
             System.out.println(animal.displayInfo());
         }
+    }
+
+    public static void loadDistinctSpeciesList() {
+        Animal.setDistinctSpeciesInZoo(Data.instantiateDistinctSpeciesFromJsonFile());
     }
 }
