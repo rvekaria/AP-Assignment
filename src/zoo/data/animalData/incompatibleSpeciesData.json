@@ -1,1 +1,1 @@
-{"Cat":["Sloth","Dog","Dog"],"Dog":["Cat"],"Sloth":["Cat"]}
+{"Cat":["Dog"],"Monkey":["Dog"],"Dog":["Cat","Monkey"]}

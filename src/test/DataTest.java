@@ -72,7 +72,7 @@ public class DataTest {
         //setup
         String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.json";
         File animalData = new File(pathname);
-        String expectedJson = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"hasAssignedPen\":true,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"hasAssignedPen\":true,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"hasAssignedPen\":true,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"hasAssignedPen\":true,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"hasAssignedPen\":true,\"animalId\":4}]";
+        String expectedJson = "[{\"landSpace\":2.0,\"waterSpace\":4.0,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"hasAssignedPen\":false,\"animalId\":0},{\"landSpace\":13.0,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"hasAssignedPen\":false,\"animalId\":1},{\"landSpace\":11.0,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"hasAssignedPen\":false,\"animalId\":2},{\"airSpace\":1000.0,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"hasAssignedPen\":false,\"animalId\":3},{\"waterSpace\":4000.0,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"hasAssignedPen\":false,\"animalId\":4}]";
 
         //act
         Data.writeAnimalsToJsonFile(pathname, Animal.getAllAnimalsInZooList());
@@ -97,8 +97,8 @@ public class DataTest {
         Pen newPen = new PartDryWaterPen("newPen", 20, 25, 10, 400, 1000, 18, keepersList, animalsInPenIdList2);
         String pathname = "/Users/rupesh.vekaria/AP-Assignment/src/test/animal/resources/testAnimalData.json";
         //File animalData = new File(pathname);
-        String expectedJsonBeforeChange = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"hasAssignedPen\":true,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"hasAssignedPen\":true,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"hasAssignedPen\":true,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"hasAssignedPen\":true,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"hasAssignedPen\":true,\"animalId\":4}]";
-        String expectedJsonAfterChange = "[{\"landSpace\":2,\"waterSpace\":4,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":5,\"hasAssignedPen\":true,\"animalId\":0},{\"landSpace\":13,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"hasAssignedPen\":true,\"animalId\":1},{\"landSpace\":11,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"hasAssignedPen\":true,\"animalId\":2},{\"airSpace\":1000,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"hasAssignedPen\":true,\"animalId\":3},{\"waterSpace\":4000,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"hasAssignedPen\":true,\"animalId\":4}]";
+        String expectedJsonBeforeChange = "[{\"landSpace\":2.0,\"waterSpace\":4.0,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":0,\"hasAssignedPen\":false,\"animalId\":0},{\"landSpace\":13.0,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"hasAssignedPen\":false,\"animalId\":1},{\"landSpace\":11.0,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"hasAssignedPen\":false,\"animalId\":2},{\"airSpace\":1000.0,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"hasAssignedPen\":false,\"animalId\":3},{\"waterSpace\":4000.0,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"hasAssignedPen\":false,\"animalId\":4}]";
+        String expectedJsonAfterChange = "[{\"landSpace\":2.0,\"waterSpace\":4.0,\"name\":\"Penny\",\"species\":\"Penguin\",\"type\":\"AMPHIBIOUS\",\"assignedPenId\":5,\"hasAssignedPen\":false,\"animalId\":0},{\"landSpace\":13.0,\"name\":\"Douglas\",\"species\":\"Dog\",\"type\":\"LAND\",\"assignedPenId\":1,\"hasAssignedPen\":false,\"animalId\":1},{\"landSpace\":11.0,\"name\":\"Gary\",\"species\":\"Goat\",\"type\":\"PETTABLE\",\"assignedPenId\":2,\"hasAssignedPen\":false,\"animalId\":2},{\"airSpace\":1000.0,\"name\":\"Owen\",\"species\":\"Owl\",\"type\":\"FLYING\",\"assignedPenId\":3,\"hasAssignedPen\":false,\"animalId\":3},{\"waterSpace\":4000.0,\"name\":\"Shaniqua\",\"species\":\"Shark\",\"type\":\"WATER\",\"assignedPenId\":4,\"hasAssignedPen\":false,\"animalId\":4}]";
 
         //act
         Data.writeAnimalsToJsonFile(pathname, Animal.getAllAnimalsInZooList());
@@ -144,8 +144,8 @@ public class DataTest {
         assertEquals(penguin.getAnimalId(), animalFromFile.getAnimalId());
         assertEquals(penguin.getAssignedPenId(), animalFromFile.getAssignedPenId());
         assertEquals(penguin.getSpecies(), animalFromFile.getSpecies());
-        assertEquals(penguin.getAnimalSpace("land"), animalFromFile.getAnimalSpace("land"));
-        assertEquals(penguin.getAnimalSpace("water"), animalFromFile.getAnimalSpace("water"));
+        assertEquals(penguin.getAnimalSpace("land"), animalFromFile.getAnimalSpace("land"),0);
+        assertEquals(penguin.getAnimalSpace("water"), animalFromFile.getAnimalSpace("water"), 0);
         assertEquals(penguin.getName(), animalFromFile.getName());
         assertEquals(penguin.getType(), animalFromFile.getType());
     }

@@ -16,11 +16,11 @@ public class Weather implements Runnable {
     private static LocalTime timeStamp;
 
     public void run() {
-        requestWeather();
-        JsonObject weatherObject = getWeatherAsJsonObject();
-        String weatherDesc = getWeatherDescription(weatherObject);
-        String temp = getTemp(weatherObject);
-        weatherDisplay = "Weather: " + weatherDesc + "   Temperature: " + temp + "    Updated: " + timeStamp;
+            requestWeather();
+            JsonObject weatherObject = getWeatherAsJsonObject();
+            String weatherDesc = getWeatherDescription(weatherObject);
+            String temp = getTemp(weatherObject);
+            weatherDisplay = "Weather: " + weatherDesc + "   Temperature: " + temp + "    Updated: " + timeStamp;
     }
 
     public static String getWeatherDisplay() {

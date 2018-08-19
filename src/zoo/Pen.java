@@ -181,7 +181,6 @@ public abstract class Pen {
     }
 
     public boolean assignAnimalToPen(Animal animal) {
-        //TODO check that the animal is compatible with other animals in that pen - make user input the incompatible species during animal creation
         if (isPenSuitable(getType(), animal.getType())) {
             if (isSpaceFor(animal)) {
                 if (isAnimalCompatibleWithSpeciesInPen(animal)) {

@@ -24,7 +24,7 @@ public class AmphibiousTest {
     }
 
     @After
-    public void tearDown(){
+    public void tearDown() {
         Animal.getAllAnimalsInZooList().clear();
         Pen.getListOfAllPens().clear();
     }
@@ -36,8 +36,8 @@ public class AmphibiousTest {
         double waterSpace = amphAnimal.getAnimalSpace("water");
 
         //assert
-        assertEquals(2, landSpace);
-        assertEquals(4, waterSpace);
+        assertEquals(2, landSpace, 0);
+        assertEquals(4, waterSpace, 0);
         double animalSpace = amphAnimal.getAnimalSpace("blah");
     }
 

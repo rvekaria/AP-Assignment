@@ -99,11 +99,11 @@ public class Controller {
         Animal.setAllFlyingAnimals(Data.instantiateAnimalsFromJsonFile(FLYING_ANIMAL_DATA, FlyingAnimal.class));
     }
 
-    public static void loadIncompatibleSpeciesMap(){
+    public static void loadIncompatibleSpeciesMap() {
         File file = new File(INCOMPATIBLE_SPECIES_DATA);
         if (file.length() != 0) {
             Animal.setIncompatibleSpeciesMap(Data.instantiateIncompatibleSpeciesFromJsonFile());
-        } else{
+        } else {
             Animal.setIncompatibleSpeciesMap(new HashMap<>());
         }
 
@@ -281,15 +281,12 @@ public class Controller {
         System.out.println("Complete the following fields to add the animal:");
         System.out.print("Species: ");
         species = scanner.nextLine();
-        if(!Animal.getDistinctSpeciesInZoo().contains(species)) {
+        if (!Animal.getDistinctSpeciesInZoo().contains(species)) {
             inputIncompatibleSpecies(species, scanner);
         }
         System.out.print("Name: ");
         name = scanner.nextLine();
-        System.out.println("Which pen do you want to assign the animal to? Pick a number from the list: ");
-        displayPenInfo();
-        System.out.print("> ");
-        assignedPenId = Integer.parseInt(scanner.nextLine());
+        assignedPenId = -1;
         switch (animalOption) {
             case "1"://Land Animal
                 System.out.print("Land space required: ");
@@ -331,9 +328,49 @@ public class Controller {
                 Data.writeFlyingAnimalsToFile();
                 break;
         }
+        autoAssignAnimalToPen(animal);
         Data.writeDistinctSpeciesToJsonFile(Animal.getDistinctSpeciesInZoo());
     }
 
+    private static void autoAssignAnimalToPen(Animal animal) {
+        Pen.PenType penType;
+        switch (animal.getType()) {
+            case LAND:
+                penType = Pen.PenType.DRY;
+                break;
+            case PETTABLE:
+                penType = Pen.PenType.PETTING;
+                break;
+            case AMPHIBIOUS:
+                penType = Pen.PenType.PARTDRYWATER;
+                break;
+            case WATER:
+                penType = Pen.PenType.AQUARIUM;
+                break;
+            default:
+                penType = Pen.PenType.AVIARY;
+                break;
+        }
+        ArrayList<Pen> listOfAllPens = Pen.getListOfAllPens();
+        if (!listOfAllPens.isEmpty()) {
+            boolean assignSuccessful = false;
+            int i = 0;
+            while (!assignSuccessful && i < listOfAllPens.size()) {
+                Pen pen = listOfAllPens.get(i);
+                if (pen.getType().equals(penType)) {
+                    assignSuccessful = animal.setAssignedPen(pen.getPenId());
+                }
+                i++;
+            }
+            if (!assignSuccessful) {
+                System.out.println("There are no suitable pens in the zoo for this animal. Please add more pens!");
+            }
+        } else {
+            System.out.println("There are no pens! Press 1 to add a new pen.");
+        }
+    }
+
+    //TODO - why was dog assigned to cat twice?
     private static void inputIncompatibleSpecies(String species, Scanner scanner) {
         HashMap<String, ArrayList<String>> incompatibleSpeciesMap = Animal.getIncompatibleSpeciesMap();
         ArrayList<String> incompatibleSpeciesList = new ArrayList<>();
@@ -343,14 +380,15 @@ public class Controller {
         while (!speciesOption.equals("x")) {
             System.out.print("> ");
             speciesOption = scanner.nextLine();
-            if(!speciesOption.equals("x") && Integer.parseInt(speciesOption)<Animal.getDistinctSpeciesInZoo().size() && Integer.parseInt(speciesOption)>=0) {
-                incompatibleSpeciesList.add(Animal.getDistinctSpeciesInZoo().get(Integer.parseInt(speciesOption)));
+            ArrayList<String> distinctSpeciesInZooList = Animal.getDistinctSpeciesInZoo();
+            if (!speciesOption.equals("x") && Integer.parseInt(speciesOption) < distinctSpeciesInZooList.size() && Integer.parseInt(speciesOption) >= 0) {
+                incompatibleSpeciesList.add(distinctSpeciesInZooList.get(Integer.parseInt(speciesOption)));
                 System.out.println("Declare another incompatible species or type x to finish.");
                 System.out.print("> ");
             }
         }
         incompatibleSpeciesMap.put(species, incompatibleSpeciesList);
-        for(String incompatibleSpecies : incompatibleSpeciesList){
+        for (String incompatibleSpecies : incompatibleSpeciesList) {
             incompatibleSpeciesMap.get(incompatibleSpecies).add(species);
         }
         Animal.setIncompatibleSpeciesMap(incompatibleSpeciesMap);

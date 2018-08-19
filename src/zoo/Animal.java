@@ -166,7 +166,8 @@ public abstract class Animal {
     }
 
     public boolean isCompatibleWith(String species){
-        if(incompatibleSpeciesMap.get(this.species).contains(species)){
+        ArrayList<String> incompatibleSpeciesList = incompatibleSpeciesMap.get(this.species);
+        if(incompatibleSpeciesList.contains(species)){
             return false;
         } else {
             return true;
