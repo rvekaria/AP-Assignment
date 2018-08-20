@@ -9,25 +9,26 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.nio.file.Files;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Data {
-    //TODO - change file paths to relative paths otherwise they may not work on other computers
-    private static final String KEEPER_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json";
 
-    private static final String ALL_PENS_FILE_PATH = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/allPensData.json";
-    private static final String DRY_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json";
-    private static final String PETTING_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json";
-    private static final String PART_DRY_WATER_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json";
-    private static final String AQUARIUM_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json";
-    private static final String AVIARY_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json";
+    private static final String ALL_PENS_FILE_PATH = "src/zoo/data/penData/allPensData.json";
+    private static final String DRY_PEN_DATA = "src/zoo/data/penData/dryPensData.json";
+    private static final String PETTING_PEN_DATA = "src/zoo/data/penData/pettingPensData.json";
+    private static final String PART_DRY_WATER_PEN_DATA = "src/zoo/data/penData/partDryWaterPensData.json";
+    private static final String AQUARIUM_DATA = "src/zoo/data/penData/aquariumsData.json";
+    private static final String AVIARY_DATA = "src/zoo/data/penData/aviariesData.json";
 
-    private static final String LAND_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json";
-    private static final String PETTING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json";
-    private static final String AMPHIBIANS_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json";
-    private static final String WATER_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json";
-    private static final String FLYING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json";
-    private static final String ALL_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/animalData.json";
+    private static final String LAND_ANIMAL_DATA = "src/zoo/data/animalData/landAnimalData.json";
+    private static final String PETTING_ANIMAL_DATA = "src/zoo/data/animalData/pettingAnimalData.json";
+    private static final String AMPHIBIANS_DATA = "src/zoo/data/animalData/amphibiansData.json";
+    private static final String WATER_ANIMAL_DATA = "src/zoo/data/animalData/waterAnimalData.json";
+    private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
+    private static final String ALL_ANIMAL_DATA = "src/zoo/data/animalData/animalData.json";
+    private static final String INCOMPATIBLE_SPECIES_DATA = "src/zoo/data/animalData/incompatibleSpeciesData.json";
+    private static final String DISTINCT_SPECIES_DATA = "src/zoo/data/animalData/distinctSpeciesData.json";
 
 
     public static void writeLandAnimalsToFile() {
@@ -207,4 +208,66 @@ public class Data {
         }
         return keepersFromFile;
     }
+
+    public static void writeIncompatibleSpeciesToJsonFile(HashMap<String, ArrayList<String>> incompatibleSpeciesMap){
+        File incompatibleSpeciesJsonFile = new File(INCOMPATIBLE_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+
+        try {
+            PrintWriter writer = new PrintWriter(incompatibleSpeciesJsonFile);
+            writer.print(jsonConverter.toJson(incompatibleSpeciesMap));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static HashMap<String, ArrayList<String>> instantiateIncompatibleSpeciesFromJsonFile(){
+        File incompatibleSpeciesJsonFile = new File(INCOMPATIBLE_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+        HashMap<String, ArrayList<String>> incompatibleSpeciesFromFile = new HashMap<>();
+        try {
+            String incompatibleSpeciesMapJsonString = new String(Files.readAllBytes(incompatibleSpeciesJsonFile.toPath()));
+            incompatibleSpeciesFromFile = jsonConverter.fromJson(incompatibleSpeciesMapJsonString, new TypeToken<HashMap<String,ArrayList<String>>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (incompatibleSpeciesFromFile != null) {
+            return incompatibleSpeciesFromFile;
+        } else {
+            return new HashMap<>();
+        }
+    }
+
+    public static void writeDistinctSpeciesToJsonFile(ArrayList<String> distinctSpeciesList){
+        File distinctSpeciesJsonFile = new File(DISTINCT_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+
+        try {
+            PrintWriter writer = new PrintWriter(distinctSpeciesJsonFile);
+            writer.print(jsonConverter.toJson(distinctSpeciesList));
+            writer.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public static ArrayList<String> instantiateDistinctSpeciesFromJsonFile(){
+        File distinctSpeciesJsonFile = new File(DISTINCT_SPECIES_DATA);
+        Gson jsonConverter = new Gson();
+        ArrayList<String> distinctSpeciesFromFile = new ArrayList<>();
+        try {
+            String incompatibleSpeciesMapJsonString = new String(Files.readAllBytes(distinctSpeciesJsonFile.toPath()));
+            distinctSpeciesFromFile = jsonConverter.fromJson(incompatibleSpeciesMapJsonString, new TypeToken<ArrayList<String>>() {
+            }.getType());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }if (distinctSpeciesFromFile != null) {
+            return distinctSpeciesFromFile;
+        } else {
+            return new ArrayList<>();
+        }
+    }
+
 }

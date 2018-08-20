@@ -1,18 +1,35 @@
 package zoo;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Main {
 
     private static Scanner scanner = new Scanner(System.in);
     private static boolean appIsRunning = true;
+    private static String weatherDisplay = "Obtaining weather information...";
+    private static String unassignedAnimalsWarning;
 
     public static void main(String[] args) {
+        unassignedAnimalsWarning = "[WARNING] The following animals are not assigned to pens! Press 6 to assign animals to a pen.";
+        ArrayList<Animal> unassignedAnimals;
         Controller.loadKeepers();
         Controller.loadPens();
         Controller.loadAnimals();
+        Controller.loadIncompatibleSpeciesMap();
+        Controller.loadDistinctSpeciesList();
+        Controller.updateAndPrintWeatherDisplay();
+        weatherDisplay = Weather.getWeatherDisplay() == null ? weatherDisplay : Weather.getWeatherDisplay();
+
         while (appIsRunning) {
+            System.out.println("\n"+weatherDisplay);
             displayMainMenuOptions();
+            unassignedAnimals = Controller.getAnimalsWithoutPens();
+            if (unassignedAnimals.size() !=0) {
+                System.out.println(unassignedAnimalsWarning);
+                Controller.printUnassignedAnimals();
+            }
+            System.out.print("> ");
             String menuOption = scanner.nextLine();
             executeOption(menuOption);
         }
@@ -31,7 +48,6 @@ public class Main {
         System.out.println("(7) Assign zookeper to a pen");
         System.out.println("(8) Update weather");
         System.out.println("(0) Exit application");
-        System.out.print("> ");
     }
 
     private static void executeOption(String menuOption) {
@@ -50,7 +66,8 @@ public class Main {
         } else if (menuOption.equals("7")) {
             Controller.assignKeeperToPen(scanner);
         } else if (menuOption.equals("8")) {
-            Controller.updateWeatherDisplay();
+            Controller.updateAndPrintWeatherDisplay();
+            weatherDisplay = Weather.getWeatherDisplay();
         } else if (menuOption.equals("0")) {
             appIsRunning = false;
         } else {

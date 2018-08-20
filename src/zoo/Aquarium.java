@@ -23,7 +23,7 @@ public class Aquarium extends Pen {
 
     @Override
     public String displayInfo() {
-        return String.format("name: %s, volume: %s, remaining area: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), volume, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
+        return String.format("name: %s, volume: %s, remaining volum: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), volume, getRemainingSpace(), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 
     @Override

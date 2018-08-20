@@ -35,7 +35,7 @@ public class PettingTest {
         double landSpace = pettingAnimal.getAnimalSpace("blah");
 
         //assert
-        assertEquals(100, landSpace);
+        assertEquals(100, landSpace, 0);
     }
 
     @Test
@@ -44,6 +44,6 @@ public class PettingTest {
         double landSpace = pettingAnimal.getAnimalSpace();
 
         //assert
-        assertEquals(100, landSpace);
+        assertEquals(100, landSpace, 0);
     }
 }

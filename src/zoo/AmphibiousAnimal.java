@@ -10,7 +10,6 @@ public class AmphibiousAnimal extends Animal {
         getAllAmphibiousAnimals().add(this);
         getAllAnimalsInZooList().add(this);
         animalId = getAllAnimalsInZooList().indexOf(this);
-        this.hasAssignedPen = setAssignedPen(assignedPenId);
     }
 
     public double getAnimalSpace() {

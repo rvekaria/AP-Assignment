@@ -1,0 +1,1 @@
+{"Owl":["Cat","Sloth","Hippo"],"Penguin":["Dog","Hippo"],"Dolphin":["Hippo"],"Hippo":["Sloth","Penguin","Dog","Cat","Goat","Owl","Dolphin"],"Cat":["Dog","Owl","Hippo"],"Goat":["Hippo"],"Dog":["Penguin","Cat","Hippo"],"Sloth":["Owl","Hippo"]}

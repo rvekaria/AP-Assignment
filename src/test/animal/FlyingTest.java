@@ -35,7 +35,7 @@ public class FlyingTest {
         double airSpace = flyingAnimal.getAnimalSpace("blah");
 
         //assert
-        assertEquals(100, airSpace);
+        assertEquals(100, airSpace, 0);
     }
 
     @Test
@@ -44,7 +44,7 @@ public class FlyingTest {
         double airSpace = flyingAnimal.getAnimalSpace();
 
         //assert
-        assertEquals(100, airSpace);
+        assertEquals(100, airSpace, 0);
     }
 
 

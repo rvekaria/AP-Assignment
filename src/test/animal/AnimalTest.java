@@ -171,8 +171,6 @@ public class AnimalTest {
         assertFalse(animalsInOldPen.contains(penguin.getAnimalId()));
         assertTrue(animalsInNewPen.contains(penguin.getAnimalId()));
     }
-//TODO - move all file related tests into a DataTest class
-
 
     @Test
     public void testGetAnimalsWithoutPens(){

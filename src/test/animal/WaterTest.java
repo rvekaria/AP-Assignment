@@ -35,7 +35,7 @@ public class WaterTest {
         double waterSpace = waterAnimal.getAnimalSpace("blah");
 
         //assert
-        assertEquals(200, waterSpace);
+        assertEquals(200, waterSpace, 0);
     }
 
     @Test
@@ -44,6 +44,6 @@ public class WaterTest {
         double waterSpace = waterAnimal.getAnimalSpace();
 
         //assert
-        assertEquals(200, waterSpace);
+        assertEquals(200, waterSpace, 0);
     }
 }

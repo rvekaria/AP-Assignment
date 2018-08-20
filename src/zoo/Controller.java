@@ -1,26 +1,27 @@
 package zoo;
 
-import com.google.gson.JsonObject;
-
 import java.io.File;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
 public class Controller {
 
-    private static final String KEEPER_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json";
-    private static final String DRY_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/dryPensData.json";
-    private static final String PETTING_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/pettingPensData.json";
-    private static final String PART_DRY_WATER_PEN_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/partDryWaterPensData.json";
-    private static final String AQUARIUM_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aquariumsData.json";
-    private static final String AVIARY_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/penData/aviariesData.json";
-    private static final String LAND_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/landAnimalData.json";
-    private static final String PETTING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/pettingAnimalData.json";
-    private static final String AMPHIBIANS_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/amphibiansData.json";
-    private static final String WATER_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/waterAnimalData.json";
-    private static final String FLYING_ANIMAL_DATA = "/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/animalData/flyingAnimalData.json";
+    private static final String KEEPER_DATA = "src/zoo/data/zooKeeperData/keeperData.json";
+
+    private static final String DRY_PEN_DATA = "src/zoo/data/penData/dryPensData.json";
+    private static final String PETTING_PEN_DATA = "src/zoo/data/penData/pettingPensData.json";
+    private static final String PART_DRY_WATER_PEN_DATA = "src/zoo/data/penData/partDryWaterPensData.json";
+    private static final String AQUARIUM_DATA = "src/zoo/data/penData/aquariumsData.json";
+    private static final String AVIARY_DATA = "src/zoo/data/penData/aviariesData.json";
+
+    private static final String LAND_ANIMAL_DATA = "src/zoo/data/animalData/landAnimalData.json";
+    private static final String PETTING_ANIMAL_DATA = "src/zoo/data/animalData/pettingAnimalData.json";
+    private static final String AMPHIBIANS_DATA = "src/zoo/data/animalData/amphibiansData.json";
+    private static final String WATER_ANIMAL_DATA = "src/zoo/data/animalData/waterAnimalData.json";
+    private static final String FLYING_ANIMAL_DATA = "src/zoo/data/animalData/flyingAnimalData.json";
+    private static final String INCOMPATIBLE_SPECIES_DATA = "src/zoo/data/animalData/incompatibleSpeciesData.json";
 
     public static void loadKeepers() {
         File file = new File(KEEPER_DATA);
@@ -98,6 +99,16 @@ public class Controller {
         Animal.setAllFlyingAnimals(Data.instantiateAnimalsFromJsonFile(FLYING_ANIMAL_DATA, FlyingAnimal.class));
     }
 
+    public static void loadIncompatibleSpeciesMap() {
+        File file = new File(INCOMPATIBLE_SPECIES_DATA);
+        if (file.length() != 0) {
+            Animal.setIncompatibleSpeciesMap(Data.instantiateIncompatibleSpeciesFromJsonFile());
+        } else {
+            Animal.setIncompatibleSpeciesMap(new HashMap<>());
+        }
+
+    }
+
     public static void addNewPen(Scanner scanner) {
         boolean isNotValidOption = true;
         ArrayList<String> validOptions = new ArrayList<>();
@@ -155,9 +166,11 @@ public class Controller {
         switch (penOption) {
             case "1"://Dry Pen
                 pen = new DryPen(name, length, width, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writeDryPensToFile();
                 break;
             case "2"://Petting Pen
                 pen = new PettingPen(name, length, width, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writePettingAnimalsToFile();
                 break;
             case "3"://Part Dry, Part Water Pen
                 System.out.print("Water depth (metres): ");
@@ -167,16 +180,19 @@ public class Controller {
                 System.out.print("Water volume (m^3): ");
                 volume = Integer.parseInt(scanner.nextLine());
                 pen = new PartDryWaterPen(name, length, width, height, area, volume, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writePartDryWaterToFile();
                 break;
             case "4"://Aquarium
                 System.out.print("Height (m): ");
                 height = Integer.parseInt(scanner.nextLine());
                 pen = new Aquarium(name, length, width, height, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writeAquariumsToFile();
                 break;
             default://Aviary
                 System.out.print("Height (m): ");
                 height = Integer.parseInt(scanner.nextLine());
                 pen = new Aviary(name, length, width, height, temp, assignedKeeperList, animalsIdsInPen);
+                Data.writeAviariesToFile();
                 break;
         }
         for (ZooKeeper keeper : assignedKeeperList) {
@@ -265,12 +281,12 @@ public class Controller {
         System.out.println("Complete the following fields to add the animal:");
         System.out.print("Species: ");
         species = scanner.nextLine();
+        if (!Animal.getDistinctSpeciesInZoo().contains(species)) {
+            inputIncompatibleSpecies(species, scanner);
+        }
         System.out.print("Name: ");
         name = scanner.nextLine();
-        System.out.println("Which pen do you want to assign the animal to? Pick a number from the list: ");
-        displayPenInfo();
-        System.out.print("> ");
-        assignedPenId = Integer.parseInt(scanner.nextLine());
+        assignedPenId = -1;
         switch (animalOption) {
             case "1"://Land Animal
                 System.out.print("Land space required: ");
@@ -312,6 +328,79 @@ public class Controller {
                 Data.writeFlyingAnimalsToFile();
                 break;
         }
+        autoAssignAnimalToPen(animal);
+        Data.writeDistinctSpeciesToJsonFile(Animal.getDistinctSpeciesInZoo());
+    }
+
+    private static void autoAssignAnimalToPen(Animal animal) {
+        Pen.PenType penType;
+        switch (animal.getType()) {
+            case LAND:
+                penType = Pen.PenType.DRY;
+                break;
+            case PETTABLE:
+                penType = Pen.PenType.PETTING;
+                break;
+            case AMPHIBIOUS:
+                penType = Pen.PenType.PARTDRYWATER;
+                break;
+            case WATER:
+                penType = Pen.PenType.AQUARIUM;
+                break;
+            default:
+                penType = Pen.PenType.AVIARY;
+                break;
+        }
+        ArrayList<Pen> listOfAllPens = Pen.getListOfAllPens();
+        if (!listOfAllPens.isEmpty()) {
+            boolean assignSuccessful = false;
+            int i = 0;
+            while (!assignSuccessful && i < listOfAllPens.size()) {
+                Pen pen = listOfAllPens.get(i);
+                if (pen.getType().equals(penType)) {
+                    assignSuccessful = animal.setAssignedPen(pen.getPenId());
+                }
+                i++;
+            }
+            if (!assignSuccessful) {
+                System.out.println("There are no suitable pens in the zoo for this animal. Please add more pens!");
+            }
+        } else {
+            System.out.println("There are no pens! Press 1 to add a new pen.");
+        }
+    }
+
+    //TODO - why was dog assigned to cat twice?
+    private static void inputIncompatibleSpecies(String species, Scanner scanner) {
+        HashMap<String, ArrayList<String>> incompatibleSpeciesMap = Animal.getIncompatibleSpeciesMap();
+        ArrayList<String> incompatibleSpeciesList = new ArrayList<>();
+        System.out.println("Which of these species is this animal incompatible with:");
+        displayDistinctSpeciesInZoo();
+        String speciesOption = "-1";
+        while (!speciesOption.equals("x")) {
+            System.out.print("> ");
+            speciesOption = scanner.nextLine();
+            ArrayList<String> distinctSpeciesInZooList = Animal.getDistinctSpeciesInZoo();
+            if (!speciesOption.equals("x") && Integer.parseInt(speciesOption) < distinctSpeciesInZooList.size() && Integer.parseInt(speciesOption) >= 0) {
+                incompatibleSpeciesList.add(distinctSpeciesInZooList.get(Integer.parseInt(speciesOption)));
+                System.out.println("Declare another incompatible species or type x to finish.");
+                System.out.print("> ");
+            }
+        }
+        incompatibleSpeciesMap.put(species, incompatibleSpeciesList);
+        for (String incompatibleSpecies : incompatibleSpeciesList) {
+            incompatibleSpeciesMap.get(incompatibleSpecies).add(species);
+        }
+        Animal.setIncompatibleSpeciesMap(incompatibleSpeciesMap);
+        Data.writeIncompatibleSpeciesToJsonFile(Animal.getIncompatibleSpeciesMap());
+    }
+
+    private static void displayDistinctSpeciesInZoo() {
+        int i;
+        for (i = 0; i < Animal.getDistinctSpeciesInZoo().size(); i++) {
+            System.out.println("[" + i + "] " + Animal.getDistinctSpeciesInZoo().get(i));
+        }
+        System.out.println("[x] Finish adding incompatible species");
     }
 
     public static void displayKeeperInfo() {
@@ -388,7 +477,6 @@ public class Controller {
         } else if (type.equals("AVIARY")) {
             Data.writeAviariesToFile();
         }
-        Data.writeAllPensListToJsonFile();
     }
 
     public static void assignKeeperToPen(Scanner scanner) {
@@ -436,14 +524,24 @@ public class Controller {
         return null;
     }
 
-    public static void updateWeatherDisplay() {
-        LocalTime timeStamp = LocalTime.now();
-        JsonObject weatherObject = Weather.getWeatherAsJsonObject();
-        String weatherDesc = Weather.getWeatherDescription(weatherObject);
-        String temp = Weather.getTemp(weatherObject);
+    public static void updateAndPrintWeatherDisplay() {
+        Weather weather = new Weather();
+        Thread thread = new Thread(weather);
+        thread.start();
+    }
 
-        String weatherDisplay = "Weather: " + weatherDesc + "   Temperature: " + temp + "\nUpdated: " + timeStamp;
-        System.out.println();
-        System.out.println(weatherDisplay);
+    public static ArrayList<Animal> getAnimalsWithoutPens() {
+        return Animal.getAnimalsWithoutPens();
+    }
+
+    public static void printUnassignedAnimals() {
+        ArrayList<Animal> unassignedAnimals = getAnimalsWithoutPens();
+        for (Animal animal : unassignedAnimals) {
+            System.out.println(animal.displayInfo());
+        }
+    }
+
+    public static void loadDistinctSpeciesList() {
+        Animal.setDistinctSpeciesInZoo(Data.instantiateDistinctSpeciesFromJsonFile());
     }
 }

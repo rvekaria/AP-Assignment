@@ -1,1 +1,1 @@
-[{"area":180,"name":"Petting Pen 1","length":12,"width":15,"temp":14,"type":"PETTING","penId":1,"assignedKeepers":[{"name":"Alan","pensTrainedFor":["DRY","PETTING"],"assignedPenIds":[]}],"animalIDsInPen":[2,3]}]
+[{"area":35,"name":"Petting Pen 1","length":5,"width":7,"temp":17,"type":"PETTING","penId":5,"assignedKeepers":[{"name":"Alan","pensTrainedFor":["DRY","PETTING"],"assignedPenIds":[4,0,5]}],"animalIDsInPen":[5]}]

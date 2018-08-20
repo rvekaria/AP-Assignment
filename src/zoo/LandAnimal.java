@@ -9,7 +9,6 @@ public class LandAnimal extends Animal {
         getAllLandAnimals().add(this);
         getAllAnimalsInZooList().add(this);
         animalId = getAllAnimalsInZooList().indexOf(this);
-        this.hasAssignedPen = setAssignedPen(assignedPenId);
     }
 
     @Override
