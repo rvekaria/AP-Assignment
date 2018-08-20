@@ -76,7 +76,7 @@ public abstract class Pen {
     protected void updateKeepersAssignedPens(ArrayList<ZooKeeper> assignedKeepers) {
         for (ZooKeeper keeper : assignedKeepers) {
             keeper.addPenToAssignedPens(penId);
-            Data.writeKeepersToJsonFile("/Users/rupesh.vekaria/AP-Assignment/src/zoo/data/zooKeeperData/keeperData.json");
+            Data.writeKeepersToJsonFile("src/zoo/data/zooKeeperData/keeperData.json");
         }
     }
 

@@ -9,12 +9,9 @@ public class Main {
     private static boolean appIsRunning = true;
     private static String weatherDisplay = "Obtaining weather information...";
     private static String unassignedAnimalsWarning;
-    private static String unassignedPensWarning;
 
     public static void main(String[] args) {
         unassignedAnimalsWarning = "[WARNING] The following animals are not assigned to pens! Press 6 to assign animals to a pen.";
-        unassignedPensWarning = "[WARNING] The following pens have no assigned keeper! Press 7 to assign animals to a pen.";
-        //TODO - the pens warning may not be needed as keepers are autoassigned to a pen upon pen creation.
         ArrayList<Animal> unassignedAnimals;
         Controller.loadKeepers();
         Controller.loadPens();
@@ -32,7 +29,6 @@ public class Main {
                 System.out.println(unassignedAnimalsWarning);
                 Controller.printUnassignedAnimals();
             }
-//            System.out.println(unassignedPensWarning);
             System.out.print("> ");
             String menuOption = scanner.nextLine();
             executeOption(menuOption);

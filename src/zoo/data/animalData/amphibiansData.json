@@ -1,0 +1,32 @@
+[
+  {
+    "landSpace": 2.0,
+    "waterSpace": 4.0,
+    "name": "Patricia",
+    "species": "Penguin",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 1,
+    "hasAssignedPen": false,
+    "animalId": 1
+  },
+  {
+    "landSpace": 2.0,
+    "waterSpace": 4.0,
+    "name": "Peter",
+    "species": "Penguin",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 3,
+    "hasAssignedPen": false,
+    "animalId": 2
+  },
+  {
+    "landSpace": 10.0,
+    "waterSpace": 20.0,
+    "name": "Harishchandra",
+    "species": "Hippo",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 7,
+    "hasAssignedPen": false,
+    "animalId": 8
+  }
+]
