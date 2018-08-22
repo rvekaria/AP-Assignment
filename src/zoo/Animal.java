@@ -8,30 +8,26 @@ public abstract class Animal {
     private String species;
     protected animalType type;
     private int assignedPenId;
-    boolean hasAssignedPen;
     protected int animalId;
 
     private static HashMap<String, ArrayList<String>> incompatibleSpeciesMap = new HashMap<>();
-
     private static ArrayList<String> distinctSpeciesInZoo = new ArrayList<>();
 
     private static ArrayList<Animal> allAnimalsInZooList = new ArrayList<>();
-
     private static ArrayList<LandAnimal> allLandAnimals = new ArrayList<>();
-
     private static ArrayList<PettingAnimal> allPettingAnimals = new ArrayList<>();
-
     private static ArrayList<AmphibiousAnimal> allAmphibiousAnimals = new ArrayList<>();
     private static ArrayList<WaterAnimal> allWaterAnimals = new ArrayList<>();
     private static ArrayList<FlyingAnimal> allFlyingAnimals = new ArrayList<>();
-    public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE;}
+
+    public enum animalType {LAND, WATER, AMPHIBIOUS, FLYING, PETTABLE}
 
     public Animal(String name, String species, animalType type, int assignedPenId) {
         this.name = name;
         this.species = species;
         this.type = type;
         this.assignedPenId = assignedPenId;
-        if(!distinctSpeciesInZoo.contains(species)){
+        if (!distinctSpeciesInZoo.contains(species)) {
             distinctSpeciesInZoo.add(species);
         }
     }
@@ -39,26 +35,29 @@ public abstract class Animal {
     public static void setIncompatibleSpeciesMap(HashMap<String, ArrayList<String>> incompatibleSpeciesMap) {
         Animal.incompatibleSpeciesMap = incompatibleSpeciesMap;
     }
-    public static void setDistinctSpeciesInZoo(ArrayList<String> distinctSpeciesInZoo) {
-        Animal.distinctSpeciesInZoo = distinctSpeciesInZoo;
-    }
 
     public static HashMap<String, ArrayList<String>> getIncompatibleSpeciesMap() {
         return incompatibleSpeciesMap;
+    }
+
+    public static void setDistinctSpeciesInZoo(ArrayList<String> distinctSpeciesInZoo) {
+        Animal.distinctSpeciesInZoo = distinctSpeciesInZoo;
     }
 
     public static ArrayList<String> getDistinctSpeciesInZoo() {
         return distinctSpeciesInZoo;
     }
 
+    public static ArrayList<Animal> getAllAnimalsInZooList() {
+        return allAnimalsInZooList;
+    }
+
     public static ArrayList<LandAnimal> getAllLandAnimals() {
         return allLandAnimals;
     }
-
     public static void setAllLandAnimals(ArrayList<LandAnimal> allLandAnimals) {
         Animal.allLandAnimals = allLandAnimals;
     }
-
     public static ArrayList<PettingAnimal> getAllPettingAnimals() {
         return allPettingAnimals;
     }
@@ -66,7 +65,6 @@ public abstract class Animal {
     public static void setAllPettingAnimals(ArrayList<PettingAnimal> allPettingAnimals) {
         Animal.allPettingAnimals = allPettingAnimals;
     }
-
     public static ArrayList<AmphibiousAnimal> getAllAmphibiousAnimals() {
         return allAmphibiousAnimals;
     }
@@ -74,7 +72,6 @@ public abstract class Animal {
     public static void setAllAmphibiousAnimals(ArrayList<AmphibiousAnimal> allAmphibiousAnimals) {
         Animal.allAmphibiousAnimals = allAmphibiousAnimals;
     }
-
     public static ArrayList<WaterAnimal> getAllWaterAnimals() {
         return allWaterAnimals;
     }
@@ -82,7 +79,6 @@ public abstract class Animal {
     public static void setAllWaterAnimals(ArrayList<WaterAnimal> allWaterAnimals) {
         Animal.allWaterAnimals = allWaterAnimals;
     }
-
     public static ArrayList<FlyingAnimal> getAllFlyingAnimals() {
         return allFlyingAnimals;
     }
@@ -117,10 +113,6 @@ public abstract class Animal {
 
     public Pen getAssignedPen() {
         return Pen.getListOfAllPens().get(assignedPenId);
-    }
-
-    public static ArrayList<Animal> getAllAnimalsInZooList() {
-        return allAnimalsInZooList;
     }
 
     public abstract String displayInfo();
@@ -165,9 +157,9 @@ public abstract class Animal {
         return null;
     }
 
-    public boolean isCompatibleWith(String species){
+    public boolean isCompatibleWith(String species) {
         ArrayList<String> incompatibleSpeciesList = incompatibleSpeciesMap.get(this.species);
-        if(incompatibleSpeciesList.contains(species)){
+        if (incompatibleSpeciesList.contains(species)) {
             return false;
         } else {
             return true;

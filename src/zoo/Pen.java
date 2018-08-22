@@ -17,14 +17,9 @@ public abstract class Pen {
     private static ArrayList<PartDryWaterPen> listOfAllDryWaterPens = new ArrayList<>();
     private static ArrayList<DryPen> listOfAllDryPens = new ArrayList<>();
 
-    public static void setListOfAllPens(ArrayList<Pen> listOfAllPens) {
-        Pen.listOfAllPens = listOfAllPens;
-    }
-
     public static ArrayList<Aquarium> getListOfAllAquariums() {
         return listOfAllAquariums;
     }
-
     public static void setListOfAllAquariums(ArrayList<Aquarium> listOfAllAquariums) {
         Pen.listOfAllAquariums = listOfAllAquariums;
     }
@@ -32,7 +27,6 @@ public abstract class Pen {
     public static ArrayList<PettingPen> getListOfAllPettingPens() {
         return listOfAllPettingPens;
     }
-
     public static void setListOfAllPettingPens(ArrayList<PettingPen> listOfAllPettingPens) {
         Pen.listOfAllPettingPens = listOfAllPettingPens;
     }
@@ -40,7 +34,6 @@ public abstract class Pen {
     public static ArrayList<Aviary> getListOfAllAviaries() {
         return listOfAllAviaries;
     }
-
     public static void setListOfAllAviaries(ArrayList<Aviary> listOfAllAviaries) {
         Pen.listOfAllAviaries = listOfAllAviaries;
     }
@@ -48,7 +41,6 @@ public abstract class Pen {
     public static ArrayList<PartDryWaterPen> getListOfAllDryWaterPens() {
         return listOfAllDryWaterPens;
     }
-
     public static void setListOfAllDryWaterPens(ArrayList<PartDryWaterPen> listOfAllDryWaterPens) {
         Pen.listOfAllDryWaterPens = listOfAllDryWaterPens;
     }
@@ -56,7 +48,6 @@ public abstract class Pen {
     public static ArrayList<DryPen> getListOfAllDryPens() {
         return listOfAllDryPens;
     }
-
     public static void setListOfAllDryPens(ArrayList<DryPen> listOfAllDryPens) {
         Pen.listOfAllDryPens = listOfAllDryPens;
     }
@@ -143,18 +134,6 @@ public abstract class Pen {
         return Arrays.toString(keeperNamesArray);
     }
 
-    public void removeZooKeeper(ZooKeeper keeper) {
-        if (assignedKeepers.contains(keeper)) {
-            assignedKeepers.remove(assignedKeepers.indexOf(keeper));
-            System.out.println(keeper.getName() + " is no longer a keeper of this pen.");
-            if (assignedKeepers.isEmpty()) {
-                System.out.println("There are no more keepers looking after " + name + ". At least one keeper must be assigned to this pen!");
-            }
-        } else {
-            System.out.println(keeper.getName() + " is not a keeper of this pen. Cannot remove.");
-        }
-    }
-
     public void assignZooKeeper(ZooKeeper keeper) {
         if (!assignedKeepers.contains(keeper) && keeper.isTrainedFor(getType()) && ZooKeeper.getListOfAllZooKeepers().contains(keeper)) {
             assignedKeepers.add(keeper); //update pen's list of zookeeper's that are looking after it
@@ -163,7 +142,7 @@ public abstract class Pen {
         } else
             assignKeeperErrorMessage(keeper);
     }
-
+    //These error messages are never used as the user is only given the option to add suitable keepers to a pen
     public void assignKeeperErrorMessage(ZooKeeper keeper) {
         if (assignedKeepers.contains(keeper)) {
             System.out.println(keeper.getName() + " is already a keeper of this pen.");
@@ -204,8 +183,6 @@ public abstract class Pen {
     public void removeAnimalFromPen(Animal animal) {
         if (animalIDsInPen.contains(animal.getAnimalId())) {
             animalIDsInPen.remove(animalIDsInPen.indexOf(animal.getAnimalId()));
-//            System.out.println(animal.getName() + " has been removed from this pen. This animal must be assigned to another suitable pen.");
-
         } else {
             System.out.println(animal.getName() + " is not in this pen. Cannot remove.");
         }

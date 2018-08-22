@@ -28,7 +28,6 @@ public class PartDryWaterPen extends Pen {
         return String.format("name: %s, land area: %s, volume: %s, remaining area: %s, remaining volume: %s, temp: %s, zookeepers: %s, no. of animals: %s", getName(), landArea, waterVolume, getRemainingSpace("land"), getRemainingSpace("water"), getTemp(), getKeeperNames(), getAnimalIDsInPen().size());
     }
 
-    @Override
     public int getCapacity(String type) {
         if (type.equals("land")) {
             return landArea;
