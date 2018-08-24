@@ -1,1 +1,86 @@
-[{"landSpace":3.0,"name":"Samuel","species":"Sloth","type":"LAND","assignedPenId":0,"hasAssignedPen":false,"animalId":0},{"landSpace":3.5,"name":"Dixa","species":"Dog","type":"LAND","assignedPenId":4,"hasAssignedPen":false,"animalId":3},{"landSpace":4.0,"name":"Catherine","species":"Cat","type":"LAND","assignedPenId":0,"hasAssignedPen":false,"animalId":4},{"landSpace":3.0,"name":"Gordon","species":"Goat","type":"PETTABLE","assignedPenId":5,"hasAssignedPen":false,"animalId":5},{"landSpace":2.0,"waterSpace":4.0,"name":"Patricia","species":"Penguin","type":"AMPHIBIOUS","assignedPenId":1,"hasAssignedPen":false,"animalId":1},{"landSpace":2.0,"waterSpace":4.0,"name":"Peter","species":"Penguin","type":"AMPHIBIOUS","assignedPenId":3,"hasAssignedPen":false,"animalId":2},{"landSpace":10.0,"waterSpace":20.0,"name":"Harishchandra","species":"Hippo","type":"AMPHIBIOUS","assignedPenId":7,"hasAssignedPen":false,"animalId":8},{"waterSpace":40.0,"name":"Dustin","species":"Dolphin","type":"WATER","assignedPenId":2,"hasAssignedPen":false,"animalId":7},{"airSpace":20.0,"name":"Otis","species":"Owl","type":"FLYING","assignedPenId":6,"hasAssignedPen":false,"animalId":6}]
+[
+  {
+    "landSpace": 3.0,
+    "name": "Samuel",
+    "species": "Sloth",
+    "type": "LAND",
+    "assignedPenId": 0,
+    "hasAssignedPen": false,
+    "animalId": 0
+  },
+  {
+    "landSpace": 3.5,
+    "name": "Dixa",
+    "species": "Dog",
+    "type": "LAND",
+    "assignedPenId": 4,
+    "hasAssignedPen": false,
+    "animalId": 3
+  },
+  {
+    "landSpace": 4.0,
+    "name": "Catherine",
+    "species": "Cat",
+    "type": "LAND",
+    "assignedPenId": 0,
+    "hasAssignedPen": false,
+    "animalId": 4
+  },
+  {
+    "landSpace": 3.0,
+    "name": "Gordon",
+    "species": "Goat",
+    "type": "PETTABLE",
+    "assignedPenId": 5,
+    "hasAssignedPen": false,
+    "animalId": 5
+  },
+  {
+    "landSpace": 2.0,
+    "waterSpace": 4.0,
+    "name": "Patricia",
+    "species": "Penguin",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 1,
+    "hasAssignedPen": false,
+    "animalId": 1
+  },
+  {
+    "landSpace": 2.0,
+    "waterSpace": 4.0,
+    "name": "Peter",
+    "species": "Penguin",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 3,
+    "hasAssignedPen": false,
+    "animalId": 2
+  },
+  {
+    "landSpace": 10.0,
+    "waterSpace": 20.0,
+    "name": "Harishchandra",
+    "species": "Hippo",
+    "type": "AMPHIBIOUS",
+    "assignedPenId": 7,
+    "hasAssignedPen": false,
+    "animalId": 8
+  },
+  {
+    "waterSpace": 40.0,
+    "name": "Dustin",
+    "species": "Dolphin",
+    "type": "WATER",
+    "assignedPenId": 2,
+    "hasAssignedPen": false,
+    "animalId": 7
+  },
+  {
+    "airSpace": 20.0,
+    "name": "Otis",
+    "species": "Owl",
+    "type": "FLYING",
+    "assignedPenId": 6,
+    "hasAssignedPen": false,
+    "animalId": 6
+  }
+]

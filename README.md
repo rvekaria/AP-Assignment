@@ -6,3 +6,5 @@ The code used to write the program makes use of object-oriented concepts such as
 tried following a model-view-controller pattern whilst writing this code.
 
 Tests have also been written for the code though this is not extensive.
+
+Run the program through the Main class in src/zoo/Main
